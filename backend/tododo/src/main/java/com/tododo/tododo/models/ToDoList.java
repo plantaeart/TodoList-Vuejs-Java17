@@ -1,6 +1,6 @@
 package com.tododo.tododo.models;
 
-import java.util.Arrays;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,11 +11,11 @@ public class ToDoList {
     @JsonProperty("name")
     private String _name;
     @JsonProperty("tasks")
-    private Task[] _tasks;
-    
+    private List<Task> _tasks;
+
     /************************* CONSTRUCTORS *************************/
 
-    public ToDoList(int id, String name, Task[] tasks) {
+    public ToDoList(int id, String name, List<Task> tasks) {
         this.id = id;
         this._name = name;
         this._tasks = tasks;
@@ -25,12 +25,17 @@ public class ToDoList {
     }
 
     @Override
+    public String toString() {
+        return "ToDoList [id=" + id + ", _name=" + _name + ", _tasks=" + _tasks + "]";
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + id;
         result = prime * result + ((_name == null) ? 0 : _name.hashCode());
-        result = prime * result + Arrays.hashCode(_tasks);
+        result = prime * result + ((_tasks == null) ? 0 : _tasks.hashCode());
         return result;
     }
 
@@ -50,38 +55,40 @@ public class ToDoList {
                 return false;
         } else if (!_name.equals(other._name))
             return false;
-        if (!Arrays.equals(_tasks, other._tasks))
+        if (_tasks == null) {
+            if (other._tasks != null)
+                return false;
+        } else if (!_tasks.equals(other._tasks))
             return false;
         return true;
     }
 
     /************************* GETTERS *************************/
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
 
-    public String getName() {
+    public String get_name() {
         return _name;
     }
 
-    public Task[] getTasks() {
+    public List<Task> get_tasks() {
         return _tasks;
     }
 
     /************************* SETTERS *************************/
 
-    public void setId(int id) {
-        this.id = id;
+    public void set_name(String _name) {
+        this._name = _name;
     }
 
-    public void setName(String name) {
-        this._name = name;
+    public void set_tasks(List<Task> _tasks) {
+        this._tasks = _tasks;
     }
 
-    public void setTasks(Task[] tasks) {
-        this._tasks = tasks;
-    }
-
-    
 }

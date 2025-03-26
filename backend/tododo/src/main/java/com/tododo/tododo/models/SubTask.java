@@ -7,13 +7,55 @@ public class SubTask {
     @JsonProperty("taskContent")
     private String _taskContent;
     protected Boolean isCompleted = false;
-    
+
     /************************* CONSTRUCTORS *************************/
 
     public SubTask(int id, String taskContent, Boolean isCompleted) {
         this.id = id;
         this._taskContent = taskContent;
         this.isCompleted = isCompleted;
+    }
+
+    public SubTask() {
+    }
+
+    @Override
+    public String toString() {
+        return "SubTask [id=" + id + ", _taskContent=" + _taskContent + ", isCompleted=" + isCompleted + "]";
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        result = prime * result + ((_taskContent == null) ? 0 : _taskContent.hashCode());
+        result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SubTask other = (SubTask) obj;
+        if (id != other.id)
+            return false;
+        if (_taskContent == null) {
+            if (other._taskContent != null)
+                return false;
+        } else if (!_taskContent.equals(other._taskContent))
+            return false;
+        if (isCompleted == null) {
+            if (other.isCompleted != null)
+                return false;
+        } else if (!isCompleted.equals(other.isCompleted))
+            return false;
+        return true;
     }
 
     /************************* GETTERS *************************/
@@ -44,5 +86,4 @@ public class SubTask {
         this.isCompleted = isCompleted;
     }
 
-    
 }

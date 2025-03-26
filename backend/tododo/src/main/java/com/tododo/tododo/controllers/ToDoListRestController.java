@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
-@RequestMapping("/api")
-public class ListRestController {
+@RequestMapping("/api/toDoList")
+public class ToDoListRestController {
 
-    public ToDoListServices service = new ToDoListServices();
+    private ToDoListServices service = new ToDoListServices();
 
     @GetMapping("/getAllToDoLists")
     public ToDoListServicesResponse getAllToDoLists() {

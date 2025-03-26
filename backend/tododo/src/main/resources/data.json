@@ -1,1 +1,1 @@
-[{"name":"A faire bientôt","tasks":[{"id":1,"isCompleted":false,"subTasks":[],"taskContent":"Je dois d'abord faire ça"}],"id":1},{"name":"A faire dans le plus grand des calmes :) ","tasks":[],"id":2},{"name":"Il faudrait que je fasse ça aussi","tasks":[],"id":3}]
+[{"id":1,"name":"A faire bientôt","tasks":[{"id":1,"isCompleted":false,"taskContent":"Se lever tôt :)","subTasks":[]}]},{"id":2,"name":"A faire dans le plus grand des calmes :D ","tasks":[]},{"id":3,"name":"Il faudrait que je fasse ça aussi","tasks":[]}]

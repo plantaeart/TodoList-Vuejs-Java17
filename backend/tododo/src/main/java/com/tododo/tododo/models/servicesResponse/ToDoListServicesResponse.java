@@ -7,12 +7,12 @@ import com.tododo.tododo.models.ToDoList;
 
 public class ToDoListServicesResponse {
 
-    private Result currentResult;
+    private Result _currentResult;
     private String _message;
     private List<ToDoList> _toDoListList;
 
     public ToDoListServicesResponse(Result currentResult, String message, List<ToDoList> toDoListList) {
-        this.currentResult = currentResult;
+        this._currentResult = currentResult;
         this._message = message;
         this._toDoListList = toDoListList;
     }
@@ -20,28 +20,28 @@ public class ToDoListServicesResponse {
     public ToDoListServicesResponse() {
     }
 
-    public Result getCurrentResult() {
-        return currentResult;
+    public Result get_currentResult() {
+        return _currentResult;
     }
 
-    public List<ToDoList> getToDoListList() {
-        return _toDoListList;
-    }
-
-    public String getMessage() {
+    public String get_message() {
         return _message;
     }
 
-    public void setCurrentResult(Result currentResult) {
-        this.currentResult = currentResult;
+    public List<ToDoList> get_toDoListList() {
+        return _toDoListList;
     }
 
-    public void setToDoListList(List<ToDoList> toDoListList) {
-        this._toDoListList = toDoListList;
+    public void set_currentResult(Result _currentResult) {
+        this._currentResult = _currentResult;
     }
 
-    public void setMessage(String message) {
-        this._message = message;
+    public void set_message(String _message) {
+        this._message = _message;
+    }
+
+    public void set_toDoListList(List<ToDoList> _toDoListList) {
+        this._toDoListList = _toDoListList;
     }
 
 }
