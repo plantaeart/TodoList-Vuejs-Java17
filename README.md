@@ -44,4 +44,4 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
 ## Notes à moi même 😐
 
 * 27/03/2025 : Pour revenir sur l'utilisation d'un data.json, j'avoue que j'avais la flemme de passer par du mongodb/supabase/firebase.
-  Mais pour mon prochain projet sans doute que je passerai par du firebase, parce que why not.
+  Mais pour mon prochain projet sans doute que je passerai par du Firebase Firestoe, parce que why not.
