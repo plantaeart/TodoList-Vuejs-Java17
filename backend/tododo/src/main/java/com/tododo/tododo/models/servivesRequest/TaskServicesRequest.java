@@ -7,9 +7,9 @@ import com.tododo.tododo.models.Task;
 
 public class TaskServicesRequest {
     @JsonProperty(value = "idList", required = false)
-    private int _idList;
+    protected int _idList;
     @JsonProperty(value = "idTask", required = false)
-    private int _idTask;
+    protected int _idTask;
     @JsonProperty(value = "tasks", required = false)
     private List<Task> _tasks;
 

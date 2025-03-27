@@ -1,5 +1,6 @@
 package com.tododo.tododo.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +12,7 @@ public class ToDoList {
     @JsonProperty("name")
     private String _name;
     @JsonProperty(value = "tasks", required = false)
-    private List<Task> _tasks;
+    private List<Task> _tasks = new ArrayList<Task>();
 
     /************************* CONSTRUCTORS *************************/
 

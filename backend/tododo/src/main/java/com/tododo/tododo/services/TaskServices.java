@@ -43,6 +43,37 @@ public class TaskServices {
         return taskResp;
     }
 
+    // Get all tasks by id todo lists from data.json
+    public TaskServicesResponse getTaskByIdFromJSON(TaskServicesRequest req) {
+        TaskServicesResponse taskResp = new TaskServicesResponse();
+        ToDoList currentToDoList = new ToDoList();
+
+        try {
+            // Getting the todo list asked
+            currentToDoList = tdls.getListByIdFromJSON(req.get_idList()).get_toDoListList().get(0);
+            // Getting the task asked
+            taskResp.set_taskList(currentToDoList.get_tasks().stream().filter(x -> x.id == req.get_idTask()).toList());
+        } catch (Exception e) {
+            String message = "error while getting task id : " + req.get_idTask() + " from the todo list with the id : "
+                    + req.get_idList() + " - message : "
+                    + e.getMessage();
+            System.err.println(message);
+            taskResp.set_message(message);
+            taskResp.set_currentResult(Result.ERROR);
+
+            return taskResp;
+        }
+
+        boolean isListEmpty = taskResp.get_taskList().size() == 0;
+        taskResp.set_currentResult(isListEmpty ? Result.NOT_EXISTING : Result.OK);
+        taskResp.set_message(
+                isListEmpty
+                        ? "No task with the id : " + req.get_idTask() + " found for the todo list with the id "
+                                + req.get_idList()
+                        : "");
+        return taskResp;
+    }
+
     // Update a task
     public TaskServicesResponse updateTaskFromJSON(TaskServicesRequest req) {
         TaskServicesResponse taskResp = new TaskServicesResponse();
@@ -93,16 +124,18 @@ public class TaskServices {
         try {
             // getting the todo list to update
             currentToDoList = tdls.getListByIdFromJSON(req.get_idList()).get_toDoListList().get(0);
-            // Sort the tasks in descending order based on their id
-            Collections.sort(currentToDoList.get_tasks(), Comparator.comparingInt(Task::getId).reversed());
 
-            boolean isEmptyTasks = !currentToDoList.get_tasks().isEmpty();
+            boolean isEmptyTasks = currentToDoList.get_tasks().isEmpty();
+
             // Get the greatest id if the todo list has task(s)
-            if (isEmptyTasks)
+            if (!isEmptyTasks) {
+                // Sort the tasks in descending order based on their id
+                Collections.sort(currentToDoList.get_tasks(), Comparator.comparingInt(Task::getId).reversed());
                 lastId = currentToDoList.get_tasks().get(0).getId();
+            }
 
             // Setting the id to the last id + 1 or if it's the first tasks to 1
-            req.get_tasks().get(0).setId(isEmptyTasks ? lastId + 1 : lastId);
+            req.get_tasks().get(0).setId(isEmptyTasks ? lastId : lastId + 1);
             // The task is not yet completed
             req.get_tasks().get(0).setIsCompleted(false);
             // Adding the task to the current todo list

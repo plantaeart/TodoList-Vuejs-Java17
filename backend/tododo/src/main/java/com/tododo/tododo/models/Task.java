@@ -1,5 +1,6 @@
 package com.tododo.tododo.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,7 +14,7 @@ public class Task {
     @JsonProperty(value = "isCompleted", required = false)
     protected Boolean isCompleted = false;
     @JsonProperty(value = "subTasks", required = false)
-    private List<SubTask> _subTasks;
+    private List<SubTask> _subTasks = new ArrayList<SubTask>();
 
     /************************* CONSTRUCTORS *************************/
 
@@ -79,7 +80,7 @@ public class Task {
         return id;
     }
 
-    public List<SubTask> getSubTasks() {
+    public List<SubTask> get_subTasks() {
         return _subTasks;
     }
 
@@ -97,7 +98,7 @@ public class Task {
         this.id = id;
     }
 
-    public void setSubTasks(List<SubTask> subTasks) {
+    public void set_subTasks(List<SubTask> subTasks) {
         this._subTasks = subTasks;
     }
 
@@ -107,5 +108,13 @@ public class Task {
 
     public void setIsCompleted(Boolean isCompleted) {
         this.isCompleted = isCompleted;
+    }
+
+    /************************* OTHERS *************************/
+
+    public void taskIsCompleted() {
+        for (SubTask subTask : _subTasks) {
+            subTask.setIsCompleted(true);
+        }
     }
 }

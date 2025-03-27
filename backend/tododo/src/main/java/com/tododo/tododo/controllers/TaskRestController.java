@@ -24,6 +24,11 @@ public class TaskRestController {
         return service.getAllTasksFromJSON(idList);
     }
 
+    @GetMapping("getTasksById")
+    public TaskServicesResponse getTasksById(@RequestBody TaskServicesRequest req) {
+        return service.getTaskByIdFromJSON(req);
+    }
+
     @PostMapping("updateTask")
     public TaskServicesResponse updateTask(@RequestBody TaskServicesRequest req) {
         return service.updateTaskFromJSON(req);
