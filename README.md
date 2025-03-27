@@ -38,7 +38,8 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
   * Mise en place de test unitaire (JUnit) 🟪
       * Création workflow de test 🟪
       * Mise en place des tests 🟪
-  * Mise en place du projet fron Vuejs 3 🟪
+  * Mise en place du projet front Vuejs 3 🟪
+  * Mise en place des tâche à réaliser pour le front 🟪 
 
 ## Notes à moi même 😐
 
