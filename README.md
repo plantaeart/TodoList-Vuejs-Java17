@@ -32,9 +32,10 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
   * Mise en place du service Task 🟩
   * Mise en place du CRUD Task 🟩
   * Mise en place des endpoint API REST Task 🟩
-  * Mise en place du service SubTask 🟧
-  * Mise en place du CRUD SubTask 🟧
-  * Mise en place des endpoint API REST SubTask 🟧
+  * Mise en place du service SubTask 🟩
+  * Mise en place du CRUD SubTask 🟩
+  * Mise en place des endpoint API REST SubTask 🟩
+  * Test workflow de l'API 🟧
   * Mise en place de test unitaire (JUnit) 🟪
       * Création workflow de test 🟪
       * Mise en place des tests 🟪
