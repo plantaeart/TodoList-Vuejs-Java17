@@ -11,36 +11,39 @@ import com.tododo.tododo.models.Task;
 import com.tododo.tododo.models.ToDoList;
 import com.tododo.tododo.models.servicesResponse.TaskServicesResponse;
 import com.tododo.tododo.models.servivesRequest.TaskServicesRequest;
+import com.tododo.tododo.models.servivesRequest.ToDoListRequest;
 
 public class TaskServices {
     File jsonFile = new File("src\\main\\resources\\data.json");
     ToDoListServices tdls = new ToDoListServices();
 
     // Get all tasks by id todo lists from data.json
-    public TaskServicesResponse getAllTasksFromJSON(int idList) {
-        TaskServicesResponse taskResp = new TaskServicesResponse();
+    public TaskServicesResponse getAllTasksFromJSON(TaskServicesRequest req) {
+        TaskServicesResponse resp = new TaskServicesResponse();
         List<ToDoList> allToDoLists = new ArrayList<ToDoList>();
 
         try {
             // gettin all list the mapper json to List<ToDoList>
             allToDoLists = tdls.getAllToDoListsFromJSON().get_toDoListList();
-            taskResp.set_taskList(
-                    allToDoLists.stream().filter(x -> x.id == idList).toList().get(0).get_tasks());
+            resp.set_taskList(
+                    allToDoLists.stream().filter(x -> x.id == req.get_idList()).toList().get(0).get_tasks());
+
+            boolean isListEmpty = resp.get_taskList().size() == 0;
+            resp.set_currentResult(isListEmpty ? Result.NOT_EXISTING : Result.OK);
+            resp.set_message(isListEmpty ? "No task found for the todo list with the id " + req.get_idList() : "");
 
         } catch (Exception e) {
-            String message = "error while parsing all task from the todo list with the id : " + idList + " - message : "
+            String message = "error while parsing all task from the todo list with the id : " + req.get_idList()
+                    + " - message : "
                     + e.getMessage();
             System.err.println(message);
-            taskResp.set_message(message);
-            taskResp.set_currentResult(Result.ERROR);
+            resp.set_message(message);
+            resp.set_currentResult(Result.ERROR);
 
-            return taskResp;
+            return resp;
         }
 
-        boolean isListEmpty = taskResp.get_taskList().size() == 0;
-        taskResp.set_currentResult(isListEmpty ? Result.NOT_EXISTING : Result.OK);
-        taskResp.set_message(isListEmpty ? "No task found for the todo list with the id " + idList : "");
-        return taskResp;
+        return resp;
     }
 
     // Get all tasks by id todo lists from data.json
@@ -50,9 +53,17 @@ public class TaskServices {
 
         try {
             // Getting the todo list asked
-            currentToDoList = tdls.getListByIdFromJSON(req.get_idList()).get_toDoListList().get(0);
+            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList())).get_toDoListList().get(0);
             // Getting the task asked
             taskResp.set_taskList(currentToDoList.get_tasks().stream().filter(x -> x.id == req.get_idTask()).toList());
+
+            boolean isListEmpty = taskResp.get_taskList().size() == 0;
+            taskResp.set_currentResult(isListEmpty ? Result.NOT_EXISTING : Result.OK);
+            taskResp.set_message(
+                    isListEmpty
+                            ? "No task with the id : " + req.get_idTask() + " found for the todo list with the id "
+                                    + req.get_idList()
+                            : "");
         } catch (Exception e) {
             String message = "error while getting task id : " + req.get_idTask() + " from the todo list with the id : "
                     + req.get_idList() + " - message : "
@@ -64,54 +75,61 @@ public class TaskServices {
             return taskResp;
         }
 
-        boolean isListEmpty = taskResp.get_taskList().size() == 0;
-        taskResp.set_currentResult(isListEmpty ? Result.NOT_EXISTING : Result.OK);
-        taskResp.set_message(
-                isListEmpty
-                        ? "No task with the id : " + req.get_idTask() + " found for the todo list with the id "
-                                + req.get_idList()
-                        : "");
         return taskResp;
     }
 
     // Update a task
     public TaskServicesResponse updateTaskFromJSON(TaskServicesRequest req) {
-        TaskServicesResponse taskResp = new TaskServicesResponse();
+        TaskServicesResponse resp = new TaskServicesResponse();
         ToDoList currentToDoList = new ToDoList();
-        Task oldTask = new Task();
-        int currentIndex = 0;
 
         try {
             // getting the todo list to update
-            currentToDoList = tdls.getListByIdFromJSON(req.get_idList()).get_toDoListList().get(0);
-            // getting the task to update
-            oldTask = currentToDoList.get_tasks().stream()
-                    .filter(x -> x.id == req.get_idTask()).toList().get(0);
-            // getting it's index
-            currentIndex = currentToDoList.get_tasks().indexOf(oldTask);
-            // Removing the old task and adding the new one
-            currentToDoList.get_tasks().remove(currentIndex);
-            currentToDoList.get_tasks().add(currentIndex, req.get_tasks().get(0));
-            // Rearanging tasks ids and sorting the tasks list ascending
-            currentToDoList.set_tasks(rearangeTasksIds(currentToDoList.get_tasks()));
-            // update the todo list
-            tdls.updateToDoListFromJSON(currentToDoList);
+            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList())).get_toDoListList().get(0);
+
+            // Getting the task to update
+            Task taskToUpdate = currentToDoList.get_tasks().stream()
+                    .filter(task -> task.getId() == req.get_idTask())
+                    .findFirst()
+                    .orElse(null);
+
+            if (taskToUpdate == null) {
+                String message = "Task with ID " + req.get_idTask() + " not found or not exist from Todo List ID "
+                        + req.get_idList();
+                System.err.println(message);
+                resp.set_message(message);
+                resp.set_currentResult(Result.ERROR);
+                return resp;
+            }
+
+            // Updating task informations
+            Task updatedTask = req.get_tasks().get(0);
+            taskToUpdate.setTaskContent(updatedTask.getTaskContent());
+            taskToUpdate.setIsCompleted(updatedTask.getIsCompleted());
+            taskToUpdate.set_subTasks(updatedTask.get_subTasks());
+
+            // Update the todo list
+            List<ToDoList> toDoListToUpdate = new ArrayList<>();
+            toDoListToUpdate.add(currentToDoList);
+            tdls.updateToDoListFromJSON(new ToDoListRequest(req.get_idList(), toDoListToUpdate));
+
+            resp.set_taskList(new ArrayList<Task>(List.of(taskToUpdate)));
+            resp.set_currentResult(Result.OK);
+            resp.set_message("The task id : " + req.get_idTask() + " from the todo list with the id : "
+                    + req.get_idList() + " is updated");
         } catch (Exception e) {
             String message = "error while updating the task id : " + req.get_idTask()
                     + " from the todo list with the id : " + req.get_idList() + " - message : "
                     + e.getMessage();
             System.err.println(message);
-            taskResp.set_message(message);
-            taskResp.set_currentResult(Result.ERROR);
+            resp.set_message(message);
+            resp.set_currentResult(Result.ERROR);
+            resp.set_taskList(new ArrayList<Task>(List.of(req.get_tasks().get(0))));
 
-            return taskResp;
+            return resp;
         }
 
-        taskResp.set_taskList(req.get_tasks());
-        taskResp.set_currentResult(Result.OK);
-        taskResp.set_message("The task id : " + req.get_idTask() + " from the todo list with the id : "
-                + req.get_idList() + " is updated");
-        return taskResp;
+        return resp;
     }
 
     // Add a task
@@ -123,7 +141,7 @@ public class TaskServices {
 
         try {
             // getting the todo list to update
-            currentToDoList = tdls.getListByIdFromJSON(req.get_idList()).get_toDoListList().get(0);
+            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList())).get_toDoListList().get(0);
 
             boolean isEmptyTasks = currentToDoList.get_tasks().isEmpty();
 
@@ -143,7 +161,13 @@ public class TaskServices {
             // Sorting the tasks in ascending order
             Collections.sort(currentToDoList.get_tasks(), Comparator.comparingInt(Task::getId));
             // update the todo list
-            tdls.updateToDoListFromJSON(currentToDoList);
+            tdls.updateToDoListFromJSON(new ToDoListRequest(new ArrayList<ToDoList>(List.of(currentToDoList))));
+
+            taskResp.set_taskList(req.get_tasks());
+            taskResp.set_currentResult(Result.OK);
+            taskResp.set_message(
+                    "The task id : " + req.get_tasks().get(0).getId() + " from the todo list with the id : "
+                            + req.get_idList() + " is added");
         } catch (Exception e) {
             String message = "error while adding the task from the todo list with the id : "
                     + req.get_idList() + " - message : "
@@ -155,43 +179,61 @@ public class TaskServices {
             return taskResp;
         }
 
-        taskResp.set_taskList(req.get_tasks());
-        taskResp.set_currentResult(Result.OK);
-        taskResp.set_message("The task id : " + req.get_tasks().get(0).getId() + " from the todo list with the id : "
-                + req.get_idList() + " is added");
         return taskResp;
     }
 
     // Delete a task
     public TaskServicesResponse deleteTaskFromJSON(TaskServicesRequest req) {
-        TaskServicesResponse taskResp = new TaskServicesResponse();
+        TaskServicesResponse resp = new TaskServicesResponse();
         ToDoList currentToDoList = new ToDoList();
 
         try {
             // getting the todo list to update
-            currentToDoList = tdls.getListByIdFromJSON(req.get_idList()).get_toDoListList().get(0);
-            // Remove the task
-            currentToDoList.get_tasks().remove(req.get_idTask() - 1);
+            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList())).get_toDoListList().get(0);
+
+            // Getting the task to delete
+            Task taskToDelete = currentToDoList.get_tasks().stream()
+                    .filter(task -> task.getId() == req.get_idTask())
+                    .findFirst()
+                    .orElse(null);
+
+            if (taskToDelete == null) {
+                String message = "Task with ID " + req.get_idTask() + " not found or not exist from Todo List ID "
+                        + req.get_idList();
+                System.err.println(message);
+                resp.set_message(message);
+                resp.set_currentResult(Result.ERROR);
+                return resp;
+            }
+
+            // Deleting the task
+            currentToDoList.get_tasks().remove(taskToDelete);
+
             // Rearanging tasks ids and sorting the tasks list ascending
             currentToDoList.set_tasks(rearangeTasksIds(currentToDoList.get_tasks()));
+
             // update the todo list
-            tdls.updateToDoListFromJSON(currentToDoList);
+            tdls.updateToDoListFromJSON(
+                    new ToDoListRequest(req.get_idList(), new ArrayList<ToDoList>(List.of(currentToDoList))));
+
+            resp.set_taskList(new ArrayList<Task>(List.of(taskToDelete)));
+            resp.set_currentResult(Result.OK);
+            resp.set_message("The task id : " + req.get_idTask() + " from the todo list with the id : "
+                    + req.get_idList() + " is deleted");
         } catch (Exception e) {
             String message = "error while deleting the task id " + req.get_idTask()
                     + " from the todo list with the id : "
                     + req.get_idList() + " - message : "
                     + e.getMessage();
             System.err.println(message);
-            taskResp.set_message(message);
-            taskResp.set_currentResult(Result.ERROR);
+            resp.set_message(message);
+            resp.set_currentResult(Result.ERROR);
+            resp.set_taskList(new ArrayList<Task>(List.of(req.get_tasks().get(0))));
 
-            return taskResp;
+            return resp;
         }
 
-        taskResp.set_currentResult(Result.OK);
-        taskResp.set_message("The task id : " + req.get_idTask() + " from the todo list with the id : "
-                + req.get_idList() + " is deleted");
-        return taskResp;
+        return resp;
     }
 
     // Adding ids to 1 to N and sorting the list by id

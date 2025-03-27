@@ -5,9 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tododo.tododo.models.Task;
 
-public class TaskServicesRequest {
-    @JsonProperty(value = "idList", required = false)
-    protected int _idList;
+public class TaskServicesRequest extends ToDoListRequest {
     @JsonProperty(value = "idTask", required = false)
     protected int _idTask;
     @JsonProperty(value = "tasks", required = false)

@@ -11,23 +11,26 @@ public class ToDoList {
     public int id;
     @JsonProperty("name")
     private String _name;
+    @JsonProperty(value = "isCompleted", required = false)
+    protected Boolean isCompleted = false;
     @JsonProperty(value = "tasks", required = false)
     private List<Task> _tasks = new ArrayList<Task>();
 
     /************************* CONSTRUCTORS *************************/
 
-    public ToDoList(int id, String name, List<Task> tasks) {
-        this.id = id;
-        this._name = name;
-        this._tasks = tasks;
+    public ToDoList() {
     }
 
-    public ToDoList() {
+    public ToDoList(int id, String _name, Boolean isCompleted, List<Task> _tasks) {
+        this.id = id;
+        this._name = _name;
+        this.isCompleted = isCompleted;
+        this._tasks = _tasks;
     }
 
     @Override
     public String toString() {
-        return "ToDoList [id=" + id + ", _name=" + _name + ", _tasks=" + _tasks + "]";
+        return "ToDoList [id=" + id + ", _name=" + _name + ", isCompleted=" + isCompleted + ", _tasks=" + _tasks + "]";
     }
 
     @Override
@@ -36,6 +39,7 @@ public class ToDoList {
         int result = 1;
         result = prime * result + id;
         result = prime * result + ((_name == null) ? 0 : _name.hashCode());
+        result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
         result = prime * result + ((_tasks == null) ? 0 : _tasks.hashCode());
         return result;
     }
@@ -55,6 +59,11 @@ public class ToDoList {
             if (other._name != null)
                 return false;
         } else if (!_name.equals(other._name))
+            return false;
+        if (isCompleted == null) {
+            if (other.isCompleted != null)
+                return false;
+        } else if (!isCompleted.equals(other.isCompleted))
             return false;
         if (_tasks == null) {
             if (other._tasks != null)
@@ -78,6 +87,10 @@ public class ToDoList {
         return _name;
     }
 
+    public Boolean getIsCompleted() {
+        return isCompleted;
+    }
+
     public List<Task> get_tasks() {
         return _tasks;
     }
@@ -88,8 +101,11 @@ public class ToDoList {
         this._name = _name;
     }
 
+    public void setIsCompleted(Boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
+
     public void set_tasks(List<Task> _tasks) {
         this._tasks = _tasks;
     }
-
 }

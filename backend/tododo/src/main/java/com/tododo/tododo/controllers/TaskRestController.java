@@ -9,7 +9,6 @@ import com.tododo.tododo.services.TaskServices;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -19,13 +18,13 @@ public class TaskRestController {
 
     private TaskServices service = new TaskServices();
 
-    @GetMapping("getTasksByToDoListId/{idList}")
-    public TaskServicesResponse getTasksByToDoListId(@PathVariable("idList") int idList) {
-        return service.getAllTasksFromJSON(idList);
+    @GetMapping("getAllTasksByToDoListId")
+    public TaskServicesResponse getTasksByToDoListId(@RequestBody TaskServicesRequest req) {
+        return service.getAllTasksFromJSON(req);
     }
 
-    @GetMapping("getTasksById")
-    public TaskServicesResponse getTasksById(@RequestBody TaskServicesRequest req) {
+    @GetMapping("getTaskById")
+    public TaskServicesResponse getTaskById(@RequestBody TaskServicesRequest req) {
         return service.getTaskByIdFromJSON(req);
     }
 
