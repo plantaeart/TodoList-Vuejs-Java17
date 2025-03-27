@@ -6,11 +6,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Task {
 
+    @JsonProperty(value = "id", required = false)
     public int id;
     @JsonProperty("taskContent")
     private String _taskContent;
+    @JsonProperty(value = "isCompleted", required = false)
     protected Boolean isCompleted = false;
-    @JsonProperty("subTasks")
+    @JsonProperty(value = "subTasks", required = false)
     private List<SubTask> _subTasks;
 
     /************************* CONSTRUCTORS *************************/

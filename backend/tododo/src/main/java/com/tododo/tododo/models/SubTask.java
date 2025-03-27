@@ -3,9 +3,12 @@ package com.tododo.tododo.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class SubTask {
+
+    @JsonProperty(value = "id", required = false)
     public int id;
     @JsonProperty("taskContent")
     private String _taskContent;
+    @JsonProperty(value = "isCompleted", required = false)
     protected Boolean isCompleted = false;
 
     /************************* CONSTRUCTORS *************************/

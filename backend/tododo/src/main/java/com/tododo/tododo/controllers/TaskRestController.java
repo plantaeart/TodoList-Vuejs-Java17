@@ -7,6 +7,7 @@ import com.tododo.tododo.models.servicesResponse.TaskServicesResponse;
 import com.tododo.tododo.models.servivesRequest.TaskServicesRequest;
 import com.tododo.tododo.services.TaskServices;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +25,18 @@ public class TaskRestController {
     }
 
     @PostMapping("updateTask")
-    public TaskServicesResponse postMethodName(@RequestBody TaskServicesRequest req) {
+    public TaskServicesResponse updateTask(@RequestBody TaskServicesRequest req) {
         return service.updateTaskFromJSON(req);
+    }
+
+    @PostMapping("addTask")
+    public TaskServicesResponse addTask(@RequestBody TaskServicesRequest req) {
+        return service.addTaskFromJSON(req);
+    }
+
+    @DeleteMapping("deleteTask")
+    public TaskServicesResponse deleteTask(@RequestBody TaskServicesRequest req) {
+        return service.deleteTaskFromJSON(req);
     }
 
 }

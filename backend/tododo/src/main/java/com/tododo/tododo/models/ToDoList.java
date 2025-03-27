@@ -10,7 +10,7 @@ public class ToDoList {
     public int id;
     @JsonProperty("name")
     private String _name;
-    @JsonProperty("tasks")
+    @JsonProperty(value = "tasks", required = false)
     private List<Task> _tasks;
 
     /************************* CONSTRUCTORS *************************/
