@@ -19,8 +19,8 @@ public class ToDoListRestController {
     private ToDoListServices service = new ToDoListServices();
 
     @GetMapping("/getAllToDoLists")
-    public ToDoListServicesResponse getAllToDoLists() {
-        return service.getAllToDoListsFromJSON();
+    public ToDoListServicesResponse getAllToDoLists(@RequestBody ToDoListRequest req) {
+        return service.getAllToDoListsFromJSON(req);
     }
 
     @GetMapping("/getToDoListById")

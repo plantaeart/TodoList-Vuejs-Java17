@@ -1,6 +1,5 @@
 package com.tododo.tododo.services;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,7 +13,6 @@ import com.tododo.tododo.models.servivesRequest.TaskServicesRequest;
 import com.tododo.tododo.models.servivesRequest.ToDoListRequest;
 
 public class TaskServices {
-    File jsonFile = new File("src\\main\\resources\\data.json");
     ToDoListServices tdls = new ToDoListServices();
 
     // Get all tasks by id todo lists from data.json
@@ -24,7 +22,7 @@ public class TaskServices {
 
         try {
             // gettin all list the mapper json to List<ToDoList>
-            allToDoLists = tdls.getAllToDoListsFromJSON().get_toDoListList();
+            allToDoLists = tdls.getAllToDoListsFromJSON(req).get_toDoListList();
             resp.set_taskList(
                     allToDoLists.stream().filter(x -> x.id == req.get_idList()).toList().get(0).get_tasks());
 
@@ -94,11 +92,12 @@ public class TaskServices {
                     .orElse(null);
 
             if (taskToUpdate == null) {
-                String message = "Task with ID " + req.get_idTask() + " not found or not exist from Todo List ID "
+                String message = "TASK UPDATE : Task with ID " + req.get_idTask()
+                        + " not found or not exist from Todo List ID "
                         + req.get_idList();
                 System.err.println(message);
                 resp.set_message(message);
-                resp.set_currentResult(Result.ERROR);
+                resp.set_currentResult(Result.NOT_EXISTING);
                 return resp;
             }
 
@@ -198,11 +197,12 @@ public class TaskServices {
                     .orElse(null);
 
             if (taskToDelete == null) {
-                String message = "Task with ID " + req.get_idTask() + " not found or not exist from Todo List ID "
+                String message = "TASK DELETE : Task with ID " + req.get_idTask()
+                        + " not found or not exist from Todo List ID "
                         + req.get_idList();
                 System.err.println(message);
                 resp.set_message(message);
-                resp.set_currentResult(Result.ERROR);
+                resp.set_currentResult(Result.NOT_EXISTING);
                 return resp;
             }
 

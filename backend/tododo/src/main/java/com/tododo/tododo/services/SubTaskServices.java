@@ -1,6 +1,5 @@
 package com.tododo.tododo.services;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -15,7 +14,6 @@ import com.tododo.tododo.models.servivesRequest.TaskServicesRequest;
 
 public class SubTaskServices {
 
-    File jsonFile = new File("src\\main\\resources\\data.json");
     TaskServices ts = new TaskServices();
 
     // Get a SubTask
@@ -130,11 +128,12 @@ public class SubTaskServices {
                     .orElse(null);
 
             if (subTaskToDelete == null) {
-                String message = "SubTask with ID " + req.get_idSubTask() + " not found or not exist in Task ID "
+                String message = "SUBTASK DELETE : SubTask with ID " + req.get_idSubTask()
+                        + " not found or not exist in Task ID "
                         + req.get_idTask() + " from Todo List ID " + req.get_idList();
                 System.err.println(message);
                 resp.set_message(message);
-                resp.set_currentResult(Result.ERROR);
+                resp.set_currentResult(Result.NOT_EXISTING);
                 return resp;
             }
 
@@ -184,11 +183,12 @@ public class SubTaskServices {
                     .orElse(null);
 
             if (subTaskToUpdate == null) {
-                String message = "SubTask with ID " + req.get_idSubTask() + " not found or not exist in Task ID "
+                String message = "SUBTASK UPDATE : SubTask with ID " + req.get_idSubTask()
+                        + " not found or not exist in Task ID "
                         + req.get_idTask() + " from Todo List ID " + req.get_idList();
                 System.err.println(message);
                 resp.set_message(message);
-                resp.set_currentResult(Result.ERROR);
+                resp.set_currentResult(Result.NOT_EXISTING);
                 return resp;
             }
 

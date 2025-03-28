@@ -2,6 +2,7 @@ package com.tododo.tododo.services;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -19,9 +20,10 @@ import com.tododo.tododo.utils.JsonUtils;
 
 public class ToDoListServices {
     File jsonFile = new File("src\\main\\resources\\data.json");
+    File jsonFileTest = new File("src\\test\\java\\com\\tododo\\tododo\\resources\\dataTest.json");
 
     // Get all ToDoList in data.json
-    public ToDoListServicesResponse getAllToDoListsFromJSON() {
+    public ToDoListServicesResponse getAllToDoListsFromJSON(ToDoListRequest req) {
         // Getting the json file
         ToDoListServicesResponse toDoListResp = new ToDoListServicesResponse();
 
@@ -29,9 +31,16 @@ public class ToDoListServices {
             // creating the mapper json to List<ToDoList>
             ObjectMapper objectMapper = new ObjectMapper();
             toDoListResp.set_toDoListList(objectMapper.readValue(
-                    jsonFile,
+                    getJsonFile(req.getIsTest()),
                     new TypeReference<List<ToDoList>>() {
                     }));
+
+            if (toDoListResp.get_toDoListList().isEmpty()) {
+                toDoListResp.set_message(
+                        "TODOLIST GETALL : No todo list found in : " + getJsonFile(req.getIsTest()).getPath());
+                toDoListResp.set_currentResult(Result.NOT_EXISTING);
+                return toDoListResp;
+            }
 
             toDoListResp.set_message("Read all Todo lists");
             toDoListResp.set_currentResult(Result.OK);
@@ -55,7 +64,7 @@ public class ToDoListServices {
         try {
             // Getting the one that match the id passed as param
             toDoListResp.set_toDoListList(
-                    getAllToDoListsFromJSON().get_toDoListList().stream().filter(x -> x.id == req.get_idList())
+                    getAllToDoListsFromJSON(req).get_toDoListList().stream().filter(x -> x.id == req.get_idList())
                             .toList());
             // Setting result reponse
             toDoListResp
@@ -80,7 +89,7 @@ public class ToDoListServices {
 
         try {
             // Get all toDoLists
-            List<ToDoList> currentToDoListList = getAllToDoListsFromJSON().get_toDoListList();
+            List<ToDoList> currentToDoListList = getAllToDoListsFromJSON(req).get_toDoListList();
 
             // Getting the task to update
             ToDoList toDoListToUpdate = currentToDoListList.stream()
@@ -89,10 +98,9 @@ public class ToDoListServices {
                     .orElse(null);
 
             if (toDoListToUpdate == null) {
-                String message = "ToDoList with ID " + req.get_idList() + " not found or not exist ";
-                System.err.println(message);
+                String message = "TODOLIST UPDATE : ToDoList with ID " + req.get_idList() + " not found or not exist ";
                 resp.set_message(message);
-                resp.set_currentResult(Result.ERROR);
+                resp.set_currentResult(Result.NOT_EXISTING);
                 return resp;
             }
 
@@ -104,7 +112,7 @@ public class ToDoListServices {
 
             // overwrites the content of file
             OutputStreamWriter writer = new OutputStreamWriter(
-                    new FileOutputStream(jsonFile),
+                    new FileOutputStream(getJsonFile(req.getIsTest())),
                     StandardCharsets.UTF_8);
 
             writer.write(JsonUtils.toJson(currentToDoListList).toString());
@@ -137,19 +145,18 @@ public class ToDoListServices {
 
         try {
             // Get all toDoLists
-            toDolists = getAllToDoListsFromJSON().get_toDoListList();
+            toDolists = getAllToDoListsFromJSON(req).get_toDoListList();
             // Putting the right id
             newToDoList.setId(toDolists.size() + 1);
             // Insert the new To do list
             toDolists.add(newToDoList);
 
-            // overwrites the content of file
-            OutputStreamWriter writer = new OutputStreamWriter(
-                    new FileOutputStream(jsonFile),
-                    StandardCharsets.UTF_8);
+            // overwrites the content of file with new updated ToDoList
+            FileWriter fileWriter = new FileWriter(getJsonFile(req.getIsTest()), StandardCharsets.UTF_8);
 
-            writer.write(JsonUtils.toJson(toDolists).toString());
-            writer.close();
+            fileWriter.write(JsonUtils.toJson(toDolists).toString());
+            fileWriter.flush();
+            fileWriter.close();
 
             // Updating the response
             listToResp.add(newToDoList);
@@ -175,9 +182,8 @@ public class ToDoListServices {
         ToDoListServicesResponse resp = new ToDoListServicesResponse();
 
         try {
-
             // Get all toDoLists
-            List<ToDoList> currentToDoListList = getAllToDoListsFromJSON().get_toDoListList();
+            List<ToDoList> currentToDoListList = getAllToDoListsFromJSON(req).get_toDoListList();
 
             // Getting the task to update
             ToDoList toDoListToDelete = currentToDoListList.stream()
@@ -186,10 +192,9 @@ public class ToDoListServices {
                     .orElse(null);
 
             if (toDoListToDelete == null) {
-                String message = "ToDoList with ID " + req.get_idList() + " not found or not exist ";
-                System.err.println(message);
+                String message = "TODOLIST DELETE : ToDoList with ID " + req.get_idList() + " not found or not exist ";
                 resp.set_message(message);
-                resp.set_currentResult(Result.ERROR);
+                resp.set_currentResult(Result.NOT_EXISTING);
                 return resp;
             }
 
@@ -199,13 +204,12 @@ public class ToDoListServices {
             // Rearanging the ids and sorting the list
             currentToDoListList = rearangeToDoListsIds(currentToDoListList);
 
-            // overwrites the content of file
-            OutputStreamWriter writer = new OutputStreamWriter(
-                    new FileOutputStream(jsonFile),
-                    StandardCharsets.UTF_8);
+            // overwrites the content of file with new updated ToDoList
+            FileWriter fileWriter = new FileWriter(getJsonFile(req.getIsTest()), StandardCharsets.UTF_8);
 
-            writer.write(JsonUtils.toJson(currentToDoListList).toString());
-            writer.close();
+            fileWriter.write(JsonUtils.toJson(currentToDoListList).toString());
+            fileWriter.flush();
+            fileWriter.close();
 
             // Setting the response
             resp.set_toDoListList(new ArrayList<ToDoList>(List.of(toDoListToDelete)));
@@ -236,5 +240,9 @@ public class ToDoListServices {
         }
 
         return toDoListsList;
+    }
+
+    private File getJsonFile(boolean isTest) {
+        return isTest ? jsonFileTest : jsonFile;
     }
 }

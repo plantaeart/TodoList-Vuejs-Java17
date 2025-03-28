@@ -28,6 +28,21 @@ public class ToDoList {
         this._tasks = _tasks;
     }
 
+    public ToDoList(String _name, Boolean isCompleted, List<Task> _tasks) {
+        this._name = _name;
+        this.isCompleted = isCompleted;
+        this._tasks = _tasks;
+    }
+
+    public ToDoList(String _name, Boolean isCompleted) {
+        this._name = _name;
+        this.isCompleted = isCompleted;
+    }
+
+    public ToDoList(String _name) {
+        this._name = _name;
+    }
+
     @Override
     public String toString() {
         return "ToDoList [id=" + id + ", _name=" + _name + ", isCompleted=" + isCompleted + ", _tasks=" + _tasks + "]";
