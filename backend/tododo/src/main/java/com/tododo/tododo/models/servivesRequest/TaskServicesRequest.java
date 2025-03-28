@@ -14,10 +14,30 @@ public class TaskServicesRequest extends ToDoListRequest {
     public TaskServicesRequest() {
     }
 
+    public TaskServicesRequest(int _idList, int _idTask, List<Task> _tasks, boolean isTest) {
+        super(_idList, isTest);
+        this._idTask = _idTask;
+        this._tasks = _tasks;
+    }
+
     public TaskServicesRequest(int _idList, int _idTask, List<Task> _tasks) {
         this._idList = _idList;
         this._idTask = _idTask;
         this._tasks = _tasks;
+    }
+
+    public TaskServicesRequest(int _idList, int _idTask, boolean isTest) {
+        super(_idList, isTest);
+        this._idTask = _idTask;
+    }
+
+    public TaskServicesRequest(int _idList, List<Task> _tasks, boolean isTest) {
+        super(_idList, isTest);
+        this._tasks = _tasks;
+    }
+
+    public TaskServicesRequest(int _idList, boolean isTest) {
+        super(_idList, isTest);
     }
 
     public int get_idList() {

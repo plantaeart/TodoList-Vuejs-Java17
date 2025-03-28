@@ -1,6 +1,5 @@
 package com.tododo.tododo.services;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.OutputStreamWriter;
@@ -19,9 +18,6 @@ import com.tododo.tododo.models.servivesRequest.ToDoListRequest;
 import com.tododo.tododo.utils.JsonUtils;
 
 public class ToDoListServices {
-    File jsonFile = new File("src\\main\\resources\\data.json");
-    File jsonFileTest = new File("src\\test\\java\\com\\tododo\\tododo\\resources\\dataTest.json");
-
     // Get all ToDoList in data.json
     public ToDoListServicesResponse getAllToDoListsFromJSON(ToDoListRequest req) {
         // Getting the json file
@@ -31,13 +27,14 @@ public class ToDoListServices {
             // creating the mapper json to List<ToDoList>
             ObjectMapper objectMapper = new ObjectMapper();
             toDoListResp.set_toDoListList(objectMapper.readValue(
-                    getJsonFile(req.getIsTest()),
+                    JsonUtils.getJsonFile(req.getIsTest()),
                     new TypeReference<List<ToDoList>>() {
                     }));
 
             if (toDoListResp.get_toDoListList().isEmpty()) {
                 toDoListResp.set_message(
-                        "TODOLIST GETALL : No todo list found in : " + getJsonFile(req.getIsTest()).getPath());
+                        "TODOLIST GETALL : No todo list found in : "
+                                + JsonUtils.getJsonFile(req.getIsTest()).getPath());
                 toDoListResp.set_currentResult(Result.NOT_EXISTING);
                 return toDoListResp;
             }
@@ -112,7 +109,7 @@ public class ToDoListServices {
 
             // overwrites the content of file
             OutputStreamWriter writer = new OutputStreamWriter(
-                    new FileOutputStream(getJsonFile(req.getIsTest())),
+                    new FileOutputStream(JsonUtils.getJsonFile(req.getIsTest())),
                     StandardCharsets.UTF_8);
 
             writer.write(JsonUtils.toJson(currentToDoListList).toString());
@@ -152,7 +149,7 @@ public class ToDoListServices {
             toDolists.add(newToDoList);
 
             // overwrites the content of file with new updated ToDoList
-            FileWriter fileWriter = new FileWriter(getJsonFile(req.getIsTest()), StandardCharsets.UTF_8);
+            FileWriter fileWriter = new FileWriter(JsonUtils.getJsonFile(req.getIsTest()), StandardCharsets.UTF_8);
 
             fileWriter.write(JsonUtils.toJson(toDolists).toString());
             fileWriter.flush();
@@ -205,7 +202,7 @@ public class ToDoListServices {
             currentToDoListList = rearangeToDoListsIds(currentToDoListList);
 
             // overwrites the content of file with new updated ToDoList
-            FileWriter fileWriter = new FileWriter(getJsonFile(req.getIsTest()), StandardCharsets.UTF_8);
+            FileWriter fileWriter = new FileWriter(JsonUtils.getJsonFile(req.getIsTest()), StandardCharsets.UTF_8);
 
             fileWriter.write(JsonUtils.toJson(currentToDoListList).toString());
             fileWriter.flush();
@@ -240,9 +237,5 @@ public class ToDoListServices {
         }
 
         return toDoListsList;
-    }
-
-    private File getJsonFile(boolean isTest) {
-        return isTest ? jsonFileTest : jsonFile;
     }
 }

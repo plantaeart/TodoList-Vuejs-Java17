@@ -51,7 +51,8 @@ public class TaskServices {
 
         try {
             // Getting the todo list asked
-            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList())).get_toDoListList().get(0);
+            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList(), req.getIsTest()))
+                    .get_toDoListList().get(0);
             // Getting the task asked
             taskResp.set_taskList(currentToDoList.get_tasks().stream().filter(x -> x.id == req.get_idTask()).toList());
 
@@ -83,7 +84,8 @@ public class TaskServices {
 
         try {
             // getting the todo list to update
-            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList())).get_toDoListList().get(0);
+            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList(), req.getIsTest()))
+                    .get_toDoListList().get(0);
 
             // Getting the task to update
             Task taskToUpdate = currentToDoList.get_tasks().stream()
@@ -107,10 +109,9 @@ public class TaskServices {
             taskToUpdate.setIsCompleted(updatedTask.getIsCompleted());
             taskToUpdate.set_subTasks(updatedTask.get_subTasks());
 
-            // Update the todo list
-            List<ToDoList> toDoListToUpdate = new ArrayList<>();
-            toDoListToUpdate.add(currentToDoList);
-            tdls.updateToDoListFromJSON(new ToDoListRequest(req.get_idList(), toDoListToUpdate));
+            // update the todo list
+            tdls.updateToDoListFromJSON(
+                    new ToDoListRequest(req.get_idList(), List.of(currentToDoList), req.getIsTest()));
 
             resp.set_taskList(new ArrayList<Task>(List.of(taskToUpdate)));
             resp.set_currentResult(Result.OK);
@@ -140,10 +141,10 @@ public class TaskServices {
 
         try {
             // getting the todo list to update
-            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList())).get_toDoListList().get(0);
+            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList(), req.getIsTest()))
+                    .get_toDoListList().get(0);
 
             boolean isEmptyTasks = currentToDoList.get_tasks().isEmpty();
-
             // Get the greatest id if the todo list has task(s)
             if (!isEmptyTasks) {
                 // Sort the tasks in descending order based on their id
@@ -160,7 +161,8 @@ public class TaskServices {
             // Sorting the tasks in ascending order
             Collections.sort(currentToDoList.get_tasks(), Comparator.comparingInt(Task::getId));
             // update the todo list
-            tdls.updateToDoListFromJSON(new ToDoListRequest(new ArrayList<ToDoList>(List.of(currentToDoList))));
+            tdls.updateToDoListFromJSON(
+                    new ToDoListRequest(req.get_idList(), List.of(currentToDoList), req.getIsTest()));
 
             taskResp.set_taskList(req.get_tasks());
             taskResp.set_currentResult(Result.OK);
@@ -188,7 +190,8 @@ public class TaskServices {
 
         try {
             // getting the todo list to update
-            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList())).get_toDoListList().get(0);
+            currentToDoList = tdls.getListByIdFromJSON(new ToDoListRequest(req.get_idList(), req.getIsTest()))
+                    .get_toDoListList().get(0);
 
             // Getting the task to delete
             Task taskToDelete = currentToDoList.get_tasks().stream()
@@ -214,7 +217,7 @@ public class TaskServices {
 
             // update the todo list
             tdls.updateToDoListFromJSON(
-                    new ToDoListRequest(req.get_idList(), new ArrayList<ToDoList>(List.of(currentToDoList))));
+                    new ToDoListRequest(req.get_idList(), List.of(currentToDoList), req.getIsTest()));
 
             resp.set_taskList(new ArrayList<Task>(List.of(taskToDelete)));
             resp.set_currentResult(Result.OK);

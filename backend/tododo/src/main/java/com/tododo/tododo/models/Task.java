@@ -25,6 +25,21 @@ public class Task {
         this._subTasks = subTasks;
     }
 
+    public Task(String _taskContent, Boolean isCompleted, List<SubTask> _subTasks) {
+        this._taskContent = _taskContent;
+        this.isCompleted = isCompleted;
+        this._subTasks = _subTasks;
+    }
+
+    public Task(String _taskContent, Boolean isCompleted) {
+        this._taskContent = _taskContent;
+        this.isCompleted = isCompleted;
+    }
+
+    public Task(String _taskContent) {
+        this._taskContent = _taskContent;
+    }
+
     public Task() {
     }
 
