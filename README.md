@@ -11,7 +11,7 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
   On part sur du bon Vue.js 3 (v3.5.13)
 
 * Backend 💻
-  On part sur du bon Java 17 (sur Visual Studio Code, ce qui rend quand même la prise en main du Java plus agréable, RIP Eclipse)
+  On part sur du bon Java 17 avec SpringBoost 3 (v3.4.4) (sur Visual Studio Code, ce qui rend quand même la prise en main du Java plus agréable, RIP Eclipse)
 
 * Données 💿
   Je n'avais pas envie de m'embêter, un fichier JSON (donc on est sur du NoSQL) fera l'affaire !
