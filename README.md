@@ -11,7 +11,7 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
   On part sur du bon Vue.js 3 (v3.5.13)
 
 * Backend 💻
-  On part sur du bon Java 17 (sur Visual Studio Code, ce qui rend quand même la prise en main du Java plus agréable, RIP Eclipse)
+  On part sur du bon Java 17 avec SpringBoost 3 (v3.4.4) (sur Visual Studio Code, ce qui rend quand même la prise en main du Java plus agréable, RIP Eclipse)
 
 * Données 💿
   Je n'avais pas envie de m'embêter, un fichier JSON (donc on est sur du NoSQL) fera l'affaire !
@@ -32,12 +32,17 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
   * Mise en place du service Task 🟩
   * Mise en place du CRUD Task 🟩
   * Mise en place des endpoint API REST Task 🟩
-  * Mise en place du service SubTask 🟧
-  * Mise en place du CRUD SubTask 🟧
-  * Mise en place des endpoint API REST SubTask 🟧
-  * Mise en place de test unitaire (JUnit) 🟪
-      * Création workflow de test 🟪
-      * Mise en place des tests 🟪
+  * Mise en place du service SubTask 🟩
+  * Mise en place du CRUD SubTask 🟩
+  * Mise en place des endpoint API REST SubTask 🟩
+  * Test workflow de l'API 🟩
+  * Mise en place de test unitaire (JUnit) 🟧
+      * Création workflow de test du service ToDoList 🟩
+        * Mise en place des tests JUnit 🟩
+      * Création workflow de test du service Task 🟧
+        * Mise en place des tests JUnit 🟧
+      * Création workflow de test du service SubTask 🟪
+        * Mise en place des tests JUnit 🟪
   * Mise en place du projet front Vuejs 3 🟪
   * Mise en place des tâche à réaliser pour le front 🟪 
 
