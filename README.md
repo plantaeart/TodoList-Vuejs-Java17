@@ -35,10 +35,14 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
   * Mise en place du service SubTask 🟩
   * Mise en place du CRUD SubTask 🟩
   * Mise en place des endpoint API REST SubTask 🟩
-  * Test workflow de l'API 🟧
-  * Mise en place de test unitaire (JUnit) 🟪
-      * Création workflow de test 🟪
-      * Mise en place des tests 🟪
+  * Test workflow de l'API 🟩
+  * Mise en place de test unitaire (JUnit) 🟧
+      * Création workflow de test du service ToDoList 🟩
+        * Mise en place des tests JUnit 🟩
+      * Création workflow de test du service Task 🟧
+        * Mise en place des tests JUnit 🟧
+      * Création workflow de test du service SubTask 🟪
+        * Mise en place des tests JUnit 🟪
   * Mise en place du projet front Vuejs 3 🟪
   * Mise en place des tâche à réaliser pour le front 🟪 
 
