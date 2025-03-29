@@ -25,7 +25,7 @@ public class SubTaskController {
 
     @PostMapping("addSubTask")
     public SubTaskServicesResponse addSubTask(@RequestBody SubTaskServicesRequest req) {
-        return service.addTaskFromJSON(req);
+        return service.addSubTaskFromJSON(req);
     }
 
     @PostMapping("updateSubTask")

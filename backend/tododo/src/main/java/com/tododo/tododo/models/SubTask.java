@@ -19,6 +19,10 @@ public class SubTask {
         this.isCompleted = isCompleted;
     }
 
+    public SubTask(String _taskContent) {
+        this._taskContent = _taskContent;
+    }
+
     public SubTask() {
     }
 

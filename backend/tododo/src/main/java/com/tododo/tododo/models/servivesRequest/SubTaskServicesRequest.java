@@ -25,8 +25,25 @@ public class SubTaskServicesRequest extends TaskServicesRequest {
         this._idSubTask = _idSubTask;
     }
 
+    public SubTaskServicesRequest(int _idList, int _idTask, int _idSubTask, List<SubTask> _subTasks,
+            boolean isTest) {
+        super(_idList, _idTask, isTest);
+        this._subTasks = _subTasks;
+        this._idSubTask = _idSubTask;
+    }
+
     public SubTaskServicesRequest(int _idList, int _idTask, List<Task> _tasks, List<SubTask> _subTasks) {
         super(_idList, _idTask, _tasks);
+        this._subTasks = _subTasks;
+    }
+
+    public SubTaskServicesRequest(int _idList, int _idTask, int _idSubTask, boolean isTest) {
+        super(_idList, _idTask, isTest);
+        this._idSubTask = _idSubTask;
+    }
+
+    public SubTaskServicesRequest(int _idList, int _idTask, List<SubTask> _subTasks, boolean isTest) {
+        super(_idList, _idTask, isTest);
         this._subTasks = _subTasks;
     }
 

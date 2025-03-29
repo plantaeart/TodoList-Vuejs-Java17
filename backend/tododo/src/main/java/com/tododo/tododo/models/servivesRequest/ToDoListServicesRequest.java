@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tododo.tododo.models.ToDoList;
 
-public class ToDoListRequest {
+public class ToDoListServicesRequest {
     @JsonProperty(value = "idList", required = false)
     protected int _idList;
     @JsonProperty(value = "toDoLists", required = false)
@@ -13,35 +13,35 @@ public class ToDoListRequest {
     @JsonProperty(value = "toDoLists", required = false)
     protected boolean isTest = false;
 
-    public ToDoListRequest() {
+    public ToDoListServicesRequest() {
     }
 
-    public ToDoListRequest(int _idList, List<ToDoList> _toDoLists, boolean isTest) {
+    public ToDoListServicesRequest(int _idList, List<ToDoList> _toDoLists, boolean isTest) {
         this._idList = _idList;
         this._toDoLists = _toDoLists;
         this.isTest = isTest;
     }
 
-    public ToDoListRequest(int _idList, List<ToDoList> _toDoLists) {
+    public ToDoListServicesRequest(int _idList, List<ToDoList> _toDoLists) {
         this._idList = _idList;
         this._toDoLists = _toDoLists;
     }
 
-    public ToDoListRequest(int _idList, boolean isTest) {
+    public ToDoListServicesRequest(int _idList, boolean isTest) {
         this._idList = _idList;
         this.isTest = isTest;
     }
 
-    public ToDoListRequest(List<ToDoList> _toDoLists, boolean isTest) {
+    public ToDoListServicesRequest(List<ToDoList> _toDoLists, boolean isTest) {
         this._toDoLists = _toDoLists;
         this.isTest = isTest;
     }
 
-    public ToDoListRequest(List<ToDoList> _toDoLists) {
+    public ToDoListServicesRequest(List<ToDoList> _toDoLists) {
         this._toDoLists = _toDoLists;
     }
 
-    public ToDoListRequest(int _idList) {
+    public ToDoListServicesRequest(int _idList) {
         this._idList = _idList;
     }
 
@@ -53,7 +53,7 @@ public class ToDoListRequest {
         this._idList = _idList;
     }
 
-    public ToDoListRequest(boolean isTest) {
+    public ToDoListServicesRequest(boolean isTest) {
         this.isTest = isTest;
     }
 

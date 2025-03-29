@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import com.tododo.tododo.enums.Result;
 import com.tododo.tododo.models.ToDoList;
 import com.tododo.tododo.models.servicesResponse.ToDoListServicesResponse;
-import com.tododo.tododo.models.servivesRequest.ToDoListRequest;
+import com.tododo.tododo.models.servivesRequest.ToDoListServicesRequest;
 
 public class ToDoListServicesTest {
     ToDoListServices service = new ToDoListServices();
@@ -17,7 +17,7 @@ public class ToDoListServicesTest {
         System.err.println("==> TODOLIST STARTING ADD TEST");
 
         ToDoList data = new ToDoList(toDoListName);
-        ToDoListRequest reqAdd = new ToDoListRequest(List.of(data), true);
+        ToDoListServicesRequest reqAdd = new ToDoListServicesRequest(List.of(data), true);
 
         ToDoListServicesResponse respAdd = service.addToDoListFromJSON(reqAdd);
         assert respAdd.get_currentResult().equals(Result.OK);
@@ -31,7 +31,7 @@ public class ToDoListServicesTest {
     void testGetListByIdFromJSON(int idList) {
         System.err.println("==> TODOLIST STARTING GET BY ID TEST");
 
-        ToDoListRequest reqGetById = new ToDoListRequest(idList, true);
+        ToDoListServicesRequest reqGetById = new ToDoListServicesRequest(idList, true);
 
         ToDoListServicesResponse respGetById = service.getListByIdFromJSON(reqGetById);
         assertAll(() -> {
@@ -46,7 +46,7 @@ public class ToDoListServicesTest {
     void testGetAllToDoListsFromJSON(int sizeToTest) {
         System.err.println("==> TODOLIST STARTING GET ALL TEST");
 
-        ToDoListRequest reqGetAll = new ToDoListRequest(true);
+        ToDoListServicesRequest reqGetAll = new ToDoListServicesRequest(true);
 
         ToDoListServicesResponse respGetAll = service.getAllToDoListsFromJSON(reqGetAll);
         assertAll(() -> {
@@ -60,7 +60,7 @@ public class ToDoListServicesTest {
     void testUpdateToDoListFromJSON(int idList, ToDoList updatedData) {
         System.err.println("==> TODOLIST STARTING UPDATE TEST");
 
-        ToDoListRequest reqUpdate = new ToDoListRequest(idList, List.of(updatedData), true);
+        ToDoListServicesRequest reqUpdate = new ToDoListServicesRequest(idList, List.of(updatedData), true);
 
         ToDoListServicesResponse respUpdate = service.updateToDoListFromJSON(reqUpdate);
         assertAll(() -> {
@@ -75,7 +75,7 @@ public class ToDoListServicesTest {
     void testDeleteToDoListByIdFromJSON(int idList) {
         System.err.println("==> TODOLIST STARTING DELETE TEST");
 
-        ToDoListRequest reqDel = new ToDoListRequest(idList, true);
+        ToDoListServicesRequest reqDel = new ToDoListServicesRequest(idList, true);
 
         ToDoListServicesResponse resp = service.deleteToDoListByIdFromJSON(reqDel);
         assert resp.get_currentResult().equals(Result.OK);

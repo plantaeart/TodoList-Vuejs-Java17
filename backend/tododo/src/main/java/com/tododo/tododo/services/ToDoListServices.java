@@ -14,12 +14,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tododo.tododo.enums.Result;
 import com.tododo.tododo.models.ToDoList;
 import com.tododo.tododo.models.servicesResponse.ToDoListServicesResponse;
-import com.tododo.tododo.models.servivesRequest.ToDoListRequest;
+import com.tododo.tododo.models.servivesRequest.ToDoListServicesRequest;
 import com.tododo.tododo.utils.JsonUtils;
 
 public class ToDoListServices {
     // Get all ToDoList in data.json
-    public ToDoListServicesResponse getAllToDoListsFromJSON(ToDoListRequest req) {
+    public ToDoListServicesResponse getAllToDoListsFromJSON(ToDoListServicesRequest req) {
         // Getting the json file
         ToDoListServicesResponse toDoListResp = new ToDoListServicesResponse();
 
@@ -54,7 +54,7 @@ public class ToDoListServices {
     }
 
     // Get one ToDoList by it's id in data.json
-    public ToDoListServicesResponse getListByIdFromJSON(ToDoListRequest req) {
+    public ToDoListServicesResponse getListByIdFromJSON(ToDoListServicesRequest req) {
         // Getting the json file
         ToDoListServicesResponse toDoListResp = new ToDoListServicesResponse();
 
@@ -80,7 +80,7 @@ public class ToDoListServices {
     }
 
     // Get update one ToDoList by it's id in data.json
-    public ToDoListServicesResponse updateToDoListFromJSON(ToDoListRequest req) {
+    public ToDoListServicesResponse updateToDoListFromJSON(ToDoListServicesRequest req) {
         // Getting the json file
         ToDoListServicesResponse resp = new ToDoListServicesResponse();
 
@@ -133,7 +133,7 @@ public class ToDoListServices {
     }
 
     // Get add one ToDoList in data.json
-    public ToDoListServicesResponse addToDoListFromJSON(ToDoListRequest req) {
+    public ToDoListServicesResponse addToDoListFromJSON(ToDoListServicesRequest req) {
         // Getting the json file
         List<ToDoList> toDolists = new ArrayList<ToDoList>();
         ToDoListServicesResponse resp = new ToDoListServicesResponse();
@@ -175,7 +175,7 @@ public class ToDoListServices {
     }
 
     // Get delete one ToDoList by it's id in data.json
-    public ToDoListServicesResponse deleteToDoListByIdFromJSON(ToDoListRequest req) {
+    public ToDoListServicesResponse deleteToDoListByIdFromJSON(ToDoListServicesRequest req) {
         ToDoListServicesResponse resp = new ToDoListServicesResponse();
 
         try {

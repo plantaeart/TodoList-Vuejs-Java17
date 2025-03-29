@@ -22,7 +22,8 @@ public class SubTaskServices {
 
         try {
             // Retrieve the task containing the subtask
-            Task currentTask = ts.getTaskByIdFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), null))
+            Task currentTask = ts
+                    .getTaskByIdFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), req.getIsTest()))
                     .get_taskList().get(0);
 
             // Find the subtask by its ID
@@ -61,7 +62,7 @@ public class SubTaskServices {
     }
 
     // Add a subTask
-    public SubTaskServicesResponse addTaskFromJSON(SubTaskServicesRequest req) {
+    public SubTaskServicesResponse addSubTaskFromJSON(SubTaskServicesRequest req) {
         SubTaskServicesResponse resp = new SubTaskServicesResponse();
         Task currentTask = new Task();
         // 1 if the added task id the first one of the todo list
@@ -69,7 +70,8 @@ public class SubTaskServices {
 
         try {
             // getting the task where we want to add a subTask
-            currentTask = ts.getTaskByIdFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), null))
+            currentTask = ts
+                    .getTaskByIdFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), req.getIsTest()))
                     .get_taskList().get(0);
             boolean isEmptySubTasks = currentTask.get_subTasks().isEmpty();
             // Get the greatest id if the todo list has task(s)
@@ -92,7 +94,8 @@ public class SubTaskServices {
             taskToUpdate.add(currentTask);
             resp.set_subTaskList(req.get_subTasks());
             // update the todo list
-            ts.updateTaskFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), taskToUpdate));
+            ts.updateTaskFromJSON(
+                    new TaskServicesRequest(req.get_idList(), req.get_idTask(), taskToUpdate, req.getIsTest()));
         } catch (Exception e) {
             String message = "error while adding the subTask from task id : " + req.get_idTask()
                     + " and from the todo list with the id : "
@@ -118,7 +121,8 @@ public class SubTaskServices {
 
         try {
             // Récupérer la tâche contenant la sous-tâche à supprimer
-            Task currentTask = ts.getTaskByIdFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), null))
+            Task currentTask = ts
+                    .getTaskByIdFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), req.getIsTest()))
                     .get_taskList().get(0);
 
             // Trouver la sous-tâche à supprimer par son ID
@@ -146,7 +150,8 @@ public class SubTaskServices {
             // Mettre à jour la liste des tâches
             List<Task> taskToUpdate = new ArrayList<>();
             taskToUpdate.add(currentTask);
-            ts.updateTaskFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), taskToUpdate));
+            ts.updateTaskFromJSON(
+                    new TaskServicesRequest(req.get_idList(), req.get_idTask(), taskToUpdate, req.getIsTest()));
 
             resp.set_subTaskList(new ArrayList<SubTask>(List.of(subTaskToDelete)));
             resp.set_currentResult(Result.OK);
@@ -173,7 +178,8 @@ public class SubTaskServices {
 
         try {
             // Récupérer la tâche contenant la sous-tâche à mettre à jour
-            Task currentTask = ts.getTaskByIdFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), null))
+            Task currentTask = ts
+                    .getTaskByIdFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), req.getIsTest()))
                     .get_taskList().get(0);
 
             // Getting the subTask to update by its ID
@@ -200,7 +206,8 @@ public class SubTaskServices {
             // Mettre à jour la liste des tâches
             List<Task> taskToUpdate = new ArrayList<>();
             taskToUpdate.add(currentTask);
-            ts.updateTaskFromJSON(new TaskServicesRequest(req.get_idList(), req.get_idTask(), taskToUpdate));
+            ts.updateTaskFromJSON(
+                    new TaskServicesRequest(req.get_idList(), req.get_idTask(), taskToUpdate, req.getIsTest()));
 
             resp.set_subTaskList(new ArrayList<SubTask>(List.of(subTaskToUpdate)));
             resp.set_currentResult(Result.OK);
