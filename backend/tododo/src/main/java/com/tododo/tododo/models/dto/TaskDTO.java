@@ -1,55 +1,28 @@
-package com.tododo.tododo.models;
+package com.tododo.tododo.models.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tododo.tododo.enums.ElementType;
 
-public class Task {
-
-    @JsonProperty(value = "id", required = false)
-    public int id;
-    @JsonProperty(value = "type", required = false)
+public class TaskDTO {
+    private int id;
     private ElementType type = ElementType.TASK;
-    @JsonProperty("taskContent")
     private String taskContent;
-    @JsonProperty(value = "isCompleted", required = false)
-    protected Boolean isCompleted = false;
-    @JsonProperty(value = "subTasks", required = false)
-    private List<SubTask> subTasks = new ArrayList<SubTask>();
+    private Boolean isCompleted;
+    private List<SubTaskDTO> subTasks = new ArrayList<SubTaskDTO>();;
 
-    /************************* CONSTRUCTORS *************************/
+    public TaskDTO() {
+    }
 
-    public Task(int id, String taskContent, Boolean isCompleted, List<SubTask> subTasks) {
-        this.id = id;
+    public TaskDTO(String taskContent) {
         this.taskContent = taskContent;
-        this.isCompleted = isCompleted;
-        this.subTasks = subTasks;
-    }
-
-    public Task(String _taskContent, Boolean isCompleted, List<SubTask> _subTasks) {
-        this.taskContent = _taskContent;
-        this.isCompleted = isCompleted;
-        this.subTasks = _subTasks;
-    }
-
-    public Task(String _taskContent, Boolean isCompleted) {
-        this.taskContent = _taskContent;
-        this.isCompleted = isCompleted;
-    }
-
-    public Task(String _taskContent) {
-        this.taskContent = _taskContent;
-    }
-
-    public Task() {
     }
 
     @Override
     public String toString() {
-        return "Task [id=" + id + ", type=" + type + ", _taskContent=" + taskContent + ", isCompleted=" + isCompleted
-                + ", _subTasks=" + subTasks + "]";
+        return "TaskDTO [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", isCompleted=" + isCompleted
+                + ", subTasks=" + subTasks + "]";
     }
 
     @Override
@@ -72,7 +45,7 @@ public class Task {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Task other = (Task) obj;
+        TaskDTO other = (TaskDTO) obj;
         if (id != other.id)
             return false;
         if (type != other.type)
@@ -95,22 +68,12 @@ public class Task {
         return true;
     }
 
-    /************************* GETTERS & SETTERS *************************/
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public ElementType getType() {
-        return type;
-    }
-
-    public void setType(ElementType type) {
-        this.type = type;
     }
 
     public String getTaskContent() {
@@ -129,11 +92,27 @@ public class Task {
         this.isCompleted = isCompleted;
     }
 
-    public List<SubTask> getSubTasks() {
+    public List<SubTaskDTO> getSubTasks() {
         return subTasks;
     }
 
-    public void setSubTasks(List<SubTask> subTasks) {
+    public void setSubTasks(List<SubTaskDTO> subTasks) {
         this.subTasks = subTasks;
+    }
+
+    public ElementType getType() {
+        return type;
+    }
+
+    public void setType(ElementType type) {
+        this.type = type;
+    }
+
+    /************************* OTHERS *************************/
+
+    public void taskIsCompleted() {
+        for (SubTaskDTO subTask : this.subTasks) {
+            subTask.setIsCompleted(true);
+        }
     }
 }

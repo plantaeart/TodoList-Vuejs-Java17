@@ -37,4 +37,9 @@ public class SubTaskController {
     public SubTaskServicesResponse deleteSubTask(@RequestBody SubTaskServicesRequest req) {
         return service.deleteSubTaskFromJSON(req);
     }
+
+    @PostMapping("switchSubTasks")
+    public SubTaskServicesResponse switchTasks(@RequestBody SubTaskServicesRequest req) {
+        return service.switchSubTaskPositionFromJSON(req);
+    }
 }

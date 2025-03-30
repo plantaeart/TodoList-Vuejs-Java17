@@ -3,43 +3,44 @@ package com.tododo.tododo.models.servicesResponse;
 import java.util.List;
 
 import com.tododo.tododo.enums.Result;
-import com.tododo.tododo.models.SubTask;
+import com.tododo.tododo.models.dto.SubTaskDTO;
 
 public class SubTaskServicesResponse {
-    private Result _currentResult;
-    private String _message;
-    private List<SubTask> _subTaskList;
+    private Result currentResult;
+    private String message;
+    private List<SubTaskDTO> subTaskList;
 
     public SubTaskServicesResponse() {
     }
 
-    public SubTaskServicesResponse(Result _currentResult, String _message, List<SubTask> _subTaskList) {
-        this._currentResult = _currentResult;
-        this._message = _message;
-        this._subTaskList = _subTaskList;
+    public SubTaskServicesResponse(Result currentResult, String message, List<SubTaskDTO> subTaskList) {
+        this.currentResult = currentResult;
+        this.message = message;
+        this.subTaskList = subTaskList;
     }
 
-    public Result get_currentResult() {
-        return _currentResult;
+    public Result getCurrentResult() {
+        return currentResult;
     }
 
-    public String get_message() {
-        return _message;
+    public void setCurrentResult(Result currentResult) {
+        this.currentResult = currentResult;
     }
 
-    public List<SubTask> get_subTaskList() {
-        return _subTaskList;
+    public String getMessage() {
+        return message;
     }
 
-    public void set_currentResult(Result _currentResult) {
-        this._currentResult = _currentResult;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void set_message(String _message) {
-        this._message = _message;
+    public List<SubTaskDTO> getSubTaskList() {
+        return subTaskList;
     }
 
-    public void set_subTaskList(List<SubTask> _subTaskList) {
-        this._subTaskList = _subTaskList;
+    public void setSubTaskList(List<SubTaskDTO> subTaskList) {
+        this.subTaskList = subTaskList;
     }
+
 }

@@ -25,7 +25,7 @@ public class ToDoListRestController {
 
     @GetMapping("/getToDoListById")
     public ToDoListServicesResponse getToDoListById(@RequestBody ToDoListServicesRequest req) {
-        return service.getListByIdFromJSON(req);
+        return service.getToDoListByIdFromJSON(req);
     }
 
     @PostMapping("/updateToDoList")

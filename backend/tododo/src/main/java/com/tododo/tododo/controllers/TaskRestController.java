@@ -43,4 +43,8 @@ public class TaskRestController {
         return service.deleteTaskFromJSON(req);
     }
 
+    @PostMapping("switchTasks")
+    public TaskServicesResponse switchTasks(@RequestBody TaskServicesRequest req) {
+        return service.switchTaskPositionFromJSON(req);
+    }
 }

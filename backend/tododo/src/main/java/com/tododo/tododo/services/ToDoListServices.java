@@ -8,11 +8,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tododo.tododo.enums.Result;
+import com.tododo.tododo.mappers.ToDoListMapper;
 import com.tododo.tododo.models.ToDoList;
+import com.tododo.tododo.models.dto.ToDoListDTO;
 import com.tododo.tododo.models.servicesResponse.ToDoListServicesResponse;
 import com.tododo.tododo.models.servivesRequest.ToDoListServicesRequest;
 import com.tododo.tododo.utils.JsonUtils;
@@ -26,26 +29,31 @@ public class ToDoListServices {
         try {
             // creating the mapper json to List<ToDoList>
             ObjectMapper objectMapper = new ObjectMapper();
-            toDoListResp.set_toDoListList(objectMapper.readValue(
-                    JsonUtils.getJsonFile(req.getIsTest()),
+            // Get all list from json file
+            List<ToDoList> toDoLists = objectMapper.readValue(JsonUtils.getJsonFile(req.getIsTest()),
                     new TypeReference<List<ToDoList>>() {
-                    }));
+                    });
 
-            if (toDoListResp.get_toDoListList().isEmpty()) {
-                toDoListResp.set_message(
-                        "TODOLIST GETALL : No todo list found in : "
-                                + JsonUtils.getJsonFile(req.getIsTest()).getPath());
-                toDoListResp.set_currentResult(Result.NOT_EXISTING);
+            // Convert them in DTO
+            List<ToDoListDTO> allToDoListDTO = toDoLists.stream()
+                    .map(ToDoListMapper::toDTO)
+                    .collect(Collectors.toList());
+
+            toDoListResp.setToDoListList(allToDoListDTO);
+
+            if (toDoListResp.getToDoListList().isEmpty()) {
+                toDoListResp.setMessage("TODOLIST GETALL : No todo list found");
+                toDoListResp.setCurrentResult(Result.NOT_EXISTING);
                 return toDoListResp;
             }
 
-            toDoListResp.set_message("Read all Todo lists");
-            toDoListResp.set_currentResult(Result.OK);
+            toDoListResp.setMessage("Read all Todo lists");
+            toDoListResp.setCurrentResult(Result.OK);
         } catch (Exception e) {
             String message = "error while parsing all todo lists : " + e.getMessage();
             System.err.println(message);
-            toDoListResp.set_message(message);
-            toDoListResp.set_currentResult(Result.ERROR);
+            toDoListResp.setMessage(message);
+            toDoListResp.setCurrentResult(Result.ERROR);
 
             return toDoListResp;
         }
@@ -54,24 +62,25 @@ public class ToDoListServices {
     }
 
     // Get one ToDoList by it's id in data.json
-    public ToDoListServicesResponse getListByIdFromJSON(ToDoListServicesRequest req) {
+    public ToDoListServicesResponse getToDoListByIdFromJSON(ToDoListServicesRequest req) {
         // Getting the json file
         ToDoListServicesResponse toDoListResp = new ToDoListServicesResponse();
 
         try {
             // Getting the one that match the id passed as param
-            toDoListResp.set_toDoListList(
-                    getAllToDoListsFromJSON(req).get_toDoListList().stream().filter(x -> x.id == req.get_idList())
+            toDoListResp.setToDoListList(
+                    getAllToDoListsFromJSON(req).getToDoListList().stream()
+                            .filter(x -> x.getId() == req.getIdsList()[0])
                             .toList());
             // Setting result reponse
             toDoListResp
-                    .set_currentResult(toDoListResp.get_toDoListList().size() == 0 ? Result.NOT_EXISTING : Result.OK);
+                    .setCurrentResult(toDoListResp.getToDoListList().size() == 0 ? Result.NOT_EXISTING : Result.OK);
         } catch (Exception e) {
-            String message = "error while getting todo list number : " + req.get_idList() + " - error : "
+            String message = "error while getting todo list number : " + req.getIdsList()[0] + " - error : "
                     + e.getMessage();
             System.err.println(message);
-            toDoListResp.set_message(message);
-            toDoListResp.set_currentResult(Result.ERROR);
+            toDoListResp.setMessage(message);
+            toDoListResp.setCurrentResult(Result.ERROR);
 
             return toDoListResp;
         }
@@ -86,26 +95,28 @@ public class ToDoListServices {
 
         try {
             // Get all toDoLists
-            List<ToDoList> currentToDoListList = getAllToDoListsFromJSON(req).get_toDoListList();
+            List<ToDoListDTO> currentToDoListList = getAllToDoListsFromJSON(req).getToDoListList();
 
             // Getting the task to update
-            ToDoList toDoListToUpdate = currentToDoListList.stream()
-                    .filter(task -> task.getId() == req.get_idList())
+            ToDoListDTO toDoListToUpdate = currentToDoListList.stream()
+                    .filter(task -> task.getId() == req.getIdsList()[0])
                     .findFirst()
                     .orElse(null);
 
             if (toDoListToUpdate == null) {
-                String message = "TODOLIST UPDATE : ToDoList with ID " + req.get_idList() + " not found or not exist ";
-                resp.set_message(message);
-                resp.set_currentResult(Result.NOT_EXISTING);
+                String message = "TODOLIST UPDATE : ToDoList with ID " + req.getIdsList()[0]
+                        + " not found or not exist ";
+                resp.setMessage(message);
+                resp.setCurrentResult(Result.NOT_EXISTING);
                 return resp;
             }
 
             // Updating task informations
-            ToDoList updatedToDoList = req.get_toDoLists().get(0);
-            toDoListToUpdate.set_name(updatedToDoList.get_name());
+            ToDoListDTO updatedToDoList = req.getToDoLists().get(0);
+            toDoListToUpdate.setName(updatedToDoList.getName());
             toDoListToUpdate.setIsCompleted(updatedToDoList.getIsCompleted());
-            toDoListToUpdate.set_tasks(updatedToDoList.get_tasks());
+            if (!updatedToDoList.getTasks().isEmpty())
+                toDoListToUpdate.setTasks(updatedToDoList.getTasks());
 
             // overwrites the content of file
             OutputStreamWriter writer = new OutputStreamWriter(
@@ -116,15 +127,15 @@ public class ToDoListServices {
             writer.close();
 
             // Setting the response
-            resp.set_toDoListList(new ArrayList<ToDoList>(List.of(toDoListToUpdate)));
-            resp.set_currentResult(Result.OK);
-            resp.set_message("Update completed");
+            resp.setToDoListList(new ArrayList<ToDoListDTO>(List.of(toDoListToUpdate)));
+            resp.setCurrentResult(Result.OK);
+            resp.setMessage("Update completed");
         } catch (Exception e) {
-            String message = "error while updating todo list " + req.get_idList() + " : " + e.getMessage();
+            String message = "error while updating todo list " + req.getIdsList()[0] + " : " + e.getMessage();
             System.err.println(message);
-            resp.set_message(message);
-            resp.set_currentResult(Result.ERROR);
-            resp.set_toDoListList(new ArrayList<ToDoList>(List.of(req.get_toDoLists().get(0))));
+            resp.setMessage(message);
+            resp.setCurrentResult(Result.ERROR);
+            resp.setToDoListList(new ArrayList<ToDoListDTO>(List.of(req.getToDoLists().get(0))));
 
             return resp;
         }
@@ -135,14 +146,14 @@ public class ToDoListServices {
     // Get add one ToDoList in data.json
     public ToDoListServicesResponse addToDoListFromJSON(ToDoListServicesRequest req) {
         // Getting the json file
-        List<ToDoList> toDolists = new ArrayList<ToDoList>();
+        List<ToDoListDTO> toDolists = new ArrayList<ToDoListDTO>();
         ToDoListServicesResponse resp = new ToDoListServicesResponse();
-        List<ToDoList> listToResp = new ArrayList<ToDoList>();
-        ToDoList newToDoList = req.get_toDoLists().get(0);
+        List<ToDoListDTO> listToResp = new ArrayList<ToDoListDTO>();
+        ToDoListDTO newToDoList = req.getToDoLists().get(0);
 
         try {
             // Get all toDoLists
-            toDolists = getAllToDoListsFromJSON(req).get_toDoListList();
+            toDolists = getAllToDoListsFromJSON(req).getToDoListList();
             // Putting the right id
             newToDoList.setId(toDolists.size() + 1);
             // Insert the new To do list
@@ -157,16 +168,16 @@ public class ToDoListServices {
 
             // Updating the response
             listToResp.add(newToDoList);
-            resp.set_toDoListList(listToResp);
-            resp.set_message("Added new Todo list");
-            resp.set_currentResult(Result.OK);
+            resp.setToDoListList(listToResp);
+            resp.setMessage("Added new Todo list");
+            resp.setCurrentResult(Result.OK);
         } catch (Exception e) {
             String message = "error while adding todo list " + newToDoList.getId() + " : " + e.getMessage();
             System.err.println(message);
-            resp.set_message(message);
-            resp.set_currentResult(Result.ERROR);
+            resp.setMessage(message);
+            resp.setCurrentResult(Result.ERROR);
             listToResp.add(newToDoList);
-            resp.set_toDoListList(listToResp);
+            resp.setToDoListList(listToResp);
 
             return resp;
         }
@@ -180,18 +191,19 @@ public class ToDoListServices {
 
         try {
             // Get all toDoLists
-            List<ToDoList> currentToDoListList = getAllToDoListsFromJSON(req).get_toDoListList();
+            List<ToDoListDTO> currentToDoListList = getAllToDoListsFromJSON(req).getToDoListList();
 
             // Getting the task to update
-            ToDoList toDoListToDelete = currentToDoListList.stream()
-                    .filter(task -> task.getId() == req.get_idList())
+            ToDoListDTO toDoListToDelete = currentToDoListList.stream()
+                    .filter(task -> task.getId() == req.getIdsList()[0])
                     .findFirst()
                     .orElse(null);
 
             if (toDoListToDelete == null) {
-                String message = "TODOLIST DELETE : ToDoList with ID " + req.get_idList() + " not found or not exist ";
-                resp.set_message(message);
-                resp.set_currentResult(Result.NOT_EXISTING);
+                String message = "TODOLIST DELETE : ToDoList with ID " + req.getIdsList()[0]
+                        + " not found or not exist ";
+                resp.setMessage(message);
+                resp.setCurrentResult(Result.NOT_EXISTING);
                 return resp;
             }
 
@@ -209,16 +221,16 @@ public class ToDoListServices {
             fileWriter.close();
 
             // Setting the response
-            resp.set_toDoListList(new ArrayList<ToDoList>(List.of(toDoListToDelete)));
-            resp.set_currentResult(Result.OK);
-            resp.set_message("Removing the todo list number " + req.get_idList() + " succesful");
+            resp.setToDoListList(new ArrayList<ToDoListDTO>(List.of(toDoListToDelete)));
+            resp.setCurrentResult(Result.OK);
+            resp.setMessage("Removing the todo list number " + req.getIdsList()[0] + " succesful");
         } catch (Exception e) {
-            String message = "error cannot remove todo list with the id " + req.get_idList() + " - message : "
+            String message = "error cannot remove todo list with the id " + req.getIdsList()[0] + " - message : "
                     + e.getMessage();
             System.err.println(message);
-            resp.set_message(message);
-            resp.set_currentResult(Result.ERROR);
-            resp.set_toDoListList(new ArrayList<ToDoList>(List.of(req.get_toDoLists().get(0))));
+            resp.setMessage(message);
+            resp.setCurrentResult(Result.ERROR);
+            resp.setToDoListList(new ArrayList<ToDoListDTO>(List.of(req.getToDoLists().get(0))));
 
             return resp;
         }
@@ -227,13 +239,13 @@ public class ToDoListServices {
     }
 
     // Adding ids to 1 to N and sorting the list by id
-    private List<ToDoList> rearangeToDoListsIds(List<ToDoList> toDoListsList) {
+    private List<ToDoListDTO> rearangeToDoListsIds(List<ToDoListDTO> toDoListsList) {
         if (!toDoListsList.isEmpty()) {
             for (int i = 0; i <= toDoListsList.size() - 1; i++) {
                 toDoListsList.get(i).setId(i + 1);
             }
 
-            Collections.sort(toDoListsList, Comparator.comparingInt(ToDoList::getId));
+            Collections.sort(toDoListsList, Comparator.comparingInt(ToDoListDTO::getId));
         }
 
         return toDoListsList;

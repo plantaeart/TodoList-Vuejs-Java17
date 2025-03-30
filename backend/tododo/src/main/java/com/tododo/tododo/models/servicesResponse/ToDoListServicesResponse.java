@@ -3,45 +3,45 @@ package com.tododo.tododo.models.servicesResponse;
 import java.util.List;
 
 import com.tododo.tododo.enums.Result;
-import com.tododo.tododo.models.ToDoList;
+import com.tododo.tododo.models.dto.ToDoListDTO;
 
 public class ToDoListServicesResponse {
 
-    private Result _currentResult;
-    private String _message;
-    private List<ToDoList> _toDoListList;
+    private Result currentResult;
+    private String message;
+    private List<ToDoListDTO> toDoListList;
 
-    public ToDoListServicesResponse(Result currentResult, String message, List<ToDoList> toDoListList) {
-        this._currentResult = currentResult;
-        this._message = message;
-        this._toDoListList = toDoListList;
+    public ToDoListServicesResponse(Result currentResult, String message, List<ToDoListDTO> toDoListList) {
+        this.currentResult = currentResult;
+        this.message = message;
+        this.toDoListList = toDoListList;
     }
 
     public ToDoListServicesResponse() {
     }
 
-    public Result get_currentResult() {
-        return _currentResult;
+    public Result getCurrentResult() {
+        return currentResult;
     }
 
-    public String get_message() {
-        return _message;
+    public String getMessage() {
+        return message;
     }
 
-    public List<ToDoList> get_toDoListList() {
-        return _toDoListList;
+    public List<ToDoListDTO> getToDoListList() {
+        return toDoListList;
     }
 
-    public void set_currentResult(Result _currentResult) {
-        this._currentResult = _currentResult;
+    public void setCurrentResult(Result currentResult) {
+        this.currentResult = currentResult;
     }
 
-    public void set_message(String _message) {
-        this._message = _message;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void set_toDoListList(List<ToDoList> _toDoListList) {
-        this._toDoListList = _toDoListList;
+    public void setToDoListList(List<ToDoListDTO> toDoListList) {
+        this.toDoListList = toDoListList;
     }
 
 }

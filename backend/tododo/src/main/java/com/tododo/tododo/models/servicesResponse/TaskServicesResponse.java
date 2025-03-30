@@ -3,44 +3,44 @@ package com.tododo.tododo.models.servicesResponse;
 import java.util.List;
 
 import com.tododo.tododo.enums.Result;
-import com.tododo.tododo.models.Task;
+import com.tododo.tododo.models.dto.TaskDTO;
 
 public class TaskServicesResponse {
-    private Result _currentResult;
-    private String _message;
-    private List<Task> _taskList;
+    private Result currentResult;
+    private String message;
+    private List<TaskDTO> taskList;
 
     public TaskServicesResponse() {
     }
 
-    public TaskServicesResponse(Result _currentResult, String _message, List<Task> _taskList) {
-        this._currentResult = _currentResult;
-        this._message = _message;
-        this._taskList = _taskList;
+    public TaskServicesResponse(Result currentResult, String message, List<TaskDTO> taskList) {
+        this.currentResult = currentResult;
+        this.message = message;
+        this.taskList = taskList;
     }
 
-    public Result get_currentResult() {
-        return _currentResult;
+    public Result getCurrentResult() {
+        return currentResult;
     }
 
-    public String get_message() {
-        return _message;
+    public void setCurrentResult(Result currentResult) {
+        this.currentResult = currentResult;
     }
 
-    public List<Task> get_taskList() {
-        return _taskList;
+    public String getMessage() {
+        return message;
     }
 
-    public void set_currentResult(Result _currentResult) {
-        this._currentResult = _currentResult;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void set_message(String _message) {
-        this._message = _message;
+    public List<TaskDTO> getTaskList() {
+        return taskList;
     }
 
-    public void set_taskList(List<Task> _taskList) {
-        this._taskList = _taskList;
+    public void setTaskList(List<TaskDTO> taskList) {
+        this.taskList = taskList;
     }
 
 }

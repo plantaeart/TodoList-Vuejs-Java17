@@ -1,38 +1,24 @@
-package com.tododo.tododo.models;
+package com.tododo.tododo.models.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tododo.tododo.enums.ElementType;
 
-public class SubTask {
-
-    @JsonProperty(value = "id", required = false)
-    public int id;
-    @JsonProperty(value = "type", required = false)
+public class SubTaskDTO {
+    private int id;
     private ElementType type = ElementType.SUBTASK;
-    @JsonProperty("taskContent")
     private String taskContent;
-    @JsonProperty(value = "isCompleted", required = false)
-    protected Boolean isCompleted = false;
+    private Boolean isCompleted;
 
-    /************************* CONSTRUCTORS *************************/
+    public SubTaskDTO() {
+    }
 
-    public SubTask(int id, String taskContent, Boolean isCompleted) {
-        this.id = id;
+    public SubTaskDTO(String taskContent) {
         this.taskContent = taskContent;
-        this.isCompleted = isCompleted;
-    }
-
-    public SubTask(String _taskContent) {
-        this.taskContent = _taskContent;
-    }
-
-    public SubTask() {
     }
 
     @Override
     public String toString() {
-        return "SubTask [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", isCompleted=" + isCompleted
-                + "]";
+        return "SubTaskDTO [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", isCompleted="
+                + isCompleted + "]";
     }
 
     @Override
@@ -54,7 +40,7 @@ public class SubTask {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        SubTask other = (SubTask) obj;
+        SubTaskDTO other = (SubTaskDTO) obj;
         if (id != other.id)
             return false;
         if (type != other.type)
@@ -72,22 +58,12 @@ public class SubTask {
         return true;
     }
 
-    /************************* GETTERS & SETTERS *************************/
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public ElementType getType() {
-        return type;
-    }
-
-    public void setType(ElementType type) {
-        this.type = type;
     }
 
     public String getTaskContent() {
@@ -104,6 +80,14 @@ public class SubTask {
 
     public void setIsCompleted(Boolean isCompleted) {
         this.isCompleted = isCompleted;
+    }
+
+    public ElementType getType() {
+        return type;
+    }
+
+    public void setType(ElementType type) {
+        this.type = type;
     }
 
 }

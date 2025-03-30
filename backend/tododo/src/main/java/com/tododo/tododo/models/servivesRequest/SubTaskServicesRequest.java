@@ -3,71 +3,71 @@ package com.tododo.tododo.models.servivesRequest;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.tododo.tododo.models.SubTask;
-import com.tododo.tododo.models.Task;
+import com.tododo.tododo.models.dto.SubTaskDTO;
+import com.tododo.tododo.models.dto.TaskDTO;
 
 public class SubTaskServicesRequest extends TaskServicesRequest {
 
     @JsonProperty(value = "subTasks", required = false)
-    private List<SubTask> _subTasks;
-    @JsonProperty(value = "idSubTask", required = false)
-    private int _idSubTask;
+    private List<SubTaskDTO> subTasks;
+    @JsonProperty(value = "idsSubTask", required = false)
+    private int[] idsSubTask;
 
-    public SubTaskServicesRequest(List<SubTask> _subTasks, int _idSubTask) {
-        this._subTasks = _subTasks;
-        this._idSubTask = _idSubTask;
+    public SubTaskServicesRequest(List<SubTaskDTO> subTasks, int[] idsSubTask) {
+        this.subTasks = subTasks;
+        this.idsSubTask = idsSubTask;
     }
 
-    public SubTaskServicesRequest(int _idList, int _idTask, List<Task> _tasks, List<SubTask> _subTasks,
-            int _idSubTask) {
-        super(_idList, _idTask, _tasks);
-        this._subTasks = _subTasks;
-        this._idSubTask = _idSubTask;
+    public SubTaskServicesRequest(int[] idsList, int[] idsTask, int[] idsSubTask, List<TaskDTO> tasks,
+            List<SubTaskDTO> subTasks) {
+        super(idsList, idsTask, tasks);
+        this.subTasks = subTasks;
+        this.idsSubTask = idsSubTask;
     }
 
-    public SubTaskServicesRequest(int _idList, int _idTask, int _idSubTask, List<SubTask> _subTasks,
+    public SubTaskServicesRequest(int[] idsList, int[] idsTask, int[] idsSubTask, List<SubTaskDTO> subTasks,
             boolean isTest) {
-        super(_idList, _idTask, isTest);
-        this._subTasks = _subTasks;
-        this._idSubTask = _idSubTask;
+        super(idsList, idsTask, isTest);
+        this.subTasks = subTasks;
+        this.idsSubTask = idsSubTask;
     }
 
-    public SubTaskServicesRequest(int _idList, int _idTask, List<Task> _tasks, List<SubTask> _subTasks) {
-        super(_idList, _idTask, _tasks);
-        this._subTasks = _subTasks;
+    public SubTaskServicesRequest(int[] idsList, int[] idsTask, List<TaskDTO> tasks, List<SubTaskDTO> subTasks) {
+        super(idsList, idsTask, tasks);
+        this.subTasks = subTasks;
     }
 
-    public SubTaskServicesRequest(int _idList, int _idTask, int _idSubTask, boolean isTest) {
-        super(_idList, _idTask, isTest);
-        this._idSubTask = _idSubTask;
+    public SubTaskServicesRequest(int[] idsList, int[] idsTask, int[] idsSubTask, boolean isTest) {
+        super(idsList, idsTask, isTest);
+        this.idsSubTask = idsSubTask;
     }
 
-    public SubTaskServicesRequest(int _idList, int _idTask, List<SubTask> _subTasks, boolean isTest) {
-        super(_idList, _idTask, isTest);
-        this._subTasks = _subTasks;
+    public SubTaskServicesRequest(int[] idsList, int[] idsTask, List<SubTaskDTO> subTasks, boolean isTest) {
+        super(idsList, idsTask, isTest);
+        this.subTasks = subTasks;
     }
 
-    public SubTaskServicesRequest(List<SubTask> _subTasks) {
-        this._subTasks = _subTasks;
+    public SubTaskServicesRequest(List<SubTaskDTO> subTasks) {
+        this.subTasks = subTasks;
     }
 
     public SubTaskServicesRequest() {
     }
 
-    public List<SubTask> get_subTasks() {
-        return _subTasks;
+    public List<SubTaskDTO> getSubTasks() {
+        return subTasks;
     }
 
-    public int get_idSubTask() {
-        return _idSubTask;
+    public int[] getIdsSubTask() {
+        return idsSubTask;
     }
 
-    public void set_subTasks(List<SubTask> _subTasks) {
-        this._subTasks = _subTasks;
+    public void setSubTasks(List<SubTaskDTO> subTasks) {
+        this.subTasks = subTasks;
     }
 
-    public void set_idSubTask(int _idSubTask) {
-        this._idSubTask = _idSubTask;
+    public void setIdsSubTask(int[] idsSubTask) {
+        this.idsSubTask = idsSubTask;
     }
 
 }

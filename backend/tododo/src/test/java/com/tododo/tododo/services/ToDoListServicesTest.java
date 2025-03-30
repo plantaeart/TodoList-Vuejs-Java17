@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import com.tododo.tododo.enums.Result;
-import com.tododo.tododo.models.ToDoList;
+import com.tododo.tododo.models.dto.ToDoListDTO;
 import com.tododo.tododo.models.servicesResponse.ToDoListServicesResponse;
 import com.tododo.tododo.models.servivesRequest.ToDoListServicesRequest;
 
@@ -16,11 +16,11 @@ public class ToDoListServicesTest {
     void testAddToDoListFromJSON(String toDoListName) {
         System.err.println("==> TODOLIST STARTING ADD TEST");
 
-        ToDoList data = new ToDoList(toDoListName);
+        ToDoListDTO data = new ToDoListDTO(toDoListName);
         ToDoListServicesRequest reqAdd = new ToDoListServicesRequest(List.of(data), true);
 
         ToDoListServicesResponse respAdd = service.addToDoListFromJSON(reqAdd);
-        assert respAdd.get_currentResult().equals(Result.OK);
+        assert respAdd.getCurrentResult().equals(Result.OK);
 
         System.err.println("==> TODOLIST FINISHING ADD TEST");
     }
@@ -31,12 +31,12 @@ public class ToDoListServicesTest {
     void testGetListByIdFromJSON(int idList) {
         System.err.println("==> TODOLIST STARTING GET BY ID TEST");
 
-        ToDoListServicesRequest reqGetById = new ToDoListServicesRequest(idList, true);
+        ToDoListServicesRequest reqGetById = new ToDoListServicesRequest(new int[] { idList }, true);
 
-        ToDoListServicesResponse respGetById = service.getListByIdFromJSON(reqGetById);
+        ToDoListServicesResponse respGetById = service.getToDoListByIdFromJSON(reqGetById);
         assertAll(() -> {
-            assert respGetById.get_currentResult().equals(Result.OK);
-            assert respGetById.get_toDoListList().get(0).getId() == idList;
+            assert respGetById.getCurrentResult().equals(Result.OK);
+            assert respGetById.getToDoListList().get(0).getId() == idList;
         });
 
         System.err.println("==> TODOLIST FINISHING GET BY ID TEST");
@@ -50,22 +50,23 @@ public class ToDoListServicesTest {
 
         ToDoListServicesResponse respGetAll = service.getAllToDoListsFromJSON(reqGetAll);
         assertAll(() -> {
-            assert respGetAll.get_currentResult().equals(Result.OK);
-            assert respGetAll.get_toDoListList().size() == sizeToTest;
+            assert respGetAll.getCurrentResult().equals(Result.OK);
+            assert respGetAll.getToDoListList().size() == sizeToTest;
         });
 
         System.err.println("==> TODOLIST FINISHING GET ALL TEST");
     }
 
-    void testUpdateToDoListFromJSON(int idList, ToDoList updatedData) {
+    void testUpdateToDoListFromJSON(int idList, ToDoListDTO updatedData) {
         System.err.println("==> TODOLIST STARTING UPDATE TEST");
 
-        ToDoListServicesRequest reqUpdate = new ToDoListServicesRequest(idList, List.of(updatedData), true);
+        ToDoListServicesRequest reqUpdate = new ToDoListServicesRequest(new int[] { idList }, List.of(updatedData),
+                true);
 
         ToDoListServicesResponse respUpdate = service.updateToDoListFromJSON(reqUpdate);
         assertAll(() -> {
-            assert respUpdate.get_currentResult().equals(Result.OK);
-            assert respUpdate.get_toDoListList().get(0).get_name() == updatedData.get_name();
+            assert respUpdate.getCurrentResult().equals(Result.OK);
+            assert respUpdate.getToDoListList().get(0).getName() == updatedData.getName();
         });
 
         System.err.println("==> TODOLIST FINISHING UPDATE TEST");
@@ -75,22 +76,26 @@ public class ToDoListServicesTest {
     void testDeleteToDoListByIdFromJSON(int idList) {
         System.err.println("==> TODOLIST STARTING DELETE TEST");
 
-        ToDoListServicesRequest reqDel = new ToDoListServicesRequest(idList, true);
+        ToDoListServicesRequest reqDel = new ToDoListServicesRequest(new int[] { idList }, true);
 
         ToDoListServicesResponse resp = service.deleteToDoListByIdFromJSON(reqDel);
-        assert resp.get_currentResult().equals(Result.OK);
+        assert resp.getCurrentResult().equals(Result.OK);
 
         System.err.println("==> TODOLIST FINISHING DELETE TEST");
     }
 
     @Test
     void workflowTestToDoListAll() {
+        System.err.println("==> STARTING TODOLIST TESTS <==");
+
         testAddToDoListFromJSON("TestToDoList1");
         testAddToDoListFromJSON("TestToDoList2");
         testGetListByIdFromJSON(2);
         testGetAllToDoListsFromJSON(2);
-        testUpdateToDoListFromJSON(2, new ToDoList("TestToDoList2Updated"));
+        testUpdateToDoListFromJSON(2, new ToDoListDTO("TestToDoList2Updated"));
         testDeleteToDoListByIdFromJSON(2);
         testDeleteToDoListByIdFromJSON(1);
+
+        System.err.println("==> FINISHING TODOLIST TESTS <==");
     }
 }

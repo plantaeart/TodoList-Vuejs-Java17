@@ -1,55 +1,28 @@
-package com.tododo.tododo.models;
+package com.tododo.tododo.models.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.tododo.tododo.enums.ElementType;
 
-public class ToDoList {
-
-    @JsonProperty(value = "id", required = false)
-    public int id;
-    @JsonProperty(value = "type", required = false)
+public class ToDoListDTO {
+    private int id;
     private ElementType type = ElementType.TODOLIST;
-    @JsonProperty("name")
     private String name;
-    @JsonProperty(value = "isCompleted", required = false)
-    protected Boolean isCompleted = false;
-    @JsonProperty(value = "tasks", required = false)
-    private List<Task> tasks = new ArrayList<Task>();
+    private Boolean isCompleted;
+    private List<TaskDTO> tasks = new ArrayList<TaskDTO>();
 
-    /************************* CONSTRUCTORS *************************/
-
-    public ToDoList() {
-    }
-
-    public ToDoList(int id, String name, Boolean isCompleted, List<Task> tasks) {
-        this.id = id;
+    public ToDoListDTO(String name) {
         this.name = name;
-        this.isCompleted = isCompleted;
-        this.tasks = tasks;
     }
 
-    public ToDoList(String name, Boolean isCompleted, List<Task> tasks) {
-        this.name = name;
-        this.isCompleted = isCompleted;
-        this.tasks = tasks;
-    }
-
-    public ToDoList(String _name, Boolean isCompleted) {
-        this.name = _name;
-        this.isCompleted = isCompleted;
-    }
-
-    public ToDoList(String _name) {
-        this.name = _name;
+    public ToDoListDTO() {
     }
 
     @Override
     public String toString() {
-        return "ToDoList [id=" + id + ", type=" + type + ", name=" + name + ", isCompleted=" + isCompleted + ", tasks="
-                + tasks + "]";
+        return "ToDoListDTO [id=" + id + ", type=" + type + ", name=" + name + ", isCompleted=" + isCompleted
+                + ", tasks=" + tasks + "]";
     }
 
     @Override
@@ -72,7 +45,7 @@ public class ToDoList {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ToDoList other = (ToDoList) obj;
+        ToDoListDTO other = (ToDoListDTO) obj;
         if (id != other.id)
             return false;
         if (type != other.type)
@@ -95,22 +68,12 @@ public class ToDoList {
         return true;
     }
 
-    /************************* GETTERS & SETTERS *************************/
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public ElementType getType() {
-        return type;
-    }
-
-    public void setType(ElementType type) {
-        this.type = type;
     }
 
     public String getName() {
@@ -129,11 +92,28 @@ public class ToDoList {
         this.isCompleted = isCompleted;
     }
 
-    public List<Task> getTasks() {
+    public List<TaskDTO> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(List<TaskDTO> tasks) {
         this.tasks = tasks;
     }
+
+    public ElementType getType() {
+        return type;
+    }
+
+    public void setType(ElementType type) {
+        this.type = type;
+    }
+
+    /************************* OTHERS *************************/
+
+    public void taskIsCompleted() {
+        for (TaskDTO task : this.tasks) {
+            task.setIsCompleted(true);
+        }
+    }
+
 }
