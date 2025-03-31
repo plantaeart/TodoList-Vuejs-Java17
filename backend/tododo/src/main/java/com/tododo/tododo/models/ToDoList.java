@@ -1,6 +1,7 @@
 package com.tododo.tododo.models;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class ToDoList {
     @JsonProperty(value = "tasks", required = false)
     private List<Task> tasks = new ArrayList<Task>();
     @JsonProperty(value = "updateDate", required = false)
-    private Date updateDate = new Date(System.currentTimeMillis());
+    private String updateDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 
     /************************* CONSTRUCTORS *************************/
 
@@ -36,7 +37,7 @@ public class ToDoList {
     }
 
     public ToDoList(ElementType type, String name, String description, int completionPercentage, String color,
-            String icon, Boolean isCompleted, List<Task> tasks, Date updateDate) {
+            String icon, Boolean isCompleted, List<Task> tasks, String updateDate) {
         this.type = type;
         this.name = name;
         this.description = description;
@@ -244,11 +245,11 @@ public class ToDoList {
         this.description = description;
     }
 
-    public Date getUpdateDate() {
+    public String getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
     }
 

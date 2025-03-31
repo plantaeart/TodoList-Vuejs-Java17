@@ -45,9 +45,9 @@ public class SubTaskServices {
                         }
 
                         // Set the retrieved subtask in the response
-                        List<SubTaskDTO> subTaskList = new ArrayList<>();
-                        subTaskList.add(subTask);
-                        resp.setSubTaskList(subTaskList);
+                        List<SubTaskDTO> subTasks = new ArrayList<>();
+                        subTasks.add(subTask);
+                        resp.setSubTaskList(subTasks);
                         resp.setCurrentResult(Result.OK);
                         resp.setMessage("SubTask with ID " + subTask.getId() + " retrieved successfully from Task ID "
                                         + currentTask.getId() + " in Todo List ID " + idsList[0]);
@@ -324,15 +324,15 @@ public class SubTaskServices {
         }
 
         // Adding ids to 1 to N and sorting the list by id
-        private List<SubTaskDTO> rearangeSubTasksIds(List<SubTaskDTO> subTaskList) {
-                if (!subTaskList.isEmpty()) {
-                        for (int i = 0; i <= subTaskList.size() - 1; i++) {
-                                subTaskList.get(i).setId(i + 1);
+        private List<SubTaskDTO> rearangeSubTasksIds(List<SubTaskDTO> subTasks) {
+                if (!subTasks.isEmpty()) {
+                        for (int i = 0; i <= subTasks.size() - 1; i++) {
+                                subTasks.get(i).setId(i + 1);
                         }
 
-                        Collections.sort(subTaskList, Comparator.comparingInt(SubTaskDTO::getId));
+                        Collections.sort(subTasks, Comparator.comparingInt(SubTaskDTO::getId));
                 }
 
-                return subTaskList;
+                return subTasks;
         }
 }

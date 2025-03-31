@@ -8,15 +8,15 @@ import com.tododo.tododo.models.dto.TaskDTO;
 public class TaskServicesResponse {
     private Result currentResult;
     private String message;
-    private List<TaskDTO> taskList;
+    private List<TaskDTO> tasks;
 
     public TaskServicesResponse() {
     }
 
-    public TaskServicesResponse(Result currentResult, String message, List<TaskDTO> taskList) {
+    public TaskServicesResponse(Result currentResult, String message, List<TaskDTO> tasks) {
         this.currentResult = currentResult;
         this.message = message;
-        this.taskList = taskList;
+        this.tasks = tasks;
     }
 
     public Result getCurrentResult() {
@@ -36,11 +36,11 @@ public class TaskServicesResponse {
     }
 
     public List<TaskDTO> getTaskList() {
-        return taskList;
+        return tasks;
     }
 
-    public void setTaskList(List<TaskDTO> taskList) {
-        this.taskList = taskList;
+    public void setTaskList(List<TaskDTO> tasks) {
+        this.tasks = tasks;
     }
 
 }

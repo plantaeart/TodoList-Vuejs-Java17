@@ -8,15 +8,15 @@ import com.tododo.tododo.models.dto.SubTaskDTO;
 public class SubTaskServicesResponse {
     private Result currentResult;
     private String message;
-    private List<SubTaskDTO> subTaskList;
+    private List<SubTaskDTO> subTasks;
 
     public SubTaskServicesResponse() {
     }
 
-    public SubTaskServicesResponse(Result currentResult, String message, List<SubTaskDTO> subTaskList) {
+    public SubTaskServicesResponse(Result currentResult, String message, List<SubTaskDTO> subTasks) {
         this.currentResult = currentResult;
         this.message = message;
-        this.subTaskList = subTaskList;
+        this.subTasks = subTasks;
     }
 
     public Result getCurrentResult() {
@@ -36,11 +36,11 @@ public class SubTaskServicesResponse {
     }
 
     public List<SubTaskDTO> getSubTaskList() {
-        return subTaskList;
+        return subTasks;
     }
 
-    public void setSubTaskList(List<SubTaskDTO> subTaskList) {
-        this.subTaskList = subTaskList;
+    public void setSubTaskList(List<SubTaskDTO> subTasks) {
+        this.subTasks = subTasks;
     }
 
 }

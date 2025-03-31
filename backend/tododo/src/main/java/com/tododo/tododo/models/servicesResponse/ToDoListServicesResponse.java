@@ -9,12 +9,12 @@ public class ToDoListServicesResponse {
 
     private Result currentResult;
     private String message;
-    private List<ToDoListDTO> toDoListList;
+    private List<ToDoListDTO> toDoLists;
 
-    public ToDoListServicesResponse(Result currentResult, String message, List<ToDoListDTO> toDoListList) {
+    public ToDoListServicesResponse(Result currentResult, String message, List<ToDoListDTO> toDoLists) {
         this.currentResult = currentResult;
         this.message = message;
-        this.toDoListList = toDoListList;
+        this.toDoLists = toDoLists;
     }
 
     public ToDoListServicesResponse() {
@@ -28,8 +28,8 @@ public class ToDoListServicesResponse {
         return message;
     }
 
-    public List<ToDoListDTO> getToDoListList() {
-        return toDoListList;
+    public List<ToDoListDTO> gettoDoLists() {
+        return toDoLists;
     }
 
     public void setCurrentResult(Result currentResult) {
@@ -40,8 +40,8 @@ public class ToDoListServicesResponse {
         this.message = message;
     }
 
-    public void setToDoListList(List<ToDoListDTO> toDoListList) {
-        this.toDoListList = toDoListList;
+    public void settoDoLists(List<ToDoListDTO> toDoLists) {
+        this.toDoLists = toDoLists;
     }
 
 }

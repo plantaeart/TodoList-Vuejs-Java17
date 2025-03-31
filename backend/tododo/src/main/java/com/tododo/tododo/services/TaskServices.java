@@ -22,7 +22,7 @@ public class TaskServices {
 
                 try {
                         // gettin all list the mapper json to List<ToDoList>
-                        allToDoLists = tdls.getAllToDoListsFromJSON(isTest).getToDoListList();
+                        allToDoLists = tdls.getAllToDoListsFromJSON(isTest).gettoDoLists();
                         resp.setTaskList(
                                         allToDoLists.stream().filter(x -> x.getId() == idsList[0]).toList()
                                                         .get(0)
@@ -60,7 +60,7 @@ public class TaskServices {
                         currentToDoList = tdls
                                         .getToDoListByIdFromJSON(
                                                         idsList, isTest)
-                                        .getToDoListList().get(0);
+                                        .gettoDoLists().get(0);
                         // Getting the task asked
                         taskResp.setTaskList(
                                         currentToDoList.getTasks().stream()
@@ -100,7 +100,7 @@ public class TaskServices {
                         currentToDoList = tdls
                                         .getToDoListByIdFromJSON(
                                                         req.getIdsList(), req.getIsTest())
-                                        .getToDoListList().get(0);
+                                        .gettoDoLists().get(0);
 
                         // Getting the task to update
                         TaskDTO taskToUpdate = currentToDoList.getTasks().stream()
@@ -161,7 +161,7 @@ public class TaskServices {
                         currentToDoList = tdls
                                         .getToDoListByIdFromJSON(
                                                         req.getIdsList(), req.getIsTest())
-                                        .getToDoListList().get(0);
+                                        .gettoDoLists().get(0);
 
                         boolean isEmptyTasks = currentToDoList.getTasks().isEmpty();
                         // Get the greatest id if the todo list has task(s)
@@ -215,7 +215,7 @@ public class TaskServices {
                         currentToDoList = tdls
                                         .getToDoListByIdFromJSON(
                                                         req.getIdsList(), req.getIsTest())
-                                        .getToDoListList().get(0);
+                                        .gettoDoLists().get(0);
 
                         // Getting the task to delete
                         TaskDTO taskToDelete = currentToDoList.getTasks().stream()
@@ -274,7 +274,7 @@ public class TaskServices {
                         currentToDoList = tdls
                                         .getToDoListByIdFromJSON(
                                                         req.getIdsList(), req.getIsTest())
-                                        .getToDoListList().get(0);
+                                        .gettoDoLists().get(0);
 
                         // Getting the first task to switch
                         TaskDTO taskToSwitch1 = currentToDoList.getTasks().stream()
@@ -344,15 +344,15 @@ public class TaskServices {
         }
 
         // Adding ids to 1 to N and sorting the list by id
-        private List<TaskDTO> rearangeTasksIds(List<TaskDTO> taskList) {
-                if (!taskList.isEmpty()) {
-                        for (int i = 0; i <= taskList.size() - 1; i++) {
-                                taskList.get(i).setId(i + 1);
+        private List<TaskDTO> rearangeTasksIds(List<TaskDTO> tasks) {
+                if (!tasks.isEmpty()) {
+                        for (int i = 0; i <= tasks.size() - 1; i++) {
+                                tasks.get(i).setId(i + 1);
                         }
 
-                        Collections.sort(taskList, Comparator.comparingInt(TaskDTO::getId));
+                        Collections.sort(tasks, Comparator.comparingInt(TaskDTO::getId));
                 }
 
-                return taskList;
+                return tasks;
         }
 }

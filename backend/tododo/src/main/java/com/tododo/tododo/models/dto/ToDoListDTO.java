@@ -1,6 +1,7 @@
 package com.tododo.tododo.models.dto;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,10 +17,10 @@ public class ToDoListDTO {
     private String icon = "";
     private Boolean isCompleted;
     private List<TaskDTO> tasks = new ArrayList<TaskDTO>();
-    private Date updateDate = new Date(System.currentTimeMillis());
+    private String updateDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 
     public ToDoListDTO(ElementType type, String name, String description, int completionPercentage, String color,
-            String icon, Boolean isCompleted, List<TaskDTO> tasks, Date updateDate) {
+            String icon, Boolean isCompleted, List<TaskDTO> tasks, String updateDate) {
         this.type = type;
         this.name = name;
         this.description = description;
@@ -199,11 +200,11 @@ public class ToDoListDTO {
         this.description = description;
     }
 
-    public Date getUpdateDate() {
+    public String getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Date updateDate) {
+    public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
     }
 
