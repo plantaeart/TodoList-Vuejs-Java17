@@ -14,6 +14,12 @@ public class ToDoList {
     private ElementType type = ElementType.TODOLIST;
     @JsonProperty("name")
     private String name;
+    @JsonProperty(value = "completionPercentage", required = false)
+    private int completionPercentage = 0;
+    @JsonProperty(value = "color", required = false)
+    private String color = "#FFFFFF";
+    @JsonProperty(value = "icon", required = false)
+    private String icon = "";
     @JsonProperty(value = "isCompleted", required = false)
     protected Boolean isCompleted = false;
     @JsonProperty(value = "tasks", required = false)
@@ -22,6 +28,29 @@ public class ToDoList {
     /************************* CONSTRUCTORS *************************/
 
     public ToDoList() {
+    }
+
+    public ToDoList(int id, ElementType type, String name, int completionPercentage, String color, String icon,
+            Boolean isCompleted, List<Task> tasks) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.completionPercentage = completionPercentage;
+        this.color = color;
+        this.icon = icon;
+        this.isCompleted = isCompleted;
+        this.tasks = tasks;
+    }
+
+    public ToDoList(int id, ElementType type, String name, int completionPercentage, String color, String icon,
+            Boolean isCompleted) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.completionPercentage = completionPercentage;
+        this.color = color;
+        this.icon = icon;
+        this.isCompleted = isCompleted;
     }
 
     public ToDoList(int id, String name, Boolean isCompleted, List<Task> tasks) {
@@ -48,8 +77,9 @@ public class ToDoList {
 
     @Override
     public String toString() {
-        return "ToDoList [id=" + id + ", type=" + type + ", name=" + name + ", isCompleted=" + isCompleted + ", tasks="
-                + tasks + "]";
+        return "ToDoList [id=" + id + ", type=" + type + ", name=" + name + ", completionPercentage="
+                + completionPercentage + ", color=" + color + ", icon=" + icon + ", isCompleted=" + isCompleted
+                + ", tasks=" + tasks + "]";
     }
 
     @Override
@@ -59,6 +89,9 @@ public class ToDoList {
         result = prime * result + id;
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + completionPercentage;
+        result = prime * result + ((color == null) ? 0 : color.hashCode());
+        result = prime * result + ((icon == null) ? 0 : icon.hashCode());
         result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
         result = prime * result + ((tasks == null) ? 0 : tasks.hashCode());
         return result;
@@ -81,6 +114,18 @@ public class ToDoList {
             if (other.name != null)
                 return false;
         } else if (!name.equals(other.name))
+            return false;
+        if (completionPercentage != other.completionPercentage)
+            return false;
+        if (color == null) {
+            if (other.color != null)
+                return false;
+        } else if (!color.equals(other.color))
+            return false;
+        if (icon == null) {
+            if (other.icon != null)
+                return false;
+        } else if (!icon.equals(other.icon))
             return false;
         if (isCompleted == null) {
             if (other.isCompleted != null)
@@ -136,4 +181,29 @@ public class ToDoList {
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
+
+    public int getCompletionPercentage() {
+        return completionPercentage;
+    }
+
+    public void setCompletionPercentage(int completionPercentage) {
+        this.completionPercentage = completionPercentage;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
 }

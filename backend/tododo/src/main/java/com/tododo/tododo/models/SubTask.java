@@ -11,6 +11,8 @@ public class SubTask {
     private ElementType type = ElementType.SUBTASK;
     @JsonProperty("taskContent")
     private String taskContent;
+    @JsonProperty(value = "icon", required = false)
+    private String icon = "";
     @JsonProperty(value = "isCompleted", required = false)
     protected Boolean isCompleted = false;
 
@@ -19,6 +21,13 @@ public class SubTask {
     public SubTask(int id, String taskContent, Boolean isCompleted) {
         this.id = id;
         this.taskContent = taskContent;
+        this.isCompleted = isCompleted;
+    }
+
+    public SubTask(ElementType type, String taskContent, String icon, Boolean isCompleted) {
+        this.type = type;
+        this.taskContent = taskContent;
+        this.icon = icon;
         this.isCompleted = isCompleted;
     }
 
@@ -31,8 +40,8 @@ public class SubTask {
 
     @Override
     public String toString() {
-        return "SubTask [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", isCompleted=" + isCompleted
-                + "]";
+        return "SubTask [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", icon=" + icon
+                + ", isCompleted=" + isCompleted + "]";
     }
 
     @Override
@@ -42,6 +51,7 @@ public class SubTask {
         result = prime * result + id;
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((taskContent == null) ? 0 : taskContent.hashCode());
+        result = prime * result + ((icon == null) ? 0 : icon.hashCode());
         result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
         return result;
     }
@@ -63,6 +73,11 @@ public class SubTask {
             if (other.taskContent != null)
                 return false;
         } else if (!taskContent.equals(other.taskContent))
+            return false;
+        if (icon == null) {
+            if (other.icon != null)
+                return false;
+        } else if (!icon.equals(other.icon))
             return false;
         if (isCompleted == null) {
             if (other.isCompleted != null)
@@ -104,6 +119,14 @@ public class SubTask {
 
     public void setIsCompleted(Boolean isCompleted) {
         this.isCompleted = isCompleted;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
 }

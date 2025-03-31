@@ -9,10 +9,21 @@ public class TaskDTO {
     private int id;
     private ElementType type = ElementType.TASK;
     private String taskContent;
+    private int completionPercentage = 0;
+    private String icon = "";
     private Boolean isCompleted;
     private List<SubTaskDTO> subTasks = new ArrayList<SubTaskDTO>();;
 
     public TaskDTO() {
+    }
+
+    public TaskDTO(ElementType type, String taskContent, int completionPercentage, String icon,
+            Boolean isCompleted) {
+        this.type = type;
+        this.taskContent = taskContent;
+        this.completionPercentage = completionPercentage;
+        this.icon = icon;
+        this.isCompleted = isCompleted;
     }
 
     public TaskDTO(String taskContent) {
@@ -21,8 +32,9 @@ public class TaskDTO {
 
     @Override
     public String toString() {
-        return "TaskDTO [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", isCompleted=" + isCompleted
-                + ", subTasks=" + subTasks + "]";
+        return "TaskDTO [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", completionPercentage="
+                + completionPercentage + ", icon=" + icon + ", isCompleted=" + isCompleted + ", subTasks=" + subTasks
+                + "]";
     }
 
     @Override
@@ -32,6 +44,8 @@ public class TaskDTO {
         result = prime * result + id;
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((taskContent == null) ? 0 : taskContent.hashCode());
+        result = prime * result + completionPercentage;
+        result = prime * result + ((icon == null) ? 0 : icon.hashCode());
         result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
         result = prime * result + ((subTasks == null) ? 0 : subTasks.hashCode());
         return result;
@@ -54,6 +68,13 @@ public class TaskDTO {
             if (other.taskContent != null)
                 return false;
         } else if (!taskContent.equals(other.taskContent))
+            return false;
+        if (completionPercentage != other.completionPercentage)
+            return false;
+        if (icon == null) {
+            if (other.icon != null)
+                return false;
+        } else if (!icon.equals(other.icon))
             return false;
         if (isCompleted == null) {
             if (other.isCompleted != null)
@@ -106,6 +127,22 @@ public class TaskDTO {
 
     public void setType(ElementType type) {
         this.type = type;
+    }
+
+    public int getCompletionPercentage() {
+        return completionPercentage;
+    }
+
+    public void setCompletionPercentage(int completionPercentage) {
+        this.completionPercentage = completionPercentage;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     /************************* OTHERS *************************/

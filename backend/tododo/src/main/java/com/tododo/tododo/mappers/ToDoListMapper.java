@@ -18,6 +18,9 @@ public class ToDoListMapper {
         dto.setId(toDoList.getId());
         dto.setType(toDoList.getType());
         dto.setName(toDoList.getName());
+        dto.setCompletionPercentage(toDoList.getCompletionPercentage());
+        dto.setColor(toDoList.getColor());
+        dto.setIcon(toDoList.getIcon());
         dto.setIsCompleted(toDoList.getIsCompleted());
 
         // Map tasks and their subtasks
@@ -27,6 +30,8 @@ public class ToDoListMapper {
                     taskDTO.setId(task.getId());
                     taskDTO.setType(task.getType());
                     taskDTO.setTaskContent(task.getTaskContent());
+                    taskDTO.setCompletionPercentage(task.getCompletionPercentage());
+                    taskDTO.setIcon(task.getIcon());
                     taskDTO.setIsCompleted(task.getIsCompleted());
 
                     // Map subtasks
@@ -36,6 +41,7 @@ public class ToDoListMapper {
                                 subTaskDTO.setId(subTask.getId());
                                 subTaskDTO.setType(subTask.getType());
                                 subTaskDTO.setTaskContent(subTask.getTaskContent());
+                                subTaskDTO.setIcon(subTask.getIcon());
                                 subTaskDTO.setIsCompleted(subTask.getIsCompleted());
                                 return subTaskDTO;
                             })

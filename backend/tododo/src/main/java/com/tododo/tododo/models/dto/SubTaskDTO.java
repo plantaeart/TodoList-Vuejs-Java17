@@ -6,9 +6,17 @@ public class SubTaskDTO {
     private int id;
     private ElementType type = ElementType.SUBTASK;
     private String taskContent;
+    private String icon = "";
     private Boolean isCompleted;
 
     public SubTaskDTO() {
+    }
+
+    public SubTaskDTO(ElementType type, String taskContent, String icon, Boolean isCompleted) {
+        this.type = type;
+        this.taskContent = taskContent;
+        this.icon = icon;
+        this.isCompleted = isCompleted;
     }
 
     public SubTaskDTO(String taskContent) {
@@ -17,8 +25,8 @@ public class SubTaskDTO {
 
     @Override
     public String toString() {
-        return "SubTaskDTO [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", isCompleted="
-                + isCompleted + "]";
+        return "SubTaskDTO [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", icon=" + icon
+                + ", isCompleted=" + isCompleted + "]";
     }
 
     @Override
@@ -28,6 +36,7 @@ public class SubTaskDTO {
         result = prime * result + id;
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((taskContent == null) ? 0 : taskContent.hashCode());
+        result = prime * result + ((icon == null) ? 0 : icon.hashCode());
         result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
         return result;
     }
@@ -49,6 +58,11 @@ public class SubTaskDTO {
             if (other.taskContent != null)
                 return false;
         } else if (!taskContent.equals(other.taskContent))
+            return false;
+        if (icon == null) {
+            if (other.icon != null)
+                return false;
+        } else if (!icon.equals(other.icon))
             return false;
         if (isCompleted == null) {
             if (other.isCompleted != null)
@@ -88,6 +102,14 @@ public class SubTaskDTO {
 
     public void setType(ElementType type) {
         this.type = type;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
 }
