@@ -13,7 +13,7 @@ public class TaskDTO {
     private int completionPercentage = 0;
     private String icon = "";
     private Boolean isCompleted;
-    private List<SubTaskDTO> subTasks = new ArrayList<SubTaskDTO>();;
+    private List<SubTaskDTO> subTasks = new ArrayList<SubTaskDTO>();
 
     public TaskDTO() {
     }

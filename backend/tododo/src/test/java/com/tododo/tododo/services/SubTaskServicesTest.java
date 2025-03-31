@@ -49,11 +49,9 @@ public class SubTaskServicesTest {
     void testGetSubTaskByIdFromJSON(int idList, int idTask, int idSubTask) {
         System.err.println("==> SUBTASK STARTING GET TEST");
 
-        // Create a request object to get the SubTask by ID
-        SubTaskServicesRequest reqGet = new SubTaskServicesRequest(new int[] { idList }, new int[] { idTask },
-                new int[] { idSubTask }, true);
         // Call the service method to get the SubTask and get the response
-        SubTaskServicesResponse respGet = service.getSubTaskByIdFromJSON(reqGet);
+        SubTaskServicesResponse respGet = service.getSubTaskByIdFromJSON(new int[] { idList }, new int[] { idTask },
+                new int[] { idSubTask }, true);
         // Assert that the result is OK
         assert respGet.getCurrentResult().equals(Result.OK);
 

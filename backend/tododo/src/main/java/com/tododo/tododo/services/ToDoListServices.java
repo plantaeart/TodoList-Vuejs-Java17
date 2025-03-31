@@ -22,7 +22,7 @@ import com.tododo.tododo.utils.JsonUtils;
 
 public class ToDoListServices {
     // Get all ToDoList in data.json
-    public ToDoListServicesResponse getAllToDoListsFromJSON(ToDoListServicesRequest req) {
+    public ToDoListServicesResponse getAllToDoListsFromJSON(boolean isTest) {
         // Getting the json file
         ToDoListServicesResponse toDoListResp = new ToDoListServicesResponse();
 
@@ -30,7 +30,7 @@ public class ToDoListServices {
             // creating the mapper json to List<ToDoList>
             ObjectMapper objectMapper = new ObjectMapper();
             // Get all list from json file
-            List<ToDoList> toDoLists = objectMapper.readValue(JsonUtils.getJsonFile(req.getIsTest()),
+            List<ToDoList> toDoLists = objectMapper.readValue(JsonUtils.getJsonFile(isTest),
                     new TypeReference<List<ToDoList>>() {
                     });
 
@@ -62,21 +62,21 @@ public class ToDoListServices {
     }
 
     // Get one ToDoList by it's id in data.json
-    public ToDoListServicesResponse getToDoListByIdFromJSON(ToDoListServicesRequest req) {
+    public ToDoListServicesResponse getToDoListByIdFromJSON(int[] idsList, boolean isTest) {
         // Getting the json file
         ToDoListServicesResponse toDoListResp = new ToDoListServicesResponse();
 
         try {
             // Getting the one that match the id passed as param
             toDoListResp.setToDoListList(
-                    getAllToDoListsFromJSON(req).getToDoListList().stream()
-                            .filter(x -> x.getId() == req.getIdsList()[0])
+                    getAllToDoListsFromJSON(isTest).getToDoListList().stream()
+                            .filter(x -> x.getId() == idsList[0])
                             .toList());
             // Setting result reponse
             toDoListResp
                     .setCurrentResult(toDoListResp.getToDoListList().size() == 0 ? Result.NOT_EXISTING : Result.OK);
         } catch (Exception e) {
-            String message = "error while getting todo list number : " + req.getIdsList()[0] + " - error : "
+            String message = "error while getting todo list number : " + idsList[0] + " - error : "
                     + e.getMessage();
             System.err.println(message);
             toDoListResp.setMessage(message);
@@ -95,7 +95,7 @@ public class ToDoListServices {
 
         try {
             // Get all toDoLists
-            List<ToDoListDTO> currentToDoListList = getAllToDoListsFromJSON(req).getToDoListList();
+            List<ToDoListDTO> currentToDoListList = getAllToDoListsFromJSON(req.getIsTest()).getToDoListList();
 
             // Getting the task to update
             ToDoListDTO toDoListToUpdate = currentToDoListList.stream()
@@ -153,7 +153,7 @@ public class ToDoListServices {
 
         try {
             // Get all toDoLists
-            toDolists = getAllToDoListsFromJSON(req).getToDoListList();
+            toDolists = getAllToDoListsFromJSON(req.getIsTest()).getToDoListList();
             // Putting the right id
             newToDoList.setId(toDolists.size() + 1);
             // Insert the new To do list
@@ -191,7 +191,7 @@ public class ToDoListServices {
 
         try {
             // Get all toDoLists
-            List<ToDoListDTO> currentToDoListList = getAllToDoListsFromJSON(req).getToDoListList();
+            List<ToDoListDTO> currentToDoListList = getAllToDoListsFromJSON(req.getIsTest()).getToDoListList();
 
             // Getting the task to update
             ToDoListDTO toDoListToDelete = currentToDoListList.stream()

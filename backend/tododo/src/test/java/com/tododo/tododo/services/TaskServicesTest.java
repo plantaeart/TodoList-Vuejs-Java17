@@ -31,8 +31,7 @@ public class TaskServicesTest {
     void testGetAllTasksFromJSON(int idList, int sizeToTest) {
         System.err.println("==> TASK STARTING GET ALL TEST");
 
-        TaskServicesRequest reqGetAll = new TaskServicesRequest(new int[] { idList }, true);
-        TaskServicesResponse respGetAll = service.getAllTasksFromJSON(reqGetAll);
+        TaskServicesResponse respGetAll = service.getAllTasksFromJSON(new int[] { idList }, true);
 
         assertAll(() -> {
             assert respGetAll.getCurrentResult().equals(Result.OK);
@@ -45,8 +44,8 @@ public class TaskServicesTest {
     void testGetTaskByIdFromJSON(int idList, int idTask) {
         System.err.println("==> TASK STARTING GET BY ID TEST");
 
-        TaskServicesRequest reqGetById = new TaskServicesRequest(new int[] { idList }, new int[] { idTask }, true);
-        TaskServicesResponse respGetById = service.getTaskByIdFromJSON(reqGetById);
+        TaskServicesResponse respGetById = service.getTaskByIdFromJSON(new int[] { idList }, new int[] { idTask },
+                true);
 
         assertAll(() -> {
             assert respGetById.getCurrentResult().equals(Result.OK);

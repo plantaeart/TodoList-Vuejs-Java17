@@ -17,26 +17,27 @@ public class SubTaskServices {
         TaskServices ts = new TaskServices();
 
         // Get a SubTask
-        public SubTaskServicesResponse getSubTaskByIdFromJSON(SubTaskServicesRequest req) {
+        public SubTaskServicesResponse getSubTaskByIdFromJSON(int[] idsList, int[] idsTask, int[] idsSubTask,
+                        boolean isTest) {
                 SubTaskServicesResponse resp = new SubTaskServicesResponse();
 
                 try {
                         // Getting the current task
                         TaskDTO currentTask = ts
-                                        .getTaskByIdFromJSON(new TaskServicesRequest(req.getIdsList(), req.getIdsTask(),
-                                                        req.getIsTest()))
+                                        .getTaskByIdFromJSON(idsList, idsTask,
+                                                        isTest)
                                         .getTaskList().get(0);
 
                         // Find the subtask by its ID
                         SubTaskDTO subTask = currentTask.getSubTasks().stream()
-                                        .filter(st -> st.getId() == req.getIdsSubTask()[0])
+                                        .filter(st -> st.getId() == idsSubTask[0])
                                         .findFirst()
                                         .orElse(null);
 
                         if (subTask == null) {
-                                String message = "SubTask with ID " + req.getSubTasks().get(0).getId()
+                                String message = "SubTask with ID " + idsSubTask[0]
                                                 + " not found in Task ID "
-                                                + req.getIdsTask()[0] + " from Todo List ID " + req.getIdsList()[0];
+                                                + idsTask[0] + " from Todo List ID " + idsList[0];
                                 System.err.println(message);
                                 resp.setMessage(message);
                                 resp.setCurrentResult(Result.ERROR);
@@ -49,11 +50,11 @@ public class SubTaskServices {
                         resp.setSubTaskList(subTaskList);
                         resp.setCurrentResult(Result.OK);
                         resp.setMessage("SubTask with ID " + subTask.getId() + " retrieved successfully from Task ID "
-                                        + currentTask.getId() + " in Todo List ID " + req.getIdsList()[0]);
+                                        + currentTask.getId() + " in Todo List ID " + idsList[0]);
                 } catch (Exception e) {
-                        String message = "Error while retrieving SubTask with ID " + req.getSubTasks().get(0).getId()
-                                        + " from Task ID " + req.getIdsTask()[0] + " in Todo List ID "
-                                        + req.getIdsList()[0]
+                        String message = "Error while retrieving SubTask with ID " + idsSubTask[0]
+                                        + " from Task ID " + idsTask[0] + " in Todo List ID "
+                                        + idsList[0]
                                         + " - message: " + e.getMessage();
                         System.err.println(message);
                         resp.setMessage(message);
@@ -74,8 +75,8 @@ public class SubTaskServices {
                 try {
                         // Getting the current task
                         currentTask = ts
-                                        .getTaskByIdFromJSON(new TaskServicesRequest(req.getIdsList(), req.getIdsTask(),
-                                                        req.getIsTest()))
+                                        .getTaskByIdFromJSON(req.getIdsList(), req.getIdsTask(),
+                                                        req.getIsTest())
                                         .getTaskList().get(0);
                         boolean isEmptySubTasks = currentTask.getSubTasks().isEmpty();
                         // Get the greatest id if the todo list has task(s)
@@ -128,8 +129,8 @@ public class SubTaskServices {
                 try {
                         // Getting the current task
                         TaskDTO currentTask = ts
-                                        .getTaskByIdFromJSON(new TaskServicesRequest(req.getIdsList(), req.getIdsTask(),
-                                                        req.getIsTest()))
+                                        .getTaskByIdFromJSON(req.getIdsList(), req.getIdsTask(),
+                                                        req.getIsTest())
                                         .getTaskList().get(0);
 
                         // Getting the subTask to delete by its ID
@@ -189,8 +190,8 @@ public class SubTaskServices {
                 try {
                         // Getting the current task
                         TaskDTO currentTask = ts
-                                        .getTaskByIdFromJSON(new TaskServicesRequest(req.getIdsList(), req.getIdsTask(),
-                                                        req.getIsTest()))
+                                        .getTaskByIdFromJSON(req.getIdsList(), req.getIdsTask(),
+                                                        req.getIsTest())
                                         .getTaskList().get(0);
 
                         // Getting the subTask to update by its ID
@@ -249,8 +250,8 @@ public class SubTaskServices {
                 try {
                         // Getting the current task
                         TaskDTO currentTask = ts
-                                        .getTaskByIdFromJSON(new TaskServicesRequest(req.getIdsList(), req.getIdsTask(),
-                                                        req.getIsTest()))
+                                        .getTaskByIdFromJSON(req.getIdsList(), req.getIdsTask(),
+                                                        req.getIsTest())
                                         .getTaskList().get(0);
 
                         // Getting the subTask to switch 1

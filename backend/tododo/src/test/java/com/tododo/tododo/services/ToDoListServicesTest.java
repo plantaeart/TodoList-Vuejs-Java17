@@ -31,9 +31,7 @@ public class ToDoListServicesTest {
     void testGetListByIdFromJSON(int idList) {
         System.err.println("==> TODOLIST STARTING GET BY ID TEST");
 
-        ToDoListServicesRequest reqGetById = new ToDoListServicesRequest(new int[] { idList }, true);
-
-        ToDoListServicesResponse respGetById = service.getToDoListByIdFromJSON(reqGetById);
+        ToDoListServicesResponse respGetById = service.getToDoListByIdFromJSON(new int[] { idList }, true);
         assertAll(() -> {
             assert respGetById.getCurrentResult().equals(Result.OK);
             assert respGetById.getToDoListList().get(0).getId() == idList;
@@ -46,9 +44,7 @@ public class ToDoListServicesTest {
     void testGetAllToDoListsFromJSON(int sizeToTest) {
         System.err.println("==> TODOLIST STARTING GET ALL TEST");
 
-        ToDoListServicesRequest reqGetAll = new ToDoListServicesRequest(true);
-
-        ToDoListServicesResponse respGetAll = service.getAllToDoListsFromJSON(reqGetAll);
+        ToDoListServicesResponse respGetAll = service.getAllToDoListsFromJSON(true);
         assertAll(() -> {
             assert respGetAll.getCurrentResult().equals(Result.OK);
             assert respGetAll.getToDoListList().size() == sizeToTest;
