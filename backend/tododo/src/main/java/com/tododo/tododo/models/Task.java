@@ -14,6 +14,8 @@ public class Task {
     private ElementType type = ElementType.TASK;
     @JsonProperty("taskContent")
     private String taskContent;
+    @JsonProperty(value = "description", required = false)
+    private String description = "";
     @JsonProperty(value = "completionPercentage", required = false)
     private int completionPercentage = 0;
     @JsonProperty(value = "icon", required = false)
@@ -28,6 +30,17 @@ public class Task {
     public Task(int id, String taskContent, Boolean isCompleted, List<SubTask> subTasks) {
         this.id = id;
         this.taskContent = taskContent;
+        this.isCompleted = isCompleted;
+        this.subTasks = subTasks;
+    }
+
+    public Task(ElementType type, String taskContent, String description, int completionPercentage, String icon,
+            Boolean isCompleted, List<SubTask> subTasks) {
+        this.type = type;
+        this.taskContent = taskContent;
+        this.description = description;
+        this.completionPercentage = completionPercentage;
+        this.icon = icon;
         this.isCompleted = isCompleted;
         this.subTasks = subTasks;
     }
@@ -62,9 +75,9 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", completionPercentage="
-                + completionPercentage + ", icon=" + icon + ", isCompleted=" + isCompleted + ", subTasks=" + subTasks
-                + "]";
+        return "Task [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", description=" + description
+                + ", completionPercentage=" + completionPercentage + ", icon=" + icon + ", isCompleted=" + isCompleted
+                + ", subTasks=" + subTasks + "]";
     }
 
     @Override
@@ -74,6 +87,7 @@ public class Task {
         result = prime * result + id;
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((taskContent == null) ? 0 : taskContent.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + completionPercentage;
         result = prime * result + ((icon == null) ? 0 : icon.hashCode());
         result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
@@ -98,6 +112,11 @@ public class Task {
             if (other.taskContent != null)
                 return false;
         } else if (!taskContent.equals(other.taskContent))
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
             return false;
         if (completionPercentage != other.completionPercentage)
             return false;
@@ -175,6 +194,14 @@ public class Task {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

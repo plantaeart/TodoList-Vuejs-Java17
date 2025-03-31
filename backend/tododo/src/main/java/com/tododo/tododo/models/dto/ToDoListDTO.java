@@ -9,20 +9,23 @@ public class ToDoListDTO {
     private int id;
     private ElementType type = ElementType.TODOLIST;
     private String name;
+    private String description = "";
     private int completionPercentage = 0;
     private String color = "#FFFFFF";
     private String icon = "";
     private Boolean isCompleted;
     private List<TaskDTO> tasks = new ArrayList<TaskDTO>();
 
-    public ToDoListDTO(ElementType type, String name, int completionPercentage, String color, String icon,
-            Boolean isCompleted) {
+    public ToDoListDTO(ElementType type, String name, String description, int completionPercentage, String color,
+            String icon, Boolean isCompleted, List<TaskDTO> tasks) {
         this.type = type;
         this.name = name;
+        this.description = description;
         this.completionPercentage = completionPercentage;
         this.color = color;
         this.icon = icon;
         this.isCompleted = isCompleted;
+        this.tasks = tasks;
     }
 
     public ToDoListDTO(String name) {
@@ -34,9 +37,9 @@ public class ToDoListDTO {
 
     @Override
     public String toString() {
-        return "ToDoListDTO [id=" + id + ", type=" + type + ", name=" + name + ", completionPercentage="
-                + completionPercentage + ", color=" + color + ", icon=" + icon + ", isCompleted=" + isCompleted
-                + ", tasks=" + tasks + "]";
+        return "ToDoListDTO [id=" + id + ", type=" + type + ", name=" + name + ", description=" + description
+                + ", completionPercentage=" + completionPercentage + ", color=" + color + ", icon=" + icon
+                + ", isCompleted=" + isCompleted + ", tasks=" + tasks + "]";
     }
 
     @Override
@@ -46,6 +49,7 @@ public class ToDoListDTO {
         result = prime * result + id;
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + completionPercentage;
         result = prime * result + ((color == null) ? 0 : color.hashCode());
         result = prime * result + ((icon == null) ? 0 : icon.hashCode());
@@ -71,6 +75,11 @@ public class ToDoListDTO {
             if (other.name != null)
                 return false;
         } else if (!name.equals(other.name))
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
             return false;
         if (completionPercentage != other.completionPercentage)
             return false;
@@ -137,14 +146,6 @@ public class ToDoListDTO {
         this.type = type;
     }
 
-    /************************* OTHERS *************************/
-
-    public void taskIsCompleted() {
-        for (TaskDTO task : this.tasks) {
-            task.setIsCompleted(true);
-        }
-    }
-
     public int getCompletionPercentage() {
         return completionPercentage;
     }
@@ -169,4 +170,19 @@ public class ToDoListDTO {
         this.icon = icon;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /************************* OTHERS *************************/
+
+    public void taskIsCompleted() {
+        for (TaskDTO task : this.tasks) {
+            task.setIsCompleted(true);
+        }
+    }
 }

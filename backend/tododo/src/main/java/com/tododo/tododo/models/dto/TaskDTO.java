@@ -9,6 +9,7 @@ public class TaskDTO {
     private int id;
     private ElementType type = ElementType.TASK;
     private String taskContent;
+    private String description = "";
     private int completionPercentage = 0;
     private String icon = "";
     private Boolean isCompleted;
@@ -17,13 +18,15 @@ public class TaskDTO {
     public TaskDTO() {
     }
 
-    public TaskDTO(ElementType type, String taskContent, int completionPercentage, String icon,
-            Boolean isCompleted) {
+    public TaskDTO(ElementType type, String taskContent, String description, int completionPercentage, String icon,
+            Boolean isCompleted, List<SubTaskDTO> subTasks) {
         this.type = type;
         this.taskContent = taskContent;
+        this.description = description;
         this.completionPercentage = completionPercentage;
         this.icon = icon;
         this.isCompleted = isCompleted;
+        this.subTasks = subTasks;
     }
 
     public TaskDTO(String taskContent) {
@@ -32,9 +35,9 @@ public class TaskDTO {
 
     @Override
     public String toString() {
-        return "TaskDTO [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", completionPercentage="
-                + completionPercentage + ", icon=" + icon + ", isCompleted=" + isCompleted + ", subTasks=" + subTasks
-                + "]";
+        return "TaskDTO [id=" + id + ", type=" + type + ", taskContent=" + taskContent + ", description=" + description
+                + ", completionPercentage=" + completionPercentage + ", icon=" + icon + ", isCompleted=" + isCompleted
+                + ", subTasks=" + subTasks + "]";
     }
 
     @Override
@@ -44,6 +47,7 @@ public class TaskDTO {
         result = prime * result + id;
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((taskContent == null) ? 0 : taskContent.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + completionPercentage;
         result = prime * result + ((icon == null) ? 0 : icon.hashCode());
         result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
@@ -68,6 +72,11 @@ public class TaskDTO {
             if (other.taskContent != null)
                 return false;
         } else if (!taskContent.equals(other.taskContent))
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
             return false;
         if (completionPercentage != other.completionPercentage)
             return false;
@@ -145,6 +154,14 @@ public class TaskDTO {
         this.icon = icon;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     /************************* OTHERS *************************/
 
     public void taskIsCompleted() {
@@ -152,4 +169,5 @@ public class TaskDTO {
             subTask.setIsCompleted(true);
         }
     }
+
 }

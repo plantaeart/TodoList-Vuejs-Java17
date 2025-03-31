@@ -14,6 +14,8 @@ public class ToDoList {
     private ElementType type = ElementType.TODOLIST;
     @JsonProperty("name")
     private String name;
+    @JsonProperty(value = "description", required = false)
+    private String description = "";
     @JsonProperty(value = "completionPercentage", required = false)
     private int completionPercentage = 0;
     @JsonProperty(value = "color", required = false)
@@ -30,11 +32,11 @@ public class ToDoList {
     public ToDoList() {
     }
 
-    public ToDoList(int id, ElementType type, String name, int completionPercentage, String color, String icon,
-            Boolean isCompleted, List<Task> tasks) {
-        this.id = id;
+    public ToDoList(ElementType type, String name, String description, int completionPercentage, String color,
+            String icon, Boolean isCompleted, List<Task> tasks) {
         this.type = type;
         this.name = name;
+        this.description = description;
         this.completionPercentage = completionPercentage;
         this.color = color;
         this.icon = icon;
@@ -77,9 +79,9 @@ public class ToDoList {
 
     @Override
     public String toString() {
-        return "ToDoList [id=" + id + ", type=" + type + ", name=" + name + ", completionPercentage="
-                + completionPercentage + ", color=" + color + ", icon=" + icon + ", isCompleted=" + isCompleted
-                + ", tasks=" + tasks + "]";
+        return "ToDoList [id=" + id + ", type=" + type + ", name=" + name + ", description=" + description
+                + ", completionPercentage=" + completionPercentage + ", color=" + color + ", icon=" + icon
+                + ", isCompleted=" + isCompleted + ", tasks=" + tasks + "]";
     }
 
     @Override
@@ -89,6 +91,7 @@ public class ToDoList {
         result = prime * result + id;
         result = prime * result + ((type == null) ? 0 : type.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + completionPercentage;
         result = prime * result + ((color == null) ? 0 : color.hashCode());
         result = prime * result + ((icon == null) ? 0 : icon.hashCode());
@@ -114,6 +117,11 @@ public class ToDoList {
             if (other.name != null)
                 return false;
         } else if (!name.equals(other.name))
+            return false;
+        if (description == null) {
+            if (other.description != null)
+                return false;
+        } else if (!description.equals(other.description))
             return false;
         if (completionPercentage != other.completionPercentage)
             return false;
@@ -204,6 +212,14 @@ public class ToDoList {
 
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }
