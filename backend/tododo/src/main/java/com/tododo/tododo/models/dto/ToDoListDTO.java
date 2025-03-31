@@ -1,5 +1,6 @@
 package com.tododo.tododo.models.dto;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,20 @@ public class ToDoListDTO {
     private String icon = "";
     private Boolean isCompleted;
     private List<TaskDTO> tasks = new ArrayList<TaskDTO>();
+    private Date updateDate = new Date(System.currentTimeMillis());
+
+    public ToDoListDTO(ElementType type, String name, String description, int completionPercentage, String color,
+            String icon, Boolean isCompleted, List<TaskDTO> tasks, Date updateDate) {
+        this.type = type;
+        this.name = name;
+        this.description = description;
+        this.completionPercentage = completionPercentage;
+        this.color = color;
+        this.icon = icon;
+        this.isCompleted = isCompleted;
+        this.tasks = tasks;
+        this.updateDate = updateDate;
+    }
 
     public ToDoListDTO(ElementType type, String name, String description, int completionPercentage, String color,
             String icon, Boolean isCompleted, List<TaskDTO> tasks) {
@@ -39,7 +54,7 @@ public class ToDoListDTO {
     public String toString() {
         return "ToDoListDTO [id=" + id + ", type=" + type + ", name=" + name + ", description=" + description
                 + ", completionPercentage=" + completionPercentage + ", color=" + color + ", icon=" + icon
-                + ", isCompleted=" + isCompleted + ", tasks=" + tasks + "]";
+                + ", isCompleted=" + isCompleted + ", tasks=" + tasks + ", updateDate=" + updateDate + "]";
     }
 
     @Override
@@ -55,6 +70,7 @@ public class ToDoListDTO {
         result = prime * result + ((icon == null) ? 0 : icon.hashCode());
         result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
         result = prime * result + ((tasks == null) ? 0 : tasks.hashCode());
+        result = prime * result + ((updateDate == null) ? 0 : updateDate.hashCode());
         return result;
     }
 
@@ -102,6 +118,11 @@ public class ToDoListDTO {
             if (other.tasks != null)
                 return false;
         } else if (!tasks.equals(other.tasks))
+            return false;
+        if (updateDate == null) {
+            if (other.updateDate != null)
+                return false;
+        } else if (!updateDate.equals(other.updateDate))
             return false;
         return true;
     }
@@ -178,6 +199,14 @@ public class ToDoListDTO {
         this.description = description;
     }
 
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
     /************************* OTHERS *************************/
 
     public void taskIsCompleted() {
@@ -185,4 +214,5 @@ public class ToDoListDTO {
             task.setIsCompleted(true);
         }
     }
+
 }

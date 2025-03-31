@@ -1,5 +1,6 @@
 package com.tododo.tododo.models;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +27,25 @@ public class ToDoList {
     protected Boolean isCompleted = false;
     @JsonProperty(value = "tasks", required = false)
     private List<Task> tasks = new ArrayList<Task>();
+    @JsonProperty(value = "updateDate", required = false)
+    private Date updateDate = new Date(System.currentTimeMillis());
 
     /************************* CONSTRUCTORS *************************/
 
     public ToDoList() {
+    }
+
+    public ToDoList(ElementType type, String name, String description, int completionPercentage, String color,
+            String icon, Boolean isCompleted, List<Task> tasks, Date updateDate) {
+        this.type = type;
+        this.name = name;
+        this.description = description;
+        this.completionPercentage = completionPercentage;
+        this.color = color;
+        this.icon = icon;
+        this.isCompleted = isCompleted;
+        this.tasks = tasks;
+        this.updateDate = updateDate;
     }
 
     public ToDoList(ElementType type, String name, String description, int completionPercentage, String color,
@@ -81,7 +97,7 @@ public class ToDoList {
     public String toString() {
         return "ToDoList [id=" + id + ", type=" + type + ", name=" + name + ", description=" + description
                 + ", completionPercentage=" + completionPercentage + ", color=" + color + ", icon=" + icon
-                + ", isCompleted=" + isCompleted + ", tasks=" + tasks + "]";
+                + ", isCompleted=" + isCompleted + ", tasks=" + tasks + ", updateDate=" + updateDate + "]";
     }
 
     @Override
@@ -97,6 +113,7 @@ public class ToDoList {
         result = prime * result + ((icon == null) ? 0 : icon.hashCode());
         result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
         result = prime * result + ((tasks == null) ? 0 : tasks.hashCode());
+        result = prime * result + ((updateDate == null) ? 0 : updateDate.hashCode());
         return result;
     }
 
@@ -144,6 +161,11 @@ public class ToDoList {
             if (other.tasks != null)
                 return false;
         } else if (!tasks.equals(other.tasks))
+            return false;
+        if (updateDate == null) {
+            if (other.updateDate != null)
+                return false;
+        } else if (!updateDate.equals(other.updateDate))
             return false;
         return true;
     }
@@ -220,6 +242,14 @@ public class ToDoList {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
 }
