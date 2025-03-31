@@ -43,7 +43,7 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
         * Mise en place des tests JUnit 🟩
       * Création workflow de test du service SubTask 🟩
         * Mise en place des tests JUnit 🟩
-  * Mise en place du projet front Vuejs 3 🟪
+  * Mise en place du projet front Vuejs 3 🟩
   * Mise en place des tâche à réaliser pour le front 🟪 
 
 ## Notes à moi même 😐
@@ -51,3 +51,4 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
 * 27/03/2025 : Pour revenir sur l'utilisation d'un data.json, j'avoue que j'avais la flemme de passer par du mongodb/supabase/firebase.
   Mais pour mon prochain projet sans doute que je passerai par du Firebase Firestoe, parce que why not.
 * 31/03/2025 : Je ne pensais pas un jour refaire du java, mais très franchement avec VS Code, c'est plutôt amusant ! (je ne pensais pas dire ça un jour non plus)
+* 01/04/2025 : Wow, mais VueJS + Pinia, c'est un truc de fou en fait 😎
