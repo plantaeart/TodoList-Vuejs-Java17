@@ -23,6 +23,7 @@ public class ToDoListMapper {
         dto.setColor(toDoList.getColor());
         dto.setIcon(toDoList.getIcon());
         dto.setIsCompleted(toDoList.getIsCompleted());
+        dto.setUpdateDate(toDoList.getUpdateDate());
 
         // Map tasks and their subtasks
         List<TaskDTO> taskDTOs = toDoList.getTasks().stream()

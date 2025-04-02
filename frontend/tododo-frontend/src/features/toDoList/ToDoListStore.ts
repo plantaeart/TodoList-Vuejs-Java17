@@ -34,7 +34,6 @@ export const useToDoListStore = defineStore('toDoListStore', {
     },
     // Update one ToDoList from API
     async updateToDoList(req: ToDoListRequest) {
-      console.log('updateToDoList', req)
       const response = (await todoService.updateToDoList(req)) as ToDoListResponse
       this.toDoListResp = response // Directly assign the response
       await this.getAllToDoLists(req) // Refresh the list
