@@ -4,45 +4,55 @@ import type { ToDoListRequest } from './ToDoListRequest'
 import type { ToDoListResponse } from './ToDoListResponse'
 import type { ToDoList } from './ToDoList'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
-import { ref } from 'vue'
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)
 
 export const useToDoListStore = defineStore('toDoListStore', {
   state: () => ({
-    allToDoListState: {} as ToDoList[],
-    toDoListResp: ref({} as ToDoListResponse),
+    allToDoListState: [] as ToDoList[], // Initialize as an empty array
+    toDoListResp: {} as ToDoListResponse, // Define as a plain object
+    sizeToDoList: 0, // Initialize sizeToDoList
   }),
   // To cache the state in localStorage
   persist: true,
   actions: {
     // Get all toDoList from API
     async getAllToDoLists(req: ToDoListRequest) {
-      this.toDoListResp = (await todoService.getAllToDoLists(req.isTest)) as ToDoListResponse
-      this.allToDoListState = this.toDoListResp.toDoLists
+      const response = (await todoService.getAllToDoLists(req.isTest)) as ToDoListResponse
+      this.toDoListResp = response // Directly assign the response
+      this.allToDoListState = response.toDoLists // Update the state
+      this.sizeToDoList = response.toDoLists.length // Update the size
     },
     // Get one ToDoList from API
     async getToDoListById(req: ToDoListRequest) {
-      this.toDoListResp = (await todoService.getToDoListById(
+      const response = (await todoService.getToDoListById(
         req.idsList,
         req.isTest,
       )) as ToDoListResponse
+      this.toDoListResp = response // Directly assign the response
     },
     // Update one ToDoList from API
     async updateToDoList(req: ToDoListRequest) {
-      this.toDoListResp = (await todoService.updateToDoList(req)) as ToDoListResponse
-      await this.getAllToDoLists(req)
+      console.log('updateToDoList', req)
+      const response = (await todoService.updateToDoList(req)) as ToDoListResponse
+      this.toDoListResp = response // Directly assign the response
+      await this.getAllToDoLists(req) // Refresh the list
     },
-    // add one ToDoList
+    // Add one ToDoList
     async addToDoList(req: ToDoListRequest) {
-      this.toDoListResp = (await todoService.addToDoList(req)) as ToDoListResponse
-      await this.getAllToDoLists(req)
+      const response = (await todoService.addToDoList(req)) as ToDoListResponse
+      this.toDoListResp = response // Directly assign the response
+      await this.getAllToDoLists(req) // Refresh the list
     },
     // Delete one ToDoList from API
     async deleteToDoListById(req: ToDoListRequest) {
-      this.toDoListResp = (await todoService.deleteToDoListById(req)) as ToDoListResponse
-      await this.getAllToDoLists(req)
+      const response = (await todoService.deleteToDoListById(
+        req.idsList,
+        req.isTest,
+      )) as ToDoListResponse
+      this.toDoListResp = response // Directly assign the response
+      await this.getAllToDoLists(req) // Refresh the list
     },
   },
 })

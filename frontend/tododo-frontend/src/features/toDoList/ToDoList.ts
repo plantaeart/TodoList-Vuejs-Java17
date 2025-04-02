@@ -1,30 +1,29 @@
 import { ElementType } from '@/types/elementType'
 import type { Task } from '../task/Task'
-import { formatDate } from '@/utils/dateUtils'
 
 export class ToDoList {
-  id: number = 0
-  type: ElementType = ElementType.TODOLIST
-  name: String = ''
-  description: String = ''
-  completionPercentage: number = 0
-  color: String = '#FFFFFF'
-  icon: String = ''
-  isCompleted: Boolean = false
-  tasks: Array<Task> = []
-  updateDate: String = formatDate(new Date())
+  id?: number = 0
+  type?: ElementType = ElementType.TODOLIST
+  name: string = ''
+  description?: string = ''
+  completionPercentage?: number = 0
+  color?: string = '#FFFFFF'
+  icon?: string = ''
+  isCompleted?: boolean = false
+  tasks?: Array<Task> = []
+  updateDate?: string
 
   constructor(
     id?: number,
     type?: ElementType,
-    name?: String,
-    description?: String,
+    name?: string,
+    description?: string,
     completionPercentage?: number,
-    color?: String,
-    icon?: String,
-    isCompleted?: Boolean,
+    color?: string,
+    icon?: string,
+    isCompleted?: boolean,
     tasks?: Array<Task>,
-    updateDate?: String,
+    updateDate?: string,
   ) {
     this.id = id ?? this.id
     this.type = type ?? this.type

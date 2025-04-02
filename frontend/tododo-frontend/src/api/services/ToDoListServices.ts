@@ -23,14 +23,19 @@ export default {
   },
 
   async updateToDoList(payload: Partial<ToDoListRequest>): Promise<ToDoListResponse> {
-    return http.patch(`/${defaultToDoListAPIPath}/updateToDoList`, payload)
+    return http.post(`/${defaultToDoListAPIPath}/updateToDoList`, payload)
   },
 
   async addToDoList(payload: Partial<ToDoListRequest>): Promise<ToDoListResponse> {
-    return http.patch(`/${defaultToDoListAPIPath}/addToDoList`, payload)
+    return http.post(`/${defaultToDoListAPIPath}/addToDoList`, payload)
   },
 
-  async deleteToDoListById(payload: Partial<ToDoListRequest>): Promise<ToDoListResponse> {
-    return http.patch(`/${defaultToDoListAPIPath}/deleteToDoListById`, payload)
+  async deleteToDoListById(
+    idsList: Partial<number[]>,
+    isTest: Partial<boolean>,
+  ): Promise<ToDoListResponse> {
+    return http.delete(`/${defaultToDoListAPIPath}/deleteToDoListById`, {
+      params: { idsList, isTest },
+    })
   },
 }
