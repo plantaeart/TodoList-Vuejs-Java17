@@ -40,7 +40,7 @@ public class ToDoListServicesResponse {
         this.message = message;
     }
 
-    public void settoDoLists(List<ToDoListDTO> toDoLists) {
+    public void setToDoLists(List<ToDoListDTO> toDoLists) {
         this.toDoLists = toDoLists;
     }
 

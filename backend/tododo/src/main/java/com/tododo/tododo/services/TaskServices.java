@@ -120,10 +120,7 @@ public class TaskServices {
 
                         // Updating task informations
                         TaskDTO updatedTask = req.getTasks().get(0);
-                        taskToUpdate.setTaskContent(updatedTask.getTaskContent());
-                        taskToUpdate.setIsCompleted(updatedTask.getIsCompleted());
-                        if (!updatedTask.getSubTasks().isEmpty())
-                                taskToUpdate.setSubTasks(updatedTask.getSubTasks());
+                        taskToUpdate.setTaskDTO(updatedTask);
 
                         // update the todo list
                         tdls.updateToDoListFromJSON(
@@ -206,27 +203,29 @@ public class TaskServices {
         }
 
         // Delete a task
-        public TaskServicesResponse deleteTaskFromJSON(TaskServicesRequest req) {
+        public TaskServicesResponse deleteTaskFromJSON(int[] idsList, int[] idsTask,
+                        boolean isTest) {
                 TaskServicesResponse resp = new TaskServicesResponse();
                 ToDoListDTO currentToDoList = new ToDoListDTO();
+                TaskDTO taskToDelete = new TaskDTO();
 
                 try {
                         // getting the todo list
                         currentToDoList = tdls
                                         .getToDoListByIdFromJSON(
-                                                        req.getIdsList(), req.getIsTest())
+                                                        idsList, isTest)
                                         .gettoDoLists().get(0);
 
                         // Getting the task to delete
-                        TaskDTO taskToDelete = currentToDoList.getTasks().stream()
-                                        .filter(task -> task.getId() == req.getIdsTask()[0])
+                        taskToDelete = currentToDoList.getTasks().stream()
+                                        .filter(task -> task.getId() == idsTask[0])
                                         .findFirst()
                                         .orElse(null);
 
                         if (taskToDelete == null) {
-                                String message = "TASK DELETE : Task with ID " + req.getIdsTask()[0]
+                                String message = "TASK DELETE : Task with ID " + idsTask[0]
                                                 + " not found or not exist from Todo List ID "
-                                                + req.getIdsList()[0];
+                                                + idsList[0];
                                 System.err.println(message);
                                 resp.setMessage(message);
                                 resp.setCurrentResult(Result.NOT_EXISTING);
@@ -241,22 +240,22 @@ public class TaskServices {
 
                         // update the todo list
                         tdls.updateToDoListFromJSON(
-                                        new ToDoListServicesRequest(req.getIdsList(), List.of(currentToDoList),
-                                                        req.getIsTest()));
+                                        new ToDoListServicesRequest(idsList, List.of(currentToDoList),
+                                                        isTest));
 
                         resp.setTaskList(List.of(taskToDelete));
                         resp.setCurrentResult(Result.OK);
-                        resp.setMessage("The task id : " + req.getIdsTask()[0] + " from the todo list with the id : "
-                                        + req.getIdsList()[0] + " is deleted");
+                        resp.setMessage("The task id : " + idsTask[0] + " from the todo list with the id : "
+                                        + idsList[0] + " is deleted");
                 } catch (Exception e) {
-                        String message = "error while deleting the task id " + req.getIdsTask()[0]
+                        String message = "error while deleting the task id " + idsTask[0]
                                         + " from the todo list with the id : "
-                                        + req.getIdsList()[0] + " - message : "
+                                        + idsList[0] + " - message : "
                                         + e.getMessage();
                         System.err.println(message);
                         resp.setMessage(message);
                         resp.setCurrentResult(Result.ERROR);
-                        resp.setTaskList(List.of(req.getTasks().get(0)));
+                        resp.setTaskList(List.of(taskToDelete));
 
                         return resp;
                 }

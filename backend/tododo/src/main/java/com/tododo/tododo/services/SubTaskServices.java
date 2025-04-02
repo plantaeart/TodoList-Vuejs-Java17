@@ -123,26 +123,28 @@ public class SubTaskServices {
         }
 
         // Delete a SubTask
-        public SubTaskServicesResponse deleteSubTaskFromJSON(SubTaskServicesRequest req) {
+        public SubTaskServicesResponse deleteSubTaskFromJSON(int[] idsList, int[] idsTask, int[] idsSubTask,
+                        boolean isTest) {
                 SubTaskServicesResponse resp = new SubTaskServicesResponse();
+                SubTaskDTO subTaskToDelete = new SubTaskDTO();
 
                 try {
                         // Getting the current task
                         TaskDTO currentTask = ts
-                                        .getTaskByIdFromJSON(req.getIdsList(), req.getIdsTask(),
-                                                        req.getIsTest())
+                                        .getTaskByIdFromJSON(idsList, idsTask,
+                                                        isTest)
                                         .getTaskList().get(0);
 
                         // Getting the subTask to delete by its ID
-                        SubTaskDTO subTaskToDelete = currentTask.getSubTasks().stream()
-                                        .filter(subTask -> subTask.getId() == req.getIdsSubTask()[0])
+                        subTaskToDelete = currentTask.getSubTasks().stream()
+                                        .filter(subTask -> subTask.getId() == idsSubTask[0])
                                         .findFirst()
                                         .orElse(null);
 
                         if (subTaskToDelete == null) {
-                                String message = "SUBTASK DELETE : SubTask with ID " + req.getIdsSubTask()[0]
+                                String message = "SUBTASK DELETE : SubTask with ID " + idsSubTask[0]
                                                 + " not found or not exist in Task ID "
-                                                + req.getIdsTask()[0] + " from Todo List ID " + req.getIdsList()[0];
+                                                + idsTask[0] + " from Todo List ID " + idsList[0];
                                 System.err.println(message);
                                 resp.setMessage(message);
                                 resp.setCurrentResult(Result.NOT_EXISTING);
@@ -159,23 +161,23 @@ public class SubTaskServices {
                         List<TaskDTO> taskToUpdate = new ArrayList<>();
                         taskToUpdate.add(currentTask);
                         ts.updateTaskFromJSON(
-                                        new TaskServicesRequest(req.getIdsList(), req.getIdsTask(), taskToUpdate,
-                                                        req.getIsTest()));
+                                        new TaskServicesRequest(idsList, idsTask, taskToUpdate,
+                                                        isTest));
 
                         resp.setSubTaskList(List.of(subTaskToDelete));
                         resp.setCurrentResult(Result.OK);
                         resp.setMessage("SubTask with ID " + subTaskToDelete.getId() + " from Task ID "
                                         + currentTask.getId()
-                                        + " in Todo List ID " + req.getIdsList()[0] + " has been deleted.");
+                                        + " in Todo List ID " + idsList[0] + " has been deleted.");
                 } catch (Exception e) {
-                        String message = "Error while deleting SubTask with ID " + req.getSubTasks().get(0).getId()
-                                        + " from Task ID " + req.getIdsTask()[0] + " in Todo List ID "
-                                        + req.getIdsList()[0]
+                        String message = "Error while deleting SubTask with ID " + idsSubTask[0]
+                                        + " from Task ID " + idsTask[0] + " in Todo List ID "
+                                        + idsList[0]
                                         + " - message: " + e.getMessage();
                         System.err.println(message);
                         resp.setMessage(message);
                         resp.setCurrentResult(Result.ERROR);
-                        resp.setSubTaskList(List.of(req.getSubTasks().get(0)));
+                        resp.setSubTaskList(List.of(subTaskToDelete));
 
                         return resp;
                 }
@@ -212,8 +214,7 @@ public class SubTaskServices {
 
                         // Update the subTask informations
                         SubTaskDTO updatedSubTask = req.getSubTasks().get(0);
-                        subTaskToUpdate.setTaskContent(updatedSubTask.getTaskContent());
-                        subTaskToUpdate.setIsCompleted(updatedSubTask.getIsCompleted());
+                        subTaskToUpdate.setSubTaskDTO(updatedSubTask);
 
                         // Mettre à jour la liste des tâches
                         List<TaskDTO> taskToUpdate = new ArrayList<>();

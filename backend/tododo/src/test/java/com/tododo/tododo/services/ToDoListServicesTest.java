@@ -72,9 +72,7 @@ public class ToDoListServicesTest {
     void testDeleteToDoListByIdFromJSON(int idList) {
         System.err.println("==> TODOLIST STARTING DELETE TEST");
 
-        ToDoListServicesRequest reqDel = new ToDoListServicesRequest(new int[] { idList }, true);
-
-        ToDoListServicesResponse resp = service.deleteToDoListByIdFromJSON(reqDel);
+        ToDoListServicesResponse resp = service.deleteToDoListByIdFromJSON(new int[] { idList }, true);
         assert resp.getCurrentResult().equals(Result.OK);
 
         System.err.println("==> TODOLIST FINISHING DELETE TEST");

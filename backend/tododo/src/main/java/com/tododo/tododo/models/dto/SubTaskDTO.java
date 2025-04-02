@@ -8,7 +8,7 @@ public class SubTaskDTO {
     private String taskContent;
     private String description = "";
     private String icon = "";
-    private Boolean isCompleted;
+    private Boolean isCompleted = false;
 
     public SubTaskDTO() {
     }
@@ -135,4 +135,24 @@ public class SubTaskDTO {
         this.description = description;
     }
 
+    public void setSubTaskDTO(SubTaskDTO subTask) {
+        if (subTask.getId() != 0) {
+            this.id = subTask.getId();
+        }
+        if (subTask.getType() != null) {
+            this.type = subTask.getType();
+        }
+        if (subTask.getTaskContent() != null) {
+            this.taskContent = subTask.getTaskContent();
+        }
+        if (subTask.getDescription() != null) {
+            this.description = subTask.getDescription();
+        }
+        if (subTask.getIcon() != null) {
+            this.icon = subTask.getIcon();
+        }
+        if (subTask.getIsCompleted() != null) {
+            this.isCompleted = subTask.getIsCompleted();
+        }
+    }
 }

@@ -35,11 +35,9 @@ public class SubTaskServicesTest {
     void testDeleteSubTaskFromJSON(int idList, int idTask, int idSubTask) {
         System.err.println("==> SUBTASK STARTING DELETE TEST");
 
-        // Create a request object to delete the SubTask
-        SubTaskServicesRequest reqDelete = new SubTaskServicesRequest(new int[] { idList }, new int[] { idTask },
-                new int[] { idSubTask }, true);
         // Call the service method to delete the SubTask and get the response
-        SubTaskServicesResponse respDelete = service.deleteSubTaskFromJSON(reqDelete);
+        SubTaskServicesResponse respDelete = service.deleteSubTaskFromJSON(new int[] { idList }, new int[] { idTask },
+                new int[] { idSubTask }, true);
         // Assert that the result is OK
         assert respDelete.getCurrentResult().equals(Result.OK);
 

@@ -73,8 +73,7 @@ public class TaskServicesTest {
     void testDeleteTaskFromJSON(int idList, int idTask) {
         System.err.println("==> TASK STARTING DELETE TEST");
 
-        TaskServicesRequest reqDelete = new TaskServicesRequest(new int[] { idList }, new int[] { idTask }, true);
-        TaskServicesResponse respDelete = service.deleteTaskFromJSON(reqDelete);
+        TaskServicesResponse respDelete = service.deleteTaskFromJSON(new int[] { idList }, new int[] { idTask }, true);
 
         assert respDelete.getCurrentResult().equals(Result.OK);
 

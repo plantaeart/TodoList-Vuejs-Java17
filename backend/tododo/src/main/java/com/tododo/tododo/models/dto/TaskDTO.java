@@ -12,7 +12,7 @@ public class TaskDTO {
     private String description = "";
     private int completionPercentage = 0;
     private String icon = "";
-    private Boolean isCompleted;
+    private Boolean isCompleted = false;
     private List<SubTaskDTO> subTasks = new ArrayList<SubTaskDTO>();
 
     public TaskDTO() {
@@ -170,4 +170,30 @@ public class TaskDTO {
         }
     }
 
+    public void setTaskDTO(TaskDTO task) {
+        if (task.getId() != 0) {
+            this.id = task.getId();
+        }
+        if (task.getType() != null) {
+            this.type = task.getType();
+        }
+        if (task.getTaskContent() != null) {
+            this.taskContent = task.getTaskContent();
+        }
+        if (task.getDescription() != null) {
+            this.description = task.getDescription();
+        }
+        if (task.getCompletionPercentage() != 0) {
+            this.completionPercentage = task.getCompletionPercentage();
+        }
+        if (task.getIcon() != null) {
+            this.icon = task.getIcon();
+        }
+        if (task.getIsCompleted() != null) {
+            this.isCompleted = task.getIsCompleted();
+        }
+        if (task.getSubTasks() != null && !task.getSubTasks().isEmpty()) {
+            this.subTasks = task.getSubTasks();
+        }
+    }
 }

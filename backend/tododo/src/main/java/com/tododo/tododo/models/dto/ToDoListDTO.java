@@ -15,7 +15,7 @@ public class ToDoListDTO {
     private int completionPercentage = 0;
     private String color = "#FFFFFF";
     private String icon = "";
-    private Boolean isCompleted;
+    private Boolean isCompleted = false;
     private List<TaskDTO> tasks = new ArrayList<TaskDTO>();
     private String updateDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 
@@ -216,4 +216,36 @@ public class ToDoListDTO {
         }
     }
 
+    public void setToDoListDTO(ToDoListDTO toDoList) {
+        if (toDoList.getId() != 0) {
+            this.id = toDoList.getId();
+        }
+        if (toDoList.getType() != null) {
+            this.type = toDoList.getType();
+        }
+        if (toDoList.getName() != null) {
+            this.name = toDoList.getName();
+        }
+        if (toDoList.getDescription() != null) {
+            this.description = toDoList.getDescription();
+        }
+        if (toDoList.getCompletionPercentage() != 0) {
+            this.completionPercentage = toDoList.getCompletionPercentage();
+        }
+        if (toDoList.getColor() != null) {
+            this.color = toDoList.getColor();
+        }
+        if (toDoList.getIcon() != null) {
+            this.icon = toDoList.getIcon();
+        }
+        if (toDoList.getIsCompleted() != null) {
+            this.isCompleted = toDoList.getIsCompleted();
+        }
+        if (toDoList.getTasks() != null && !toDoList.getTasks().isEmpty()) {
+            this.tasks = toDoList.getTasks();
+        }
+        if (toDoList.getUpdateDate() != null) {
+            this.updateDate = toDoList.getUpdateDate();
+        }
+    }
 }
