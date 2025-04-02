@@ -124,7 +124,6 @@ public class ToDoListServices {
             writer.close();
 
             // Setting the response
-            System.err.println(toDoListToUpdate.toString());
             resp.setToDoLists(List.of(toDoListToUpdate));
             resp.setCurrentResult(Result.OK);
             resp.setMessage("Update completed");

@@ -87,8 +87,6 @@ public class TaskServicesTest {
                 true);
         TaskServicesResponse respSwitch = service.switchTaskPositionFromJSON(reqSwitch);
 
-        respSwitch.getTaskList().forEach(x -> System.err.println(x.toString()));
-
         assertAll(() -> {
             assert respSwitch.getCurrentResult().equals(Result.OK);
             assert respSwitch.getTaskList().get(0).getTaskContent().equals(taskContentTest);

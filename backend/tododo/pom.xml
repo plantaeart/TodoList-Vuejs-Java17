@@ -30,29 +30,11 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
-
-		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-engine</artifactId>
-			<scope>test</scope>
-		</dependency>
-
+		
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.junit.platform</groupId>
-			<artifactId>junit-platform-launcher</artifactId>    
-			<scope>test</scope>
-		</dependency>   
-
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-			<version>9.7</version>
+			<version>5.10.0</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -81,16 +63,29 @@
 	</dependencies>
 
 	<build>
+	    <sourceDirectory>src/main/java</sourceDirectory>
+    	<testSourceDirectory>src/test/java</testSourceDirectory>
+    	<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+    	</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.0.0</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+						<include>**/*TestCase.java</include>
+					</includes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

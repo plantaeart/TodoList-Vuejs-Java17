@@ -105,7 +105,6 @@ public class ToDoListMapper {
                 })
                 .collect(Collectors.toList());
 
-        System.err.println(tasks);
         toDoList.setTasks(tasks);
         return toDoList;
     }
