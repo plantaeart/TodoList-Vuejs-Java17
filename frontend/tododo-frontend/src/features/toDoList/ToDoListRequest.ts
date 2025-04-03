@@ -2,7 +2,7 @@ import type { ToDoList } from './ToDoList'
 
 export class ToDoListRequest {
   idsList: number[] = []
-  toDoLists: Array<ToDoList> = []
+  toDoLists?: Array<ToDoList> = []
   isTest: boolean = false
 
   constructor(idsList?: number[], toDoLists?: Array<ToDoList>, isTest?: boolean) {

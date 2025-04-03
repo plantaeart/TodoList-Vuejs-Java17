@@ -17,9 +17,11 @@ onMounted(async () => {
 
 <template>
   <div class="m-4">
-    <div>
-      <p class="flex justify-center mb-1" v-if="isLoading">Loading...</p>
-      <p class="flex justify-center mb-1" v-else>
+    <div class="flex flex-col items-center mb-1">
+      <h1 class="text-xl">Tododo</h1>
+      <h2 class="text-l underline">To do and do !</h2>
+      <p v-if="isLoading">Loading...</p>
+      <p v-else>
         {{ 'Count the number of lists : ' + store.sizeToDoList }}
       </p>
     </div>
@@ -28,8 +30,8 @@ onMounted(async () => {
     </div>
     <div
       class="flex flex-row items-center"
-      v-for="(toDoList, index) in store.toDoListResp.toDoLists"
-      :key="index"
+      v-for="toDoList in store.allToDoListState"
+      :key="toDoList.id"
     >
       <DisplayToDoListItem :to-do-list="toDoList" />
     </div>
