@@ -29,9 +29,9 @@ public class ToDoListRestController {
         return service.getToDoListByIdFromJSON(idsList, isTest);
     }
 
-    @PostMapping("/updateToDoList")
-    public ToDoListServicesResponse updateToDoList(@RequestBody ToDoListServicesRequest req) {
-        return service.updateToDoListFromJSON(req);
+    @PostMapping("/updateToDoListById")
+    public ToDoListServicesResponse updateToDoListById(@RequestBody ToDoListServicesRequest req) {
+        return service.updateToDoListByIdFromJSON(req);
     }
 
     @PostMapping("/addToDoList")

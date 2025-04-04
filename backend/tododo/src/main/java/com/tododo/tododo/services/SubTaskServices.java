@@ -100,7 +100,7 @@ public class SubTaskServices {
                         taskToUpdate.add(currentTask);
                         resp.setSubTaskList(req.getSubTasks());
                         // update the todo list
-                        ts.updateTaskFromJSON(
+                        ts.updateTaskByIdFromJSON(
                                         new TaskServicesRequest(req.getIdsList(), req.getIdsTask(), taskToUpdate,
                                                         req.getIsTest()));
                 } catch (Exception e) {
@@ -123,7 +123,7 @@ public class SubTaskServices {
         }
 
         // Delete a SubTask
-        public SubTaskServicesResponse deleteSubTaskFromJSON(int[] idsList, int[] idsTask, int[] idsSubTask,
+        public SubTaskServicesResponse deleteSubTaskByIdFromJSON(int[] idsList, int[] idsTask, int[] idsSubTask,
                         boolean isTest) {
                 SubTaskServicesResponse resp = new SubTaskServicesResponse();
                 SubTaskDTO subTaskToDelete = new SubTaskDTO();
@@ -160,7 +160,7 @@ public class SubTaskServices {
                         // Mettre à jour la liste des tâches
                         List<TaskDTO> taskToUpdate = new ArrayList<>();
                         taskToUpdate.add(currentTask);
-                        ts.updateTaskFromJSON(
+                        ts.updateTaskByIdFromJSON(
                                         new TaskServicesRequest(idsList, idsTask, taskToUpdate,
                                                         isTest));
 
@@ -186,7 +186,7 @@ public class SubTaskServices {
         }
 
         // Update a SubTask
-        public SubTaskServicesResponse updateSubTaskFromJSON(SubTaskServicesRequest req) {
+        public SubTaskServicesResponse updateSubTaskByIdFromJSON(SubTaskServicesRequest req) {
                 SubTaskServicesResponse resp = new SubTaskServicesResponse();
 
                 try {
@@ -219,7 +219,7 @@ public class SubTaskServices {
                         // Mettre à jour la liste des tâches
                         List<TaskDTO> taskToUpdate = new ArrayList<>();
                         taskToUpdate.add(currentTask);
-                        ts.updateTaskFromJSON(
+                        ts.updateTaskByIdFromJSON(
                                         new TaskServicesRequest(req.getIdsList(), req.getIdsTask(), taskToUpdate,
                                                         req.getIsTest()));
 
@@ -297,7 +297,7 @@ public class SubTaskServices {
                                         .toList());
 
                         // Update the current tasks
-                        ts.updateTaskFromJSON(
+                        ts.updateTaskByIdFromJSON(
                                         new TaskServicesRequest(req.getIdsList(), req.getIdsTask(),
                                                         List.of(currentTask),
                                                         req.getIsTest()));

@@ -30,9 +30,9 @@ public class TaskRestController {
         return service.getTaskByIdFromJSON(idsList, idsTask, isTest);
     }
 
-    @PostMapping("updateTask")
-    public TaskServicesResponse updateTask(@RequestBody TaskServicesRequest req) {
-        return service.updateTaskFromJSON(req);
+    @PostMapping("updateTaskById")
+    public TaskServicesResponse updateTaskById(@RequestBody TaskServicesRequest req) {
+        return service.updateTaskByIdFromJSON(req);
     }
 
     @PostMapping("addTask")
@@ -40,10 +40,10 @@ public class TaskRestController {
         return service.addTaskFromJSON(req);
     }
 
-    @DeleteMapping("deleteTask")
-    public TaskServicesResponse deleteTask(@RequestParam int[] idsList, @RequestParam int[] idsTask,
+    @DeleteMapping("deleteTaskById")
+    public TaskServicesResponse deleteTaskById(@RequestParam int[] idsList, @RequestParam int[] idsTask,
             @RequestParam boolean isTest) {
-        return service.deleteTaskFromJSON(idsList, idsTask, isTest);
+        return service.deleteTaskByIdFromJSON(idsList, idsTask, isTest);
     }
 
     @PostMapping("switchTasks")

@@ -32,11 +32,12 @@ public class SubTaskServicesTest {
         System.err.println("==> SUBTASK FINISHING ADD TEST");
     }
 
-    void testDeleteSubTaskFromJSON(int idList, int idTask, int idSubTask) {
+    void testdeleteSubTaskByIdFromJSON(int idList, int idTask, int idSubTask) {
         System.err.println("==> SUBTASK STARTING DELETE TEST");
 
         // Call the service method to delete the SubTask and get the response
-        SubTaskServicesResponse respDelete = service.deleteSubTaskFromJSON(new int[] { idList }, new int[] { idTask },
+        SubTaskServicesResponse respDelete = service.deleteSubTaskByIdFromJSON(new int[] { idList },
+                new int[] { idTask },
                 new int[] { idSubTask }, true);
         // Assert that the result is OK
         assert respDelete.getCurrentResult().equals(Result.OK);
@@ -56,7 +57,7 @@ public class SubTaskServicesTest {
         System.err.println("==> SUBTASK FINISHING GET TEST");
     }
 
-    void testUpdateSubTaskFromJSON(int idList, int idTask, int idSubTask, SubTaskDTO updatedData) {
+    void testupdateSubTaskByIdFromJSON(int idList, int idTask, int idSubTask, SubTaskDTO updatedData) {
         System.err.println("==> SUBTASK STARTING UPDATE TEST");
 
         // Create a request object to update the SubTask
@@ -64,7 +65,7 @@ public class SubTaskServicesTest {
                 new int[] { idSubTask }, List.of(updatedData),
                 true);
         // Call the service method to update the SubTask and get the response
-        SubTaskServicesResponse respUpdate = service.updateSubTaskFromJSON(reqUpdate);
+        SubTaskServicesResponse respUpdate = service.updateSubTaskByIdFromJSON(reqUpdate);
         // Assert that the result is OK
         assertAll(() -> {
             assert respUpdate.getCurrentResult().equals(Result.OK);
@@ -101,11 +102,11 @@ public class SubTaskServicesTest {
         taskServiceTest.testAddTaskFromJSON(1, "TestTask1");
         testAddSubTaskFromJSON(1, 1, "TestSubTask1");
         testAddSubTaskFromJSON(1, 1, "TestSubTask2");
-        testUpdateSubTaskFromJSON(1, 1, 2, new SubTaskDTO("TestSubTask2Updated"));
+        testupdateSubTaskByIdFromJSON(1, 1, 2, new SubTaskDTO("TestSubTask2Updated"));
         testGetSubTaskByIdFromJSON(1, 1, 2);
         testSwitchTaskPositionFromJSON(1, 1, 1, 2, "TestSubTask2Updated");
-        testDeleteSubTaskFromJSON(1, 1, 2);
-        testDeleteSubTaskFromJSON(1, 1, 1);
+        testdeleteSubTaskByIdFromJSON(1, 1, 2);
+        testdeleteSubTaskByIdFromJSON(1, 1, 1);
         taskServiceTest.testDeleteTaskFromJSON(1, 1);
         toDoListServiceTest.testDeleteToDoListByIdFromJSON(1);
 

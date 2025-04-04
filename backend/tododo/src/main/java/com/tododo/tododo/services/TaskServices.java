@@ -91,7 +91,7 @@ public class TaskServices {
         }
 
         // Update a task
-        public TaskServicesResponse updateTaskFromJSON(TaskServicesRequest req) {
+        public TaskServicesResponse updateTaskByIdFromJSON(TaskServicesRequest req) {
                 TaskServicesResponse resp = new TaskServicesResponse();
                 ToDoListDTO currentToDoList = new ToDoListDTO();
 
@@ -123,7 +123,7 @@ public class TaskServices {
                         taskToUpdate.setTaskDTO(updatedTask);
 
                         // update the todo list
-                        tdls.updateToDoListFromJSON(
+                        tdls.updateToDoListByIdFromJSON(
                                         new ToDoListServicesRequest(req.getIdsList(), List.of(currentToDoList),
                                                         req.getIsTest()));
 
@@ -178,7 +178,7 @@ public class TaskServices {
                         // Sorting the tasks in ascending order
                         Collections.sort(currentToDoList.getTasks(), Comparator.comparingInt(TaskDTO::getId));
                         // update the todo list
-                        tdls.updateToDoListFromJSON(
+                        tdls.updateToDoListByIdFromJSON(
                                         new ToDoListServicesRequest(req.getIdsList(), List.of(currentToDoList),
                                                         req.getIsTest()));
 
@@ -203,7 +203,7 @@ public class TaskServices {
         }
 
         // Delete a task
-        public TaskServicesResponse deleteTaskFromJSON(int[] idsList, int[] idsTask,
+        public TaskServicesResponse deleteTaskByIdFromJSON(int[] idsList, int[] idsTask,
                         boolean isTest) {
                 TaskServicesResponse resp = new TaskServicesResponse();
                 ToDoListDTO currentToDoList = new ToDoListDTO();
@@ -239,7 +239,7 @@ public class TaskServices {
                         currentToDoList.setTasks(rearangeTasksIds(currentToDoList.getTasks()));
 
                         // update the todo list
-                        tdls.updateToDoListFromJSON(
+                        tdls.updateToDoListByIdFromJSON(
                                         new ToDoListServicesRequest(idsList, List.of(currentToDoList),
                                                         isTest));
 
@@ -318,7 +318,7 @@ public class TaskServices {
                                         .toList());
 
                         // update the todo list
-                        tdls.updateToDoListFromJSON(
+                        tdls.updateToDoListByIdFromJSON(
                                         new ToDoListServicesRequest(req.getIdsList(), List.of(currentToDoList),
                                                         req.getIsTest()));
 

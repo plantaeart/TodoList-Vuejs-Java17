@@ -44,6 +44,7 @@ public class ToDoListServices {
             if (toDoListResp.gettoDoLists().isEmpty()) {
                 toDoListResp.setMessage("TODOLIST GETALL : No todo list found");
                 toDoListResp.setCurrentResult(Result.NOT_EXISTING);
+                toDoListResp.setToDoLists(toDoListResp.gettoDoLists());
                 return toDoListResp;
             }
 
@@ -89,7 +90,7 @@ public class ToDoListServices {
     }
 
     // Get update one ToDoList by it's id in data.json
-    public ToDoListServicesResponse updateToDoListFromJSON(ToDoListServicesRequest req) {
+    public ToDoListServicesResponse updateToDoListByIdFromJSON(ToDoListServicesRequest req) {
         // Getting the json file
         ToDoListServicesResponse resp = new ToDoListServicesResponse();
 

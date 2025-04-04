@@ -53,13 +53,13 @@ public class ToDoListServicesTest {
         System.err.println("==> TODOLIST FINISHING GET ALL TEST");
     }
 
-    void testUpdateToDoListFromJSON(int idList, ToDoListDTO updatedData) {
+    void testupdateToDoListByIdFromJSON(int idList, ToDoListDTO updatedData) {
         System.err.println("==> TODOLIST STARTING UPDATE TEST");
 
         ToDoListServicesRequest reqUpdate = new ToDoListServicesRequest(new int[] { idList }, List.of(updatedData),
                 true);
 
-        ToDoListServicesResponse respUpdate = service.updateToDoListFromJSON(reqUpdate);
+        ToDoListServicesResponse respUpdate = service.updateToDoListByIdFromJSON(reqUpdate);
         assertAll(() -> {
             assert respUpdate.getCurrentResult().equals(Result.OK);
             assert respUpdate.gettoDoLists().get(0).getName() == updatedData.getName();
@@ -86,7 +86,7 @@ public class ToDoListServicesTest {
         testAddToDoListFromJSON("TestToDoList2");
         testGetListByIdFromJSON(2);
         testGetAllToDoListsFromJSON(2);
-        testUpdateToDoListFromJSON(2, new ToDoListDTO("TestToDoList2Updated"));
+        testupdateToDoListByIdFromJSON(2, new ToDoListDTO("TestToDoList2Updated"));
         testDeleteToDoListByIdFromJSON(2);
         testDeleteToDoListByIdFromJSON(1);
 

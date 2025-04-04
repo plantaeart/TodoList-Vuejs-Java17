@@ -30,15 +30,15 @@ public class SubTaskController {
         return service.addSubTaskFromJSON(req);
     }
 
-    @PostMapping("updateSubTask")
-    public SubTaskServicesResponse updateSubTask(@RequestBody SubTaskServicesRequest req) {
-        return service.updateSubTaskFromJSON(req);
+    @PostMapping("updateSubTaskById")
+    public SubTaskServicesResponse updateSubTaskById(@RequestBody SubTaskServicesRequest req) {
+        return service.updateSubTaskByIdFromJSON(req);
     }
 
-    @DeleteMapping("deleteSubTask")
-    public SubTaskServicesResponse deleteSubTask(@RequestParam int[] idsList, @RequestParam int[] idsTask,
+    @DeleteMapping("deleteSubTaskById")
+    public SubTaskServicesResponse deleteSubTaskById(@RequestParam int[] idsList, @RequestParam int[] idsTask,
             @RequestParam int[] idsSubTask, @RequestParam boolean isTest) {
-        return service.deleteSubTaskFromJSON(idsList, idsTask, idsSubTask, isTest);
+        return service.deleteSubTaskByIdFromJSON(idsList, idsTask, idsSubTask, isTest);
     }
 
     @PostMapping("switchSubTasks")

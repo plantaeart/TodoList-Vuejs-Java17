@@ -55,12 +55,12 @@ public class TaskServicesTest {
         System.err.println("==> TASK FINISHING GET BY ID TEST");
     }
 
-    void testUpdateTaskFromJSON(int idList, int idTask, TaskDTO updatedData) {
+    void testupdateTaskByIdFromJSON(int idList, int idTask, TaskDTO updatedData) {
         System.err.println("==> TASK STARTING UPDATE TEST");
 
         TaskServicesRequest reqUpdate = new TaskServicesRequest(new int[] { idList }, new int[] { idTask },
                 List.of(updatedData), true);
-        TaskServicesResponse respUpdate = service.updateTaskFromJSON(reqUpdate);
+        TaskServicesResponse respUpdate = service.updateTaskByIdFromJSON(reqUpdate);
 
         assertAll(() -> {
             assert respUpdate.getCurrentResult().equals(Result.OK);
@@ -73,7 +73,8 @@ public class TaskServicesTest {
     void testDeleteTaskFromJSON(int idList, int idTask) {
         System.err.println("==> TASK STARTING DELETE TEST");
 
-        TaskServicesResponse respDelete = service.deleteTaskFromJSON(new int[] { idList }, new int[] { idTask }, true);
+        TaskServicesResponse respDelete = service.deleteTaskByIdFromJSON(new int[] { idList }, new int[] { idTask },
+                true);
 
         assert respDelete.getCurrentResult().equals(Result.OK);
 
@@ -104,7 +105,7 @@ public class TaskServicesTest {
         testAddTaskFromJSON(1, "TestTask2");
         testGetAllTasksFromJSON(1, 2);
         testGetTaskByIdFromJSON(1, 2);
-        testUpdateTaskFromJSON(1, 2, new TaskDTO("TestTask2Updated"));
+        testupdateTaskByIdFromJSON(1, 2, new TaskDTO("TestTask2Updated"));
         testSwitchTaskPositionFromJSON(1, 1, 2, "TestTask2Updated");
         testDeleteTaskFromJSON(1, 2);
         testDeleteTaskFromJSON(1, 1);
