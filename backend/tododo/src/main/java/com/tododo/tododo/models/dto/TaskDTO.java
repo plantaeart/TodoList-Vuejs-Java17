@@ -164,12 +164,6 @@ public class TaskDTO {
 
     /************************* OTHERS *************************/
 
-    public void taskIsCompleted() {
-        for (SubTaskDTO subTask : this.subTasks) {
-            subTask.setIsCompleted(true);
-        }
-    }
-
     public void setTaskDTO(TaskDTO task) {
         if (task.getId() != 0) {
             this.id = task.getId();

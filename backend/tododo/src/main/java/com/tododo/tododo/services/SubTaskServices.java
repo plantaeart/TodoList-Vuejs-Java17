@@ -26,7 +26,7 @@ public class SubTaskServices {
                         TaskDTO currentTask = ts
                                         .getTaskByIdFromJSON(idsList, idsTask,
                                                         isTest)
-                                        .getTaskList().get(0);
+                                        .getTasks().get(0);
 
                         // Find the subtask by its ID
                         SubTaskDTO subTask = currentTask.getSubTasks().stream()
@@ -77,7 +77,7 @@ public class SubTaskServices {
                         currentTask = ts
                                         .getTaskByIdFromJSON(req.getIdsList(), req.getIdsTask(),
                                                         req.getIsTest())
-                                        .getTaskList().get(0);
+                                        .getTasks().get(0);
                         boolean isEmptySubTasks = currentTask.getSubTasks().isEmpty();
                         // Get the greatest id if the todo list has task(s)
                         if (!isEmptySubTasks) {
@@ -133,7 +133,7 @@ public class SubTaskServices {
                         TaskDTO currentTask = ts
                                         .getTaskByIdFromJSON(idsList, idsTask,
                                                         isTest)
-                                        .getTaskList().get(0);
+                                        .getTasks().get(0);
 
                         // Getting the subTask to delete by its ID
                         subTaskToDelete = currentTask.getSubTasks().stream()
@@ -194,7 +194,7 @@ public class SubTaskServices {
                         TaskDTO currentTask = ts
                                         .getTaskByIdFromJSON(req.getIdsList(), req.getIdsTask(),
                                                         req.getIsTest())
-                                        .getTaskList().get(0);
+                                        .getTasks().get(0);
 
                         // Getting the subTask to update by its ID
                         SubTaskDTO subTaskToUpdate = currentTask.getSubTasks().stream()
@@ -253,7 +253,7 @@ public class SubTaskServices {
                         TaskDTO currentTask = ts
                                         .getTaskByIdFromJSON(req.getIdsList(), req.getIdsTask(),
                                                         req.getIsTest())
-                                        .getTaskList().get(0);
+                                        .getTasks().get(0);
 
                         // Getting the subTask to switch 1
                         SubTaskDTO subTaskToSwitch1 = currentTask.getSubTasks().stream()

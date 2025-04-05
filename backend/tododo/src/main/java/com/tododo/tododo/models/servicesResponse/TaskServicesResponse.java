@@ -35,11 +35,11 @@ public class TaskServicesResponse {
         this.message = message;
     }
 
-    public List<TaskDTO> getTaskList() {
+    public List<TaskDTO> getTasks() {
         return tasks;
     }
 
-    public void setTaskList(List<TaskDTO> tasks) {
+    public void setTasks(List<TaskDTO> tasks) {
         this.tasks = tasks;
     }
 

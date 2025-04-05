@@ -35,7 +35,7 @@ public class TaskServicesTest {
 
         assertAll(() -> {
             assert respGetAll.getCurrentResult().equals(Result.OK);
-            assert respGetAll.getTaskList().size() == sizeToTest;
+            assert respGetAll.getTasks().size() == sizeToTest;
         });
 
         System.err.println("==> TASK FINISHING GET ALL TEST");
@@ -49,7 +49,7 @@ public class TaskServicesTest {
 
         assertAll(() -> {
             assert respGetById.getCurrentResult().equals(Result.OK);
-            assert respGetById.getTaskList().get(0).getId() == idTask;
+            assert respGetById.getTasks().get(0).getId() == idTask;
         });
 
         System.err.println("==> TASK FINISHING GET BY ID TEST");
@@ -64,7 +64,7 @@ public class TaskServicesTest {
 
         assertAll(() -> {
             assert respUpdate.getCurrentResult().equals(Result.OK);
-            assert respUpdate.getTaskList().get(0).getTaskContent() == updatedData.getTaskContent();
+            assert respUpdate.getTasks().get(0).getTaskContent() == updatedData.getTaskContent();
         });
 
         System.err.println("==> TASK FINISHING UPDATE TEST");
@@ -90,7 +90,7 @@ public class TaskServicesTest {
 
         assertAll(() -> {
             assert respSwitch.getCurrentResult().equals(Result.OK);
-            assert respSwitch.getTaskList().get(0).getTaskContent().equals(taskContentTest);
+            assert respSwitch.getTasks().get(0).getTaskContent().equals(taskContentTest);
         });
 
         System.err.println("==> TASK FINISHING SWITCH TASK POSITION TESTS");

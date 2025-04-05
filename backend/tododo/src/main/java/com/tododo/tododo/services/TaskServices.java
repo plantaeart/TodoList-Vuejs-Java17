@@ -23,12 +23,12 @@ public class TaskServices {
                 try {
                         // gettin all list the mapper json to List<ToDoList>
                         allToDoLists = tdls.getAllToDoListsFromJSON(isTest).gettoDoLists();
-                        resp.setTaskList(
+                        resp.setTasks(
                                         allToDoLists.stream().filter(x -> x.getId() == idsList[0]).toList()
                                                         .get(0)
                                                         .getTasks());
 
-                        boolean isListEmpty = resp.getTaskList().size() == 0;
+                        boolean isListEmpty = resp.getTasks().size() == 0;
                         resp.setCurrentResult(isListEmpty ? Result.NOT_EXISTING : Result.OK);
                         resp.setMessage(isListEmpty
                                         ? "No task found for the todo list with the id " + idsList[0]
@@ -62,12 +62,12 @@ public class TaskServices {
                                                         idsList, isTest)
                                         .gettoDoLists().get(0);
                         // Getting the task asked
-                        taskResp.setTaskList(
+                        taskResp.setTasks(
                                         currentToDoList.getTasks().stream()
                                                         .filter(x -> x.getId() == idsTask[0])
                                                         .toList());
 
-                        boolean isListEmpty = taskResp.getTaskList().size() == 0;
+                        boolean isListEmpty = taskResp.getTasks().size() == 0;
                         taskResp.setCurrentResult(isListEmpty ? Result.NOT_EXISTING : Result.OK);
                         taskResp.setMessage(
                                         isListEmpty
@@ -127,7 +127,7 @@ public class TaskServices {
                                         new ToDoListServicesRequest(req.getIdsList(), List.of(currentToDoList),
                                                         req.getIsTest()));
 
-                        resp.setTaskList(List.of(taskToUpdate));
+                        resp.setTasks(List.of(taskToUpdate));
                         resp.setCurrentResult(Result.OK);
                         resp.setMessage("The task id : " + req.getIdsTask()[0] + " from the todo list with the id : "
                                         + req.getIdsList()[0] + " is updated");
@@ -138,7 +138,7 @@ public class TaskServices {
                         System.err.println(message);
                         resp.setMessage(message);
                         resp.setCurrentResult(Result.ERROR);
-                        resp.setTaskList(List.of(req.getTasks().get(0)));
+                        resp.setTasks(List.of(req.getTasks().get(0)));
 
                         return resp;
                 }
@@ -182,7 +182,7 @@ public class TaskServices {
                                         new ToDoListServicesRequest(req.getIdsList(), List.of(currentToDoList),
                                                         req.getIsTest()));
 
-                        taskResp.setTaskList(req.getTasks());
+                        taskResp.setTasks(req.getTasks());
                         taskResp.setCurrentResult(Result.OK);
                         taskResp.setMessage(
                                         "The task id : " + req.getTasks().get(0).getId()
@@ -243,7 +243,7 @@ public class TaskServices {
                                         new ToDoListServicesRequest(idsList, List.of(currentToDoList),
                                                         isTest));
 
-                        resp.setTaskList(List.of(taskToDelete));
+                        resp.setTasks(List.of(taskToDelete));
                         resp.setCurrentResult(Result.OK);
                         resp.setMessage("The task id : " + idsTask[0] + " from the todo list with the id : "
                                         + idsList[0] + " is deleted");
@@ -255,7 +255,7 @@ public class TaskServices {
                         System.err.println(message);
                         resp.setMessage(message);
                         resp.setCurrentResult(Result.ERROR);
-                        resp.setTaskList(List.of(taskToDelete));
+                        resp.setTasks(List.of(taskToDelete));
 
                         return resp;
                 }
@@ -322,7 +322,7 @@ public class TaskServices {
                                         new ToDoListServicesRequest(req.getIdsList(), List.of(currentToDoList),
                                                         req.getIsTest()));
 
-                        resp.setTaskList(List.of(taskToSwitch2, taskToSwitch1));
+                        resp.setTasks(List.of(taskToSwitch2, taskToSwitch1));
                         resp.setCurrentResult(Result.OK);
                         resp.setMessage("The task 1 and 2 had their ids switched from the todo list with the id : "
                                         + req.getIdsList()[0]);
@@ -334,7 +334,7 @@ public class TaskServices {
                         System.err.println(message);
                         resp.setMessage(message);
                         resp.setCurrentResult(Result.ERROR);
-                        resp.setTaskList(List.of(req.getTasks().get(0)));
+                        resp.setTasks(List.of(req.getTasks().get(0)));
 
                         return resp;
                 }

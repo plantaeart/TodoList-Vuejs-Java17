@@ -210,12 +210,6 @@ public class ToDoListDTO {
 
     /************************* OTHERS *************************/
 
-    public void taskIsCompleted() {
-        for (TaskDTO task : this.tasks) {
-            task.setIsCompleted(true);
-        }
-    }
-
     public void setToDoListDTO(ToDoListDTO toDoList) {
         if (toDoList.getId() != 0) {
             this.id = toDoList.getId();
