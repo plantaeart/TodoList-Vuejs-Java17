@@ -62,7 +62,7 @@ const onCheckboxChange = async (value: boolean) => {
     // Update the ToDoList with the new task status
     respToDoList = await storeToDoList.updateToDoListById(
       new ToDoListRequest([idList], [currentToDoList], false),
-      ElementType.TASK,
+      ElementType.TASK.toString(),
     )
 
     // Check if the response is valid and contains the expected data
