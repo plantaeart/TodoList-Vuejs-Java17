@@ -1,11 +1,10 @@
 import { defaultToDoListAPIPath } from '@/constants/api'
 import type { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
-import type { ToDoListResponse } from '@/features/toDoList/ToDoListResponse'
 import http from '../http'
 import type { AxiosResponse } from 'axios'
 
 export default {
-  async getAllToDoLists(isTest: Partial<boolean>): Promise<ToDoListResponse> {
+  async getAllToDoLists(isTest: Partial<boolean>) {
     const { data } = await http.get(`/${defaultToDoListAPIPath}/getAllToDoLists`, {
       params: { isTest },
     })
@@ -23,8 +22,8 @@ export default {
     return data
   },
 
-  async updateToDoList(payload: Partial<ToDoListRequest>): Promise<AxiosResponse> {
-    return http.post(`/${defaultToDoListAPIPath}/updateToDoList`, payload)
+  async updateToDoListById(payload: Partial<ToDoListRequest>): Promise<AxiosResponse> {
+    return http.post(`/${defaultToDoListAPIPath}/updateToDoListById`, payload)
   },
 
   async addToDoList(payload: Partial<ToDoListRequest>): Promise<AxiosResponse> {

@@ -1,1 +1,2 @@
-export const defaultToDoListAPIPath: String = 'api/toDoList'
+export const defaultToDoListAPIPath: string = 'api/toDoList'
+export const defaultTaskAPIPath: string = 'api/task'

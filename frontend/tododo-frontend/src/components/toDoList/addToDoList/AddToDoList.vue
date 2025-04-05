@@ -33,7 +33,7 @@ const clickAddToDoListFromFormInfos = () => {
       <AddToDoListForm ref="AddToDoListFormRef" />
       <div class="flex flex-row justify-center">
         <Button
-          class="w-1/2 m-4"
+          class="w-1/4 m-4"
           severity="danger"
           label="Cancel"
           icon="pi pi-times"
@@ -41,7 +41,7 @@ const clickAddToDoListFromFormInfos = () => {
           raised
         />
         <Button
-          class="w-1/2 m-4"
+          class="w-1/4 m-4"
           label="Create"
           icon="pi pi-check"
           @click="clickAddToDoListFromFormInfos"

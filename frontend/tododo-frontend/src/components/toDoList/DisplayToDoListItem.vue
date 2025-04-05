@@ -5,9 +5,9 @@ import type { ToDoList } from '@/features/toDoList/ToDoList'
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
 import type { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
 import { ref } from 'vue'
-import dayjs from 'dayjs'
 import { ToDoListResponse } from '@/features/toDoList/ToDoListResponse'
 import { Result } from '@/types/result'
+import { ElementType } from '@/types/elementType'
 
 const store = useToDoListStore()
 
@@ -24,11 +24,10 @@ const localToDoList = ref(props.toDoList)
 
 // Handle checkbox change
 const onCheckboxChange = async (value: boolean) => {
-  let resp: ToDoListResponse = new ToDoListResponse()
+  let respToDoList: ToDoListResponse = new ToDoListResponse()
   try {
     // Update the local copy
     localToDoList.value.isCompleted = value
-    localToDoList.value.updateDate = dayjs().format('DD/MM/YYYY HH:mm:ss')
 
     const req: ToDoListRequest = {
       idsList: [localToDoList.value.id as number],
@@ -39,14 +38,18 @@ const onCheckboxChange = async (value: boolean) => {
     console.log('Start updating todo list id : ', localToDoList.value.id)
 
     // Await the response from the store
-    resp = await store.updateToDoList(req)
+    respToDoList = await store.updateToDoListById(req, ElementType.TODOLIST)
 
     // Check if the response is valid and contains the expected data
-    if (resp.currentResult !== Result.OK)
-      console.error('Failed to update todo list. Response:', resp)
+    if (respToDoList.currentResult !== Result.OK)
+      console.error('Failed to update todo list. Response:', respToDoList.message)
   } catch (error) {
-    console.error('(FRONT) Error while adding ToDoList:', error)
-    console.error('(BACK) Error while adding ToDoList:', resp.message)
+    console.error(
+      `(FRONT) Error while updating toDoList id: ${localToDoList.value.id}, error : ${error}`,
+    )
+    console.error(
+      `(BACK) Error while updating toDoList id: ${localToDoList.value.id}, error : ${respToDoList.message}`,
+    )
   }
 }
 
@@ -70,8 +73,12 @@ const deleteToDoList = async () => {
       store.allToDoListState = store.sortToDoListById
     } else console.error('Failed to delete todo list. Response:', resp)
   } catch (error) {
-    console.error('(FRONT) Error while adding ToDoList:', error)
-    console.error('(BACK) Error while adding ToDoList:', resp.message)
+    console.error(
+      `(FRONT) Error while deleting toDoList id: ${localToDoList.value.id}, error : ${error}`,
+    )
+    console.error(
+      `(BACK) Error while deleting toDoList id: ${localToDoList.value.id}, error : ${resp.message}`,
+    )
   }
 }
 </script>

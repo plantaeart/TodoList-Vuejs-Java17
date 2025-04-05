@@ -1,81 +1,129 @@
-import { acceptHMRUpdate, createPinia, defineStore } from 'pinia'
-import todoService from '@/api/services/ToDoListServices'
-import type { ToDoListRequest } from './ToDoListRequest'
+import { defineStore } from 'pinia'
+import { ref, computed, reactive } from 'vue'
+import toDoListService from '@/api/services/ToDoListServices'
+import { ToDoListRequest } from './ToDoListRequest'
 import type { ToDoListResponse } from './ToDoListResponse'
-import type { ToDoList } from './ToDoList'
-import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { ToDoList } from './ToDoList'
 import { rearrangeArrayIds } from '@/utils/arrayUtils'
+import dayjs from 'dayjs'
+import { ElementType } from '@/types/elementType'
 
-const pinia = createPinia()
-pinia.use(piniaPluginPersistedstate)
+export const useToDoListStore = defineStore('toDoListStore', () => {
+  //* State
+  const allToDoListState = reactive<ToDoList[]>([])
+  const toDoListResp = ref<ToDoListResponse>({} as ToDoListResponse) // Define as a plain object
+  const sizeToDoList = ref(0) // Initialize sizeToDoList
 
-export const useToDoListStore = defineStore('toDoListStore', {
-  state: () => ({
-    allToDoListState: {} as ToDoList[], // Initialize as an empty array
-    toDoListResp: {} as ToDoListResponse, // Define as a plain object
-    sizeToDoList: 0, // Initialize sizeToDoList
-  }),
-  getters: {
-    rearrangeArrayIdsList(state) {
-      return rearrangeArrayIds(state.allToDoListState)
-    },
-    sortToDoListById(state) {
-      return state.allToDoListState.sort((a, b) => a.id! - b.id!)
-    },
-  },
-  // To cache the state in localStorage
-  persist: true,
-  actions: {
-    // Get all toDoList from API
-    async getAllToDoLists(req: ToDoListRequest) {
-      const response = (await todoService.getAllToDoLists(req.isTest)) as ToDoListResponse
-      this.toDoListResp = response // Directly assign the response
-      this.allToDoListState = response.toDoLists // Update the state
-      this.sizeToDoList = response.toDoLists.length // Update the size
-    },
-    // Get one ToDoList from API
-    async getToDoListById(req: ToDoListRequest) {
-      const response = await todoService.getToDoListById(req.idsList, req.isTest)
-      this.toDoListResp = response.data // Directly assign the response
-    },
-    // Update one ToDoList from API
-    async updateToDoList(req: ToDoListRequest): Promise<ToDoListResponse> {
-      const response = await todoService.updateToDoList(req)
-      this.toDoListResp = response.data // Directly assign the response
-      this.allToDoListState[
-        this.allToDoListState.findIndex((item) => item.id === this.toDoListResp.toDoLists[0].id)
-      ] = this.toDoListResp.toDoLists[0]
-      return this.toDoListResp
-    },
-    // Add one ToDoList
-    async addToDoList(req: ToDoListRequest): Promise<ToDoListResponse> {
-      const response = await todoService.addToDoList(req)
-      this.toDoListResp = response.data // Directly assign the response
-      // Add the new ToDoList to the state
-      this.allToDoListState.push(this.toDoListResp.toDoLists[0])
-      // increase the size of the list
-      this.sizeToDoList = this.allToDoListState.length
-      return this.toDoListResp // Return the response
-    },
-    // Delete one ToDoList from API
-    async deleteToDoListById(req: ToDoListRequest): Promise<ToDoListResponse> {
-      const response = await todoService.deleteToDoListById(req.idsList, req.isTest)
-      this.toDoListResp = response.data // Directly assign the response
-      // Find the index of the item to delete
-      const index = this.allToDoListState.findIndex((item) => item.id === req.idsList[0])
-      if (index !== -1) {
-        // Remove the item from the array
-        this.allToDoListState.splice(index, 1)
-        this.sizeToDoList = this.allToDoListState.length
-        console.log(`Deleted item with id ${req.idsList[0]}`)
-      } else {
-        console.warn(`Item with id ${req.idsList[0]} not found in allToDoListState.`)
+  //* Getters
+  const rearrangeArrayIdsList = computed(() => {
+    return rearrangeArrayIds(allToDoListState)
+  })
+
+  const sortToDoListById = computed(() => {
+    return [...allToDoListState].sort((a, b) => a.id! - b.id!)
+  })
+
+  //* Actions
+
+  const checkIfAllTaskCompleted = (idList: number): boolean => {
+    const toDoList = allToDoListState.find((item) => item.id === idList)
+    if (toDoList && toDoList.tasks) {
+      // Check if all tasks are completed
+      return toDoList.tasks.every((task) => task.isCompleted == true)
+    }
+    return false
+  }
+
+  const getAllToDoLists = async (req: ToDoListRequest) => {
+    const response = (await toDoListService.getAllToDoLists(req.isTest)) as ToDoListResponse
+    toDoListResp.value = response // Directly assign the response
+    allToDoListState.splice(0, allToDoListState.length, ...toDoListResp.value.toDoLists)
+    sizeToDoList.value = toDoListResp.value.toDoLists.length // Update the size
+  }
+
+  const getToDoListById = async (req: ToDoListRequest) => {
+    const response = await toDoListService.getToDoListById(req.idsList, req.isTest)
+    toDoListResp.value = response.data // Directly assign the response
+  }
+
+  const updateToDoListById = async (
+    req: ToDoListRequest,
+    fromElement: string,
+  ): Promise<ToDoListResponse> => {
+    // Check if the request contains a list of ToDoLists
+    if (req.toDoLists && req.toDoLists.length > 0) {
+      // Manage behavior based on the type of element
+      switch (fromElement) {
+        case ElementType.TODOLIST:
+          const populateCompleted = req.toDoLists[0].isCompleted as boolean
+          console.log('populateCompleted', populateCompleted)
+          req.toDoLists[0].tasks?.forEach((task) => (task.isCompleted = populateCompleted))
+          break
+        case ElementType.TASK:
+          const isTasksCompleted = checkIfAllTaskCompleted(req.idsList[0])
+          req.toDoLists[0].isCompleted = isTasksCompleted
+          break
       }
-      return this.toDoListResp // Return the response
-    },
-  },
-})
+      // Update the updateDate property to the current date
+      req.toDoLists[0].updateDate = dayjs().format('YYYY-MM-DD HH:mm:ss')
+    }
 
-if (import.meta.hot) {
-  import.meta.hot.accept(acceptHMRUpdate(useToDoListStore, import.meta.hot))
-}
+    const response = await toDoListService.updateToDoListById(req)
+    toDoListResp.value = response.data // Directly assign the response
+
+    // Update the specific ToDoList in the state
+    const index = allToDoListState.findIndex(
+      (item) => item.id === toDoListResp.value.toDoLists[0].id,
+    )
+    if (index !== -1) {
+      console.log(toDoListResp.value.toDoLists[0])
+      // Replace the array reference to trigger reactivity
+      Object.assign(allToDoListState[index], toDoListResp.value.toDoLists[0])
+    }
+
+    return toDoListResp.value
+  }
+
+  const addToDoList = async (req: ToDoListRequest): Promise<ToDoListResponse> => {
+    const response = await toDoListService.addToDoList(req)
+    toDoListResp.value = response.data // Directly assign the response
+
+    // Add the new ToDoList to the state
+    allToDoListState.push(toDoListResp.value.toDoLists[0])
+    sizeToDoList.value = allToDoListState.length // Update the size
+
+    return toDoListResp.value
+  }
+
+  const deleteToDoListById = async (req: ToDoListRequest): Promise<ToDoListResponse> => {
+    const response = await toDoListService.deleteToDoListById(req.idsList, req.isTest)
+    toDoListResp.value = response.data // Directly assign the response
+
+    // Find the index of the item to delete
+    const index = allToDoListState.findIndex((item) => item.id === req.idsList[0])
+    if (index !== -1) {
+      allToDoListState.splice(index, 1) // Remove the item from the array
+      sizeToDoList.value = allToDoListState.length // Update the size
+      console.log(`Deleted todo list with id ${req.idsList[0]}`)
+    } else {
+      console.warn(`List with id ${req.idsList[0]} not found in allToDoListState.`)
+    }
+
+    return toDoListResp.value
+  }
+
+  // Return state, getters, and actions
+  return {
+    allToDoListState,
+    toDoListResp,
+    sizeToDoList,
+    rearrangeArrayIdsList,
+    sortToDoListById,
+    checkIfAllTaskCompleted,
+    getAllToDoLists,
+    getToDoListById,
+    updateToDoListById,
+    addToDoList,
+    deleteToDoListById,
+  }
+})

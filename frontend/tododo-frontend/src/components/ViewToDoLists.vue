@@ -2,8 +2,9 @@
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
 import { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
 import { onMounted, ref } from 'vue'
-import DisplayToDoListItem from './list/DisplayToDoListItem.vue'
-import AddToDoList from './list/AddToDoList.vue'
+import DisplayToDoListItem from './toDoList/DisplayToDoListItem.vue'
+import AddToDoList from './toDoList/addToDoList/AddToDoList.vue'
+import DisplayTaskItem from './task/DisplayTaskItem.vue'
 
 const store = useToDoListStore()
 const req: ToDoListRequest = new ToDoListRequest()
@@ -29,11 +30,14 @@ onMounted(async () => {
       <AddToDoList />
     </div>
     <div
-      class="flex flex-row items-center"
+      class="flex flex-col items-start"
       v-for="toDoList in store.allToDoListState"
       :key="toDoList.id"
     >
       <DisplayToDoListItem :to-do-list="toDoList" />
+      <div class="flex flex-row items-center ml-10" v-for="task in toDoList.tasks" :key="task.id">
+        <DisplayTaskItem :task="task" :id-list="toDoList.id as number" />
+      </div>
     </div>
   </div>
 </template>
