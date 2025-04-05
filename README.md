@@ -8,7 +8,7 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
 ## Technologies utilisées ⚒️
 
 * Frontend 🖼️
-  On part sur du bon Vue.js 3 (v3.5.13)
+  On part sur du bon Vue.js 3 (v3.5.13), avec du Pinia pour la gestion d'état et primevue pour les composant css
 
 * Backend 💻
   On part sur du bon Java 17 avec SpringBoost 3 (v3.4.4) (sur Visual Studio Code, ce qui rend quand même la prise en main du Java plus agréable, RIP Eclipse)
@@ -44,7 +44,14 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
       * Création workflow de test du service SubTask 🟩
         * Mise en place des tests JUnit 🟩
   * Mise en place du projet front Vuejs 3 🟩
-  * Mise en place des tâche à réaliser pour le front 🟪 
+  * Mise en place des tâche à réaliser pour le front 🟩
+    * Mise en place des compotement basic (Create, update, delete, switch) for ToDoList 🟧
+    * Mise en place du style 🟪
+    * Mise en place des compotement basic (Create, update, delete, switch) for Task
+    * Mise en place du style 🟪
+    * Mise en place des compotement basic (Create, update, delete, switch) for ToDoList 🟪
+    * Mise en place du style 🟪
+  * Adding some integration tests with cypress 🟪
 
 ## Notes à moi même 😐
 
@@ -52,3 +59,4 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
   Mais pour mon prochain projet sans doute que je passerai par du Firebase Firestoe, parce que why not.
 * 31/03/2025 : Je ne pensais pas un jour refaire du java, mais très franchement avec VS Code, c'est plutôt amusant ! (je ne pensais pas dire ça un jour non plus)
 * 01/04/2025 : Wow, mais VueJS + Pinia, c'est un truc de fou en fait 😎
+* 03/04/2025 : Des principes très intéressant avec VueJS (au niveau des refs, éléments réactifs et emits --> qui me rappelle les signaux dans Godot).
