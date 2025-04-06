@@ -77,18 +77,24 @@ export const useTaskStore = defineStore('taskStore', () => {
     taskResp.value = response.data // Directly assign the response
 
     // Find the index of the item to delete
-    const idList = req.idsList[0]
+    const indexList = req.idsList[0] - 1
     const idTask = req.idsTask[0]
-    const index = toDoListStore.allToDoListState[idList].tasks?.findIndex(
+    console.log('indexList', indexList)
+    const indexTask = toDoListStore.allToDoListState[indexList].tasks?.findIndex(
       (item) => item.id === idTask,
     )
-    if (index !== -1) {
+    console.log('indexTask', indexTask)
+    if (indexTask !== -1) {
+      console.log(
+        'toDoListStore.allToDoListState[indexList] : ',
+        toDoListStore.allToDoListState[indexList],
+      )
       // Remove the item from the array
-      toDoListStore.allToDoListState[idList].tasks?.splice(index as number, 1)
-      console.log(`Deleted task with id ${idTask} from todo list ${idList}`)
+      toDoListStore.allToDoListState[indexList].tasks?.splice(indexTask as number, 1)
+      console.log(`Deleted task with id ${idTask} from todo list id ${req.idsList[0]}`)
     } else {
       console.warn(
-        `Task with id ${idTask} and todo list id ${idList} not found in allToDoListState.`,
+        `Task with id ${idTask} and todo list id ${req.idsList[0]} not found in allToDoListState.`,
       )
     }
 

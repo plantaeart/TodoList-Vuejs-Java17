@@ -1,19 +1,33 @@
 <script setup lang="ts">
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
-import { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
-import { onMounted, ref } from 'vue'
+import { reactive, watch } from 'vue'
 import DisplayToDoListItem from './toDoList/DisplayToDoListItem.vue'
 import AddToDoList from './toDoList/addToDoList/AddToDoList.vue'
 import DisplayTaskItem from './task/DisplayTaskItem.vue'
+import type { ToDoList } from '@/features/toDoList/ToDoList'
 
 const store = useToDoListStore()
-const req: ToDoListRequest = new ToDoListRequest()
-const isLoading = ref(true) // Track loading state
+const localToDoLists = reactive(new Array<ToDoList>()) // Local state to hold fetched data])
 
-onMounted(async () => {
-  await store.getAllToDoLists(req) // Wait for the API call to complete
-  isLoading.value = false // Set loading to false after data is fetched
+const props = defineProps({
+  toDoLists: {
+    type: Object as () => Array<ToDoList>, // Specify the type of the prop
+    required: true, // Make it required
+  },
+  isLoading: {
+    type: Boolean, // Specify the type of the prop
+    required: true, // Make it required
+  },
 })
+
+// Watch for changes in the prop and update the local copy
+watch(
+  () => props.toDoLists,
+  (newToDoLists) => {
+    localToDoLists.push(...newToDoLists) // Update the local copy when the prop changes
+  },
+  { deep: true },
+)
 </script>
 
 <template>

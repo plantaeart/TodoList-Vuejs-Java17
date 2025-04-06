@@ -4,7 +4,7 @@ import Button from 'primevue/button'
 import type { ToDoList } from '@/features/toDoList/ToDoList'
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
 import type { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
-import { ref } from 'vue'
+import { reactive, watch } from 'vue'
 import { ToDoListResponse } from '@/features/toDoList/ToDoListResponse'
 import { Result } from '@/types/result'
 import { ElementType } from '@/types/elementType'
@@ -19,36 +19,43 @@ const props = defineProps({
   },
 })
 
+// Watch for changes in the prop and update the local copy
+watch(
+  () => props.toDoList,
+  (newToDoList) => {
+    Object.assign(localToDoList, newToDoList) // Update the local copy when the prop changes
+  },
+  { deep: true },
+)
+
 // Create a local reactive copy of the prop
-const localToDoList = ref(props.toDoList)
+const localToDoList = reactive(props.toDoList)
 
 // Handle checkbox change
 const onCheckboxChange = async (value: boolean) => {
   let respToDoList: ToDoListResponse = new ToDoListResponse()
   try {
     // Update the local copy
-    localToDoList.value.isCompleted = value
+    localToDoList.isCompleted = value
 
     const req: ToDoListRequest = {
-      idsList: [localToDoList.value.id as number],
-      toDoLists: [{ ...localToDoList.value }], // Use the local copy
+      idsList: [localToDoList.id as number],
+      toDoLists: [{ ...localToDoList }], // Use the local copy
       isTest: false,
     }
 
-    console.log('Start updating todo list id : ', localToDoList.value.id)
+    console.log(`Start updating todo list id : ${localToDoList.id}`)
 
     // Await the response from the store
     respToDoList = await store.updateToDoListById(req, ElementType.TODOLIST)
 
     // Check if the response is valid and contains the expected data
     if (respToDoList.currentResult !== Result.OK)
-      console.error('Failed to update todo list. Response:', respToDoList.message)
+      console.error(`Failed to update todo list. Response : ${respToDoList.message}`)
   } catch (error) {
+    console.error(`(FRONT) Error while updating toDoList id: ${localToDoList.id}, error : ${error}`)
     console.error(
-      `(FRONT) Error while updating toDoList id: ${localToDoList.value.id}, error : ${error}`,
-    )
-    console.error(
-      `(BACK) Error while updating toDoList id: ${localToDoList.value.id}, error : ${respToDoList.message}`,
+      `(BACK) Error while updating toDoList id: ${localToDoList.id}, error : ${respToDoList.message}`,
     )
   }
 }
@@ -57,7 +64,7 @@ const onCheckboxChange = async (value: boolean) => {
 const deleteToDoList = async () => {
   let resp: ToDoListResponse = new ToDoListResponse()
   try {
-    const idToDelete: number = localToDoList.value.id as number
+    const idToDelete: number = localToDoList.id as number
     const req: ToDoListRequest = {
       idsList: [idToDelete],
       isTest: false,
@@ -70,14 +77,11 @@ const deleteToDoList = async () => {
     if (resp.currentResult === Result.OK) {
       // Remove the deleted item from the local list
       store.allToDoListState = store.rearrangeArrayIdsList
-      store.allToDoListState = store.sortToDoListById
     } else console.error('Failed to delete todo list. Response:', resp)
   } catch (error) {
+    console.error(`(FRONT) Error while deleting toDoList id: ${localToDoList.id}, error : ${error}`)
     console.error(
-      `(FRONT) Error while deleting toDoList id: ${localToDoList.value.id}, error : ${error}`,
-    )
-    console.error(
-      `(BACK) Error while deleting toDoList id: ${localToDoList.value.id}, error : ${resp.message}`,
+      `(BACK) Error while deleting toDoList id: ${localToDoList.id}, error : ${resp.message}`,
     )
   }
 }

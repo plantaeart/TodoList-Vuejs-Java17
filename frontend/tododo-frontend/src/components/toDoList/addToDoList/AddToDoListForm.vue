@@ -19,16 +19,18 @@ const addToDoListFromFormInfos = async () => {
     req.toDoLists = [
       { name: toDoListName.value, tasks: tasks.filter((item) => item.taskContent !== '') },
     ] // Prepare the request
-    console.log('Start adding todo list with name : ', req.toDoLists)
+    console.log(`Start adding todo list with name : ` + req.toDoLists)
     // Await the response from the store
     resp = await store.addToDoList(req)
     // Check if the response is valid and contains the expected data
-    if (resp && resp.currentResult !== Result.OK)
-      console.error('Failed to add ToDoList. Response:', resp)
-    else tasks.splice(0, tasks.length) // Clear the tasks array after successful addition
+    if (resp && resp.currentResult === Result.OK) {
+      // Refresh the list of ToDoLists
+      store.allToDoListState = store.refreshAllToDoLists
+      tasks.splice(0, tasks.length) // Clear the tasks array after successful addition
+    } else console.error(`Failed to add ToDoList. Response : ${resp.message}`)
   } catch (error) {
-    console.error('(FRONT) Error while adding ToDoList:', error)
-    console.error('(BACK) Error while adding ToDoList:', resp.message)
+    console.error(`(FRONT) Error while adding ToDoList : ${error}`)
+    console.error(`(BACK) Error while adding ToDoList : ${resp.message}`)
   }
 }
 
