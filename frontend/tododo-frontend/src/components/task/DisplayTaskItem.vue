@@ -3,10 +3,10 @@ import Checkbox from 'primevue/checkbox'
 import Button from 'primevue/button'
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
 import type { TaskRequest } from '@/features/task/TaskRequest'
-import { reactive, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { TaskResponse } from '@/features/task/TaskResponse'
 import { Result } from '@/types/result'
-import type { Task } from '@/features/task/Task'
+import { Task } from '@/features/task/Task'
 import { useTaskStore } from '@/features/task/TaskStore'
 import { ToDoListResponse } from '@/features/toDoList/ToDoListResponse'
 import { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
@@ -15,7 +15,7 @@ import { ElementType } from '@/types/elementType'
 
 const storeToDoList = useToDoListStore()
 const storeTask = useTaskStore()
-
+const localTask = ref<Task>(new Task()) // Local state to hold fetched data
 // Define props
 const props = defineProps({
   idList: {
@@ -33,13 +33,13 @@ watch(
   () => props.task,
   (newTask) => {
     // Update the local copy when the prop changes
-    Object.assign(localTask, newTask)
+    localTask.value = newTask
   },
   { deep: true },
 )
 
 // Create a local reactive copy of the prop
-const localTask = reactive(props.task)
+localTask.value = props.task
 const idList = props.idList
 
 // Handle checkbox change
@@ -48,26 +48,28 @@ const onCheckboxChange = async (value: boolean) => {
   let respToDoList: ToDoListResponse = new ToDoListResponse()
   try {
     // Update the local copy
-    localTask.isCompleted = value
+    localTask.value.isCompleted = value
     const currentToDoList = storeToDoList.allToDoListState.find(
       (item) => item.id === idList,
     ) as ToDoList
 
     const req: TaskRequest = {
       idsList: [idList],
-      idsTask: [localTask.id as number],
-      tasks: [{ ...localTask }], // Use the local copy
+      idsTask: [localTask.value.id as number],
+      tasks: [{ ...localTask.value }], // Use the local copy
       isTest: false,
     }
 
-    console.log(`Start updating Task id : ${localTask.id} from todo list id : ${idList}`)
+    console.log(`Start updating Task id : ${localTask.value.id} from todo list id : ${idList}`)
 
     // Await the response from the store
     respTask = await storeTask.updateTaskById(req)
 
     // Check if the response is valid and contains the expected data
-    if (respTask.currentResult !== Result.OK)
-      console.error(`Failed to update task. Response: ${respTask.message}`)
+    if (respTask.currentResult === Result.OK) {
+      storeTask.rearrangeArrayIdsTask(idList)
+      storeTask.sortTaskById(idList)
+    } else console.error(`Failed to update task. Response: ${respTask.message}`)
 
     // Update the ToDoList with the new task status
     respToDoList = await storeToDoList.updateToDoListById(
@@ -82,10 +84,10 @@ const onCheckboxChange = async (value: boolean) => {
       )
   } catch (error) {
     console.error(
-      `(FRONT) Error while updating Task id: ${localTask.id} from ToDoList id: ${idList}, error : ${error}`,
+      `(FRONT) Error while updating Task id: ${localTask.value.id} from ToDoList id: ${idList}, error : ${error}`,
     )
     console.error(
-      `(BACK) Error while updating Task id: ${localTask.id} from ToDoList id: ${idList}, error : ${respTask.message}`,
+      `(BACK) Error while updating Task id: ${localTask.value.id} from ToDoList id: ${idList}, error : ${respTask.message}`,
     )
   }
 }
@@ -94,14 +96,13 @@ const onCheckboxChange = async (value: boolean) => {
 const deleteTaskFromDisplayList = async () => {
   let resp: TaskResponse = new TaskResponse()
   try {
-    const idToDelete: number = localTask.id as number
+    const idToDelete: number = localTask.value.id as number
     const req: TaskRequest = {
       idsList: [idList],
       idsTask: [idToDelete],
       isTest: false,
     }
-    const toDoListStore = useToDoListStore()
-    console.log('toDoListStore.allToDoListState[1] : ', toDoListStore.allToDoListState[1])
+    //const toDoListStore = useToDoListStore()
     // Await the response from the store
     resp = await storeTask.deleteTaskById(req)
 
@@ -110,14 +111,13 @@ const deleteTaskFromDisplayList = async () => {
       // Remove the deleted item from the local list
       storeTask.rearrangeArrayIdsTask(idList)
       storeTask.sortTaskById(idList)
-      console.log('END toDoListStore.allToDoListState[1] : ', toDoListStore.allToDoListState[1])
     } else console.error('Failed to delete todo list. Response:', resp)
   } catch (error) {
     console.error(
-      `(FRONT) Error while deleting Task id: ${localTask.id} from ToDoList id: ${idList}, error : ${error}`,
+      `(FRONT) Error while deleting Task id: ${localTask.value.id} from ToDoList id: ${idList}, error : ${error}`,
     )
     console.error(
-      `(BACK) Error while deleting Task id: ${localTask.id} from ToDoList id: ${idList}, error : ${resp.message}`,
+      `(BACK) Error while deleting Task id: ${localTask.value.id} from ToDoList id: ${idList}, error : ${resp.message}`,
     )
   }
 }

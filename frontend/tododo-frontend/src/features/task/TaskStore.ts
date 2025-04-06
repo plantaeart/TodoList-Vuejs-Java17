@@ -14,12 +14,14 @@ export const useTaskStore = defineStore('taskStore', () => {
   // Getters
   const rearrangeArrayIdsTask = (idList: number) => {
     const toDoListStore = useToDoListStore()
-    return rearrangeArrayIds(toDoListStore.allToDoListState[idList].tasks as Array<Task>)
+    toDoListStore.allToDoListState[idList].tasks = rearrangeArrayIds(
+      toDoListStore.allToDoListState[idList].tasks as Array<Task>,
+    )
   }
 
   const sortTaskById = (idList: number) => {
     const toDoListStore = useToDoListStore()
-    return toDoListStore.allToDoListState[idList].tasks?.sort((a, b) => a.id! - b.id!)
+    toDoListStore.allToDoListState[idList].tasks?.sort((a, b) => a.id! - b.id!)
   }
 
   // Actions
@@ -79,16 +81,10 @@ export const useTaskStore = defineStore('taskStore', () => {
     // Find the index of the item to delete
     const indexList = req.idsList[0] - 1
     const idTask = req.idsTask[0]
-    console.log('indexList', indexList)
     const indexTask = toDoListStore.allToDoListState[indexList].tasks?.findIndex(
       (item) => item.id === idTask,
     )
-    console.log('indexTask', indexTask)
     if (indexTask !== -1) {
-      console.log(
-        'toDoListStore.allToDoListState[indexList] : ',
-        toDoListStore.allToDoListState[indexList],
-      )
       // Remove the item from the array
       toDoListStore.allToDoListState[indexList].tasks?.splice(indexTask as number, 1)
       console.log(`Deleted task with id ${idTask} from todo list id ${req.idsList[0]}`)

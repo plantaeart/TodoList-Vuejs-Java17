@@ -1,32 +1,39 @@
 import { defineStore } from 'pinia'
-import { ref, computed, reactive } from 'vue'
+import { ref, computed } from 'vue'
 import toDoListService from '@/api/services/ToDoListServices'
 import { ToDoListRequest } from './ToDoListRequest'
 import type { ToDoListResponse } from './ToDoListResponse'
 import { ToDoList } from './ToDoList'
-import { rearrangeArrayIds } from '@/utils/arrayUtils'
 import dayjs from 'dayjs'
 import { ElementType } from '@/types/elementType'
 
 export const useToDoListStore = defineStore('toDoListStore', () => {
   //* State
-  const allToDoListState = reactive<ToDoList[]>([])
+  const allToDoListState = ref<ToDoList[]>([])
   const toDoListResp = ref<ToDoListResponse>({} as ToDoListResponse) // Define as a plain object
   const sizeToDoList = ref(0) // Initialize sizeToDoList
 
   //* Getters
   const rearrangeArrayIdsList = computed(() => {
-    return rearrangeArrayIds(allToDoListState).sort((a, b) => a.id! - b.id!)
+    allToDoListState.value.forEach((item, index) => {
+      item.id = index + 1 // Update the id property
+    })
+    allToDoListState.value.sort((a, b) => a.id! - b.id!)
+    return allToDoListState.value
   })
 
   const refreshAllToDoLists = computed(() => {
-    return allToDoListState.splice(0, allToDoListState.length, ...allToDoListState)
+    return allToDoListState.value.splice(
+      0,
+      allToDoListState.value.length,
+      ...allToDoListState.value,
+    )
   })
 
   //* Actions
 
   const checkIfAllTaskCompleted = (idList: number): boolean => {
-    const toDoList = allToDoListState.find((item) => item.id === idList)
+    const toDoList = allToDoListState.value.find((item) => item.id === idList)
     if (toDoList && toDoList.tasks) {
       // Check if all tasks are completed
       return toDoList.tasks.every((task) => task.isCompleted == true)
@@ -37,7 +44,7 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
   const getAllToDoLists = async (req: ToDoListRequest) => {
     const response = (await toDoListService.getAllToDoLists(req.isTest)) as ToDoListResponse
     toDoListResp.value = response // Directly assign the response
-    allToDoListState.splice(0, allToDoListState.length, ...toDoListResp.value.toDoLists)
+    allToDoListState.value.splice(0, allToDoListState.value.length, ...toDoListResp.value.toDoLists)
     sizeToDoList.value = toDoListResp.value.toDoLists.length // Update the size
   }
 
@@ -71,12 +78,12 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
     toDoListResp.value = response.data // Directly assign the response
 
     // Update the specific ToDoList in the state
-    const index = allToDoListState.findIndex(
+    const index = allToDoListState.value.findIndex(
       (item) => item.id === toDoListResp.value.toDoLists[0].id,
     )
     if (index !== -1) {
       // Replace the array reference to trigger reactivity
-      Object.assign(allToDoListState[index], toDoListResp.value.toDoLists[0])
+      Object.assign(allToDoListState.value[index], toDoListResp.value.toDoLists[0])
     }
 
     return toDoListResp.value
@@ -87,8 +94,8 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
     toDoListResp.value = response.data // Directly assign the response
 
     // Add the new ToDoList to the state
-    allToDoListState.push(toDoListResp.value.toDoLists[0]) // Use spread operator to add the new ToDoList
-    sizeToDoList.value = allToDoListState.length // Update the size
+    allToDoListState.value.push(toDoListResp.value.toDoLists[0]) // Use spread operator to add the new ToDoList
+    sizeToDoList.value = allToDoListState.value.length // Update the size
 
     return toDoListResp.value
   }
@@ -96,16 +103,13 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
   const deleteToDoListById = async (req: ToDoListRequest): Promise<ToDoListResponse> => {
     const response = await toDoListService.deleteToDoListById(req.idsList, req.isTest)
     toDoListResp.value = response.data // Directly assign the response
-    console.log('list before delete : ', allToDoListState)
     // Find the index of the item to delete
-    const index = allToDoListState.findIndex((item) => item.id === req.idsList[0])
+    const index = allToDoListState.value.findIndex((item) => item.id === req.idsList[0])
     if (index !== -1) {
-      allToDoListState.splice(index, 1) // Remove the item from the array
-      console.log('list after delete : ', allToDoListState)
-      sizeToDoList.value = allToDoListState.length // Update the size
-      console.log(`Deleted todo list with id ${req.idsList[0]}`)
+      allToDoListState.value.splice(index, 1) // Remove the item from the array
+      sizeToDoList.value = allToDoListState.value.length // Update the size
     } else {
-      console.warn(`List with id ${req.idsList[0]} not found in allToDoListState.`)
+      console.warn(`List with id ${req.idsList[0]} not found in allToDoListState.value.`)
     }
 
     return toDoListResp.value

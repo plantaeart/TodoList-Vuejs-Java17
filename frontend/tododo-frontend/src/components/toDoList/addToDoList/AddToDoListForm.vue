@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
@@ -11,13 +11,13 @@ import { Task } from '@/features/task/Task'
 const store = useToDoListStore()
 const req: ToDoListRequest = new ToDoListRequest()
 const toDoListName = ref('')
-const tasks: Task[] = reactive([])
+const tasks = ref<Task[]>([])
 
 const addToDoListFromFormInfos = async () => {
   let resp: ToDoListResponse = new ToDoListResponse()
   try {
     req.toDoLists = [
-      { name: toDoListName.value, tasks: tasks.filter((item) => item.taskContent !== '') },
+      { name: toDoListName.value, tasks: tasks.value.filter((item) => item.taskContent !== '') },
     ] // Prepare the request
     console.log(`Start adding todo list with name : ` + req.toDoLists)
     // Await the response from the store
@@ -25,8 +25,8 @@ const addToDoListFromFormInfos = async () => {
     // Check if the response is valid and contains the expected data
     if (resp && resp.currentResult === Result.OK) {
       // Refresh the list of ToDoLists
-      store.allToDoListState = store.refreshAllToDoLists
-      tasks.splice(0, tasks.length) // Clear the tasks array after successful addition
+      Object.assign(store.allToDoListState, store.refreshAllToDoLists)
+      tasks.value.splice(0, tasks.value.length) // Clear the tasks array after successful addition
     } else console.error(`Failed to add ToDoList. Response : ${resp.message}`)
   } catch (error) {
     console.error(`(FRONT) Error while adding ToDoList : ${error}`)
@@ -38,16 +38,16 @@ const addToDoListFromFormInfos = async () => {
 const addingNewTask = async () => {
   if (!toDoListName.value) return
 
-  tasks.push(new Task(tasks.length + 1, ''))
+  tasks.value.push(new Task(tasks.value.length + 1, ''))
 }
 
 // Function to delete a task in form
 const deleteNewTask = async (taskId: number) => {
   if (!toDoListName.value) return
 
-  const index = tasks.findIndex((task) => task.id === taskId)
+  const index = tasks.value.findIndex((task) => task.id === taskId)
   if (index !== -1) {
-    tasks.splice(index, 1)
+    tasks.value.splice(index, 1)
   }
 }
 

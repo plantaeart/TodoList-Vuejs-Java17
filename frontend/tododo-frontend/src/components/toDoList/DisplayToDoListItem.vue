@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import Checkbox from 'primevue/checkbox'
 import Button from 'primevue/button'
-import type { ToDoList } from '@/features/toDoList/ToDoList'
+import { ToDoList } from '@/features/toDoList/ToDoList'
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
 import type { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
-import { reactive, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { ToDoListResponse } from '@/features/toDoList/ToDoListResponse'
 import { Result } from '@/types/result'
 import { ElementType } from '@/types/elementType'
 
 const store = useToDoListStore()
+const localToDoList = ref<ToDoList>(new ToDoList()) // Local state to hold fetched data
 
 // Define props
 const props = defineProps({
@@ -23,28 +24,28 @@ const props = defineProps({
 watch(
   () => props.toDoList,
   (newToDoList) => {
-    Object.assign(localToDoList, newToDoList) // Update the local copy when the prop changes
+    localToDoList.value = newToDoList // Update the local copy when the prop changes
   },
   { deep: true },
 )
 
-// Create a local reactive copy of the prop
-const localToDoList = reactive(props.toDoList)
+// Initialize local state with the prop value
+localToDoList.value = props.toDoList
 
 // Handle checkbox change
 const onCheckboxChange = async (value: boolean) => {
   let respToDoList: ToDoListResponse = new ToDoListResponse()
   try {
     // Update the local copy
-    localToDoList.isCompleted = value
+    localToDoList.value.isCompleted = value
 
     const req: ToDoListRequest = {
-      idsList: [localToDoList.id as number],
-      toDoLists: [{ ...localToDoList }], // Use the local copy
+      idsList: [localToDoList.value.id as number],
+      toDoLists: [{ ...localToDoList.value }], // Use the local copy
       isTest: false,
     }
 
-    console.log(`Start updating todo list id : ${localToDoList.id}`)
+    console.log(`Start updating todo list id : ${localToDoList.value.id}`)
 
     // Await the response from the store
     respToDoList = await store.updateToDoListById(req, ElementType.TODOLIST)
@@ -53,9 +54,11 @@ const onCheckboxChange = async (value: boolean) => {
     if (respToDoList.currentResult !== Result.OK)
       console.error(`Failed to update todo list. Response : ${respToDoList.message}`)
   } catch (error) {
-    console.error(`(FRONT) Error while updating toDoList id: ${localToDoList.id}, error : ${error}`)
     console.error(
-      `(BACK) Error while updating toDoList id: ${localToDoList.id}, error : ${respToDoList.message}`,
+      `(FRONT) Error while updating toDoList id: ${localToDoList.value.id}, error : ${error}`,
+    )
+    console.error(
+      `(BACK) Error while updating toDoList id: ${localToDoList.value.id}, error : ${respToDoList.message}`,
     )
   }
 }
@@ -64,7 +67,7 @@ const onCheckboxChange = async (value: boolean) => {
 const deleteToDoList = async () => {
   let resp: ToDoListResponse = new ToDoListResponse()
   try {
-    const idToDelete: number = localToDoList.id as number
+    const idToDelete: number = localToDoList.value.id as number
     const req: ToDoListRequest = {
       idsList: [idToDelete],
       isTest: false,
@@ -76,12 +79,16 @@ const deleteToDoList = async () => {
     // Check if the response is valid and contains the expected data
     if (resp.currentResult === Result.OK) {
       // Remove the deleted item from the local list
-      store.allToDoListState = store.rearrangeArrayIdsList
+      Object.assign(store.allToDoListState, store.rearrangeArrayIdsList)
+      Object.assign(store.allToDoListState, store.refreshAllToDoLists)
+      console.log('After delete, rearrange ids and sorting', store.allToDoListState)
     } else console.error('Failed to delete todo list. Response:', resp)
   } catch (error) {
-    console.error(`(FRONT) Error while deleting toDoList id: ${localToDoList.id}, error : ${error}`)
     console.error(
-      `(BACK) Error while deleting toDoList id: ${localToDoList.id}, error : ${resp.message}`,
+      `(FRONT) Error while deleting toDoList id: ${localToDoList.value.id}, error : ${error}`,
+    )
+    console.error(
+      `(BACK) Error while deleting toDoList id: ${localToDoList.value.id}, error : ${resp.message}`,
     )
   }
 }

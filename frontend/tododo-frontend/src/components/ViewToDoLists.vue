@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
-import { reactive, watch } from 'vue'
+import { ref, watch } from 'vue'
 import DisplayToDoListItem from './toDoList/DisplayToDoListItem.vue'
 import AddToDoList from './toDoList/addToDoList/AddToDoList.vue'
 import DisplayTaskItem from './task/DisplayTaskItem.vue'
 import type { ToDoList } from '@/features/toDoList/ToDoList'
 
 const store = useToDoListStore()
-const localToDoLists = reactive(new Array<ToDoList>()) // Local state to hold fetched data])
+const localToDoLists = ref<ToDoList[]>([]) // Local state to hold fetched data
 
 const props = defineProps({
   toDoLists: {
@@ -20,11 +20,13 @@ const props = defineProps({
   },
 })
 
+localToDoLists.value = props.toDoLists // Initialize local state with the prop value
+
 // Watch for changes in the prop and update the local copy
 watch(
   () => props.toDoLists,
   (newToDoLists) => {
-    localToDoLists.push(...newToDoLists) // Update the local copy when the prop changes
+    localToDoLists.value = newToDoLists // Update the local copy when the prop changes
   },
   { deep: true },
 )
@@ -43,11 +45,8 @@ watch(
     <div>
       <AddToDoList />
     </div>
-    <div
-      class="flex flex-col items-start"
-      v-for="toDoList in store.allToDoListState"
-      :key="toDoList.id"
-    >
+    <div class="flex flex-col items-start" v-for="toDoList in localToDoLists" :key="toDoList.id">
+      <p>{{ toDoList.name }}</p>
       <DisplayToDoListItem :to-do-list="toDoList" />
       <div class="flex flex-row items-center ml-10" v-for="task in toDoList.tasks" :key="task.id">
         <DisplayTaskItem :task="task" :id-list="toDoList.id as number" />
