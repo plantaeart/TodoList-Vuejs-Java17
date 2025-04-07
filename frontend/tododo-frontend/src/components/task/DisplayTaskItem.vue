@@ -110,7 +110,6 @@ const deleteTaskFromDisplayList = async () => {
     // Check if the response is valid and contains the expected data
     if (resp.currentResult === Result.OK) {
       // Remove the deleted item from the local list
-      console.log('here')
       storeTask.rearrangeArrayIdsTask(idList)
     } else console.error('Failed to delete todo list. Response:', resp)
   } catch (error) {

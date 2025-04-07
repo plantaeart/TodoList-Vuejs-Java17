@@ -80,7 +80,6 @@ const deleteToDoList = async () => {
     if (resp.currentResult === Result.OK) {
       // Remove the deleted item from the local list
       Object.assign(store.allToDoListState, store.rearrangeArrayIdsList)
-      Object.assign(store.allToDoListState, store.refreshAllToDoLists)
       console.log('After delete, rearrange ids and sorting', store.allToDoListState)
     } else console.error('Failed to delete todo list. Response:', resp)
   } catch (error) {

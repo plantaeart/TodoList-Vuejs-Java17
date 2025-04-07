@@ -24,8 +24,6 @@ const addToDoListFromFormInfos = async () => {
     resp = await store.addToDoList(req)
     // Check if the response is valid and contains the expected data
     if (resp && resp.currentResult === Result.OK) {
-      // Refresh the list of ToDoLists
-      Object.assign(store.allToDoListState, store.refreshAllToDoLists)
       tasks.value.splice(0, tasks.value.length) // Clear the tasks array after successful addition
     } else console.error(`Failed to add ToDoList. Response : ${resp.message}`)
   } catch (error) {

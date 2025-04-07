@@ -22,14 +22,6 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
     return allToDoListState.value
   })
 
-  const refreshAllToDoLists = computed(() => {
-    return allToDoListState.value.splice(
-      0,
-      allToDoListState.value.length,
-      ...allToDoListState.value,
-    )
-  })
-
   //* Actions
 
   const checkIfAllTaskCompleted = (idList: number): boolean => {
@@ -121,7 +113,6 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
     toDoListResp,
     sizeToDoList,
     rearrangeArrayIdsList,
-    refreshAllToDoLists,
     checkIfAllTaskCompleted,
     getAllToDoLists,
     getToDoListById,
