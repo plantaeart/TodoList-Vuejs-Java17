@@ -14,8 +14,9 @@ export const useTaskStore = defineStore('taskStore', () => {
   // Getters
   const rearrangeArrayIdsTask = (idList: number) => {
     const toDoListStore = useToDoListStore()
-    toDoListStore.allToDoListState[idList].tasks = rearrangeArrayIds(
-      toDoListStore.allToDoListState[idList].tasks as Array<Task>,
+    const indexList = idList - 1
+    toDoListStore.allToDoListState[indexList].tasks = rearrangeArrayIds(
+      toDoListStore.allToDoListState[indexList].tasks as Array<Task>,
     )
   }
 

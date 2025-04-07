@@ -10,7 +10,6 @@ import appEnv from 'app-env'
 const store = useToDoListStore()
 const localToDoLists = ref<ToDoList[]>([]) // Local state to hold fetched data
 const debug = ref(appEnv.VITE_DEBUG)
-console.log('Debug value:', debug.value)
 
 const props = defineProps({
   toDoLists: {

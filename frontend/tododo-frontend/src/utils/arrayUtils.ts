@@ -13,5 +13,6 @@ export function rearrangeArrayIds<T extends { id?: number }>(array: T[]): T[] {
 
   // Sort the array by the `id` property
   array.sort((a, b) => a.id! - b.id!)
+
   return array
 }

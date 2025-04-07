@@ -17,7 +17,6 @@ import appEnv from 'app-env'
 const storeToDoList = useToDoListStore()
 const storeTask = useTaskStore()
 const localTask = ref<Task>(new Task()) // Local state to hold fetched data
-console.log(appEnv.VITE_DEBUG)
 const debug = ref(appEnv.VITE_DEBUG)
 // Define props
 const props = defineProps({
@@ -111,6 +110,7 @@ const deleteTaskFromDisplayList = async () => {
     // Check if the response is valid and contains the expected data
     if (resp.currentResult === Result.OK) {
       // Remove the deleted item from the local list
+      console.log('here')
       storeTask.rearrangeArrayIdsTask(idList)
     } else console.error('Failed to delete todo list. Response:', resp)
   } catch (error) {
