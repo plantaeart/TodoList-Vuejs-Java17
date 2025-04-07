@@ -1,8 +1,9 @@
 import axios from 'axios'
 import qs from 'qs'
+import appEnv from 'app-env'
 
 const http = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: appEnv.VITE_API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

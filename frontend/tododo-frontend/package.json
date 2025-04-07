@@ -17,6 +17,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@niku/vite-env-caster": "^1.1.2",
     "@primeuix/themes": "^1.0.0",
     "@tailwindcss/vite": "^4.0.17",
     "@types/qs": "^6.9.18",

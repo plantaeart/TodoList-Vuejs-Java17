@@ -12,10 +12,13 @@ import { ToDoListResponse } from '@/features/toDoList/ToDoListResponse'
 import { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
 import type { ToDoList } from '@/features/toDoList/ToDoList'
 import { ElementType } from '@/types/elementType'
+import appEnv from 'app-env'
 
 const storeToDoList = useToDoListStore()
 const storeTask = useTaskStore()
 const localTask = ref<Task>(new Task()) // Local state to hold fetched data
+console.log(appEnv.VITE_DEBUG)
+const debug = ref(appEnv.VITE_DEBUG)
 // Define props
 const props = defineProps({
   idList: {
@@ -68,7 +71,6 @@ const onCheckboxChange = async (value: boolean) => {
     // Check if the response is valid and contains the expected data
     if (respTask.currentResult === Result.OK) {
       storeTask.rearrangeArrayIdsTask(idList)
-      storeTask.sortTaskById(idList)
     } else console.error(`Failed to update task. Response: ${respTask.message}`)
 
     // Update the ToDoList with the new task status
@@ -110,7 +112,6 @@ const deleteTaskFromDisplayList = async () => {
     if (resp.currentResult === Result.OK) {
       // Remove the deleted item from the local list
       storeTask.rearrangeArrayIdsTask(idList)
-      storeTask.sortTaskById(idList)
     } else console.error('Failed to delete todo list. Response:', resp)
   } catch (error) {
     console.error(
@@ -126,6 +127,7 @@ const deleteTaskFromDisplayList = async () => {
 <template>
   <div class="m-4">
     <div class="flex flex-row items-center">
+      <p v-if="debug" class="mr-5 text-sm">Task ID : {{ localTask.id }}</p>
       <Checkbox
         size="large"
         :model-value="localTask.isCompleted"

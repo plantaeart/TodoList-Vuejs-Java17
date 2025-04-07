@@ -19,11 +19,6 @@ export const useTaskStore = defineStore('taskStore', () => {
     )
   }
 
-  const sortTaskById = (idList: number) => {
-    const toDoListStore = useToDoListStore()
-    toDoListStore.allToDoListState[idList].tasks?.sort((a, b) => a.id! - b.id!)
-  }
-
   // Actions
   const getAllTasksByToDoListId = async (req: TaskRequest) => {
     const response = await taskService.getAllTasksByToDoListId(req.idsList, req.isTest)
@@ -101,7 +96,6 @@ export const useTaskStore = defineStore('taskStore', () => {
   return {
     taskResp,
     rearrangeArrayIdsTask,
-    sortTaskById,
     getAllTasksByToDoListId,
     getTaskById,
     updateTaskById,
