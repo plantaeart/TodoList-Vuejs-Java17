@@ -1,5 +1,6 @@
 import { ElementType } from '@/types/elementType'
 import type { SubTask } from '../subTask/SubTask'
+import { Icon } from '../classes/Icon'
 
 export class Task {
   id: number
@@ -7,7 +8,7 @@ export class Task {
   taskContent: string = ''
   description: string = ''
   completionPercentage: number = 0
-  icon: string = ''
+  icon: Icon = new Icon()
   isCompleted: boolean = false
   subTasks: Array<SubTask> = []
 
@@ -17,7 +18,7 @@ export class Task {
     type: ElementType = ElementType.TASK,
     description: string = '',
     completionPercentage: number = 0,
-    icon: string = '',
+    icon: Icon = new Icon(),
     isCompleted: boolean = false,
     subTasks: Array<SubTask> = [],
   ) {

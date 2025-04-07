@@ -109,6 +109,8 @@ const deleteTaskFromDisplayList = async () => {
       // Update the ToDoList with the new task status
       checkToDoListCompletedState(currentToDoList)
     } else console.error('Failed to delete todo list. Response:', resp)
+
+    console.log('Finish delete task id : ' + idToDelete)
   } catch (error) {
     console.error(
       `(FRONT) Error while deleting Task id: ${localTask.value.id} from ToDoList id: ${idList}, error : ${error}`,
@@ -154,7 +156,12 @@ const checkToDoListCompletedState = async (currentToDoList: ToDoList) => {
         aria-label="Cancel"
         @click="deleteTaskFromDisplayList"
       />
-      <p class="ml-4">{{ localTask.taskContent }}</p>
+      <span
+        v-if="localTask.icon?.icon !== ''"
+        :class="['m-2', 'font-size:20px', 'flex', 'justify-center', localTask.icon?.icon]"
+      />
+      <span v-else class="ml-[32px]" />
+      <h3 class="text-lg">{{ localTask.taskContent }}</h3>
     </div>
   </div>
 </template>

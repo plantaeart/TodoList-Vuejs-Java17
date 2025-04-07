@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Checkbox from 'primevue/checkbox'
 import Button from 'primevue/button'
+import Panel from 'primevue/panel'
 import { ToDoList } from '@/features/toDoList/ToDoList'
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
 import type { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
@@ -31,7 +32,6 @@ watch(
 
 // Initialize local state with the prop value
 localToDoList.value = props.toDoList
-
 // Handle checkbox change
 const onCheckboxChange = async (value: boolean) => {
   let respToDoList: ToDoListResponse = new ToDoListResponse()
@@ -94,8 +94,8 @@ const deleteToDoList = async () => {
 </script>
 
 <template>
-  <div class="m-4">
-    <div class="flex flex-row items-center">
+  <div class="flex flex-col m-4">
+    <div class="flex flex-row items-center mb-4">
       <Checkbox
         size="large"
         :model-value="localToDoList.isCompleted"
@@ -110,8 +110,18 @@ const deleteToDoList = async () => {
         aria-label="Cancel"
         @click="deleteToDoList"
       />
-      <p class="ml-4">{{ localToDoList.name }}</p>
+      <span
+        v-if="localToDoList.icon?.icon !== ''"
+        :class="['m-2', 'font-size:20px', 'flex', 'justify-center', localToDoList.icon?.icon]"
+      />
+      <span v-else class="ml-[32px]" />
+      <h3 class="text-lg">{{ localToDoList.name }}</h3>
     </div>
+    <Panel header="Description" class="w-96 h-30">
+      <p>
+        {{ localToDoList.description }}
+      </p>
+    </Panel>
   </div>
 </template>
 
