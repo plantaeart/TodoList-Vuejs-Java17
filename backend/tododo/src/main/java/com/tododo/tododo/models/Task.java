@@ -19,7 +19,7 @@ public class Task {
     @JsonProperty(value = "completionPercentage", required = false)
     private int completionPercentage = 0;
     @JsonProperty(value = "icon", required = false)
-    private String icon = "";
+    private Icon icon = new Icon();
     @JsonProperty(value = "isCompleted", required = false)
     protected Boolean isCompleted = false;
     @JsonProperty(value = "subTasks", required = false)
@@ -34,7 +34,7 @@ public class Task {
         this.subTasks = subTasks;
     }
 
-    public Task(ElementType type, String taskContent, String description, int completionPercentage, String icon,
+    public Task(ElementType type, String taskContent, String description, int completionPercentage, Icon icon,
             Boolean isCompleted, List<SubTask> subTasks) {
         this.type = type;
         this.taskContent = taskContent;
@@ -45,7 +45,7 @@ public class Task {
         this.subTasks = subTasks;
     }
 
-    public Task(int id, ElementType type, String taskContent, int completionPercentage, String icon,
+    public Task(int id, ElementType type, String taskContent, int completionPercentage, Icon icon,
             Boolean isCompleted) {
         this.id = id;
         this.type = type;
@@ -188,11 +188,11 @@ public class Task {
         this.completionPercentage = completionPercentage;
     }
 
-    public String getIcon() {
+    public Icon getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(Icon icon) {
         this.icon = icon;
     }
 
@@ -203,5 +203,4 @@ public class Task {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

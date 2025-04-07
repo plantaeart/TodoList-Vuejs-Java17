@@ -11,14 +11,14 @@ public class TaskDTO {
     private String taskContent;
     private String description = "";
     private int completionPercentage = 0;
-    private String icon = "";
+    private IconDTO icon = new IconDTO();
     private Boolean isCompleted = false;
     private List<SubTaskDTO> subTasks = new ArrayList<SubTaskDTO>();
 
     public TaskDTO() {
     }
 
-    public TaskDTO(ElementType type, String taskContent, String description, int completionPercentage, String icon,
+    public TaskDTO(ElementType type, String taskContent, String description, int completionPercentage, IconDTO icon,
             Boolean isCompleted, List<SubTaskDTO> subTasks) {
         this.type = type;
         this.taskContent = taskContent;
@@ -146,11 +146,11 @@ public class TaskDTO {
         this.completionPercentage = completionPercentage;
     }
 
-    public String getIcon() {
+    public IconDTO getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(IconDTO icon) {
         this.icon = icon;
     }
 
@@ -188,6 +188,8 @@ public class TaskDTO {
         }
         if (task.getSubTasks() != null && !task.getSubTasks().isEmpty()) {
             this.subTasks = task.getSubTasks();
+        } else {
+            this.subTasks = new ArrayList<SubTaskDTO>();
         }
     }
 }

@@ -14,7 +14,7 @@ public class SubTask {
     @JsonProperty(value = "description", required = false)
     private String description = "";
     @JsonProperty(value = "icon", required = false)
-    private String icon = "";
+    private Icon icon = new Icon();
     @JsonProperty(value = "isCompleted", required = false)
     protected Boolean isCompleted = false;
 
@@ -26,7 +26,7 @@ public class SubTask {
         this.isCompleted = isCompleted;
     }
 
-    public SubTask(ElementType type, String taskContent, String description, String icon, Boolean isCompleted) {
+    public SubTask(ElementType type, String taskContent, String description, Icon icon, Boolean isCompleted) {
         this.type = type;
         this.taskContent = taskContent;
         this.description = description;
@@ -34,7 +34,7 @@ public class SubTask {
         this.isCompleted = isCompleted;
     }
 
-    public SubTask(ElementType type, String taskContent, String icon, Boolean isCompleted) {
+    public SubTask(ElementType type, String taskContent, Icon icon, Boolean isCompleted) {
         this.type = type;
         this.taskContent = taskContent;
         this.icon = icon;
@@ -137,11 +137,11 @@ public class SubTask {
         this.isCompleted = isCompleted;
     }
 
-    public String getIcon() {
+    public Icon getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(Icon icon) {
         this.icon = icon;
     }
 
@@ -152,5 +152,4 @@ public class SubTask {
     public void setDescription(String description) {
         this.description = description;
     }
-
 }

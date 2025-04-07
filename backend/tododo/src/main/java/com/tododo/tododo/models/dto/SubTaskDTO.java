@@ -7,13 +7,13 @@ public class SubTaskDTO {
     private ElementType type = ElementType.SUBTASK;
     private String taskContent;
     private String description = "";
-    private String icon = "";
+    private IconDTO icon = new IconDTO();
     private Boolean isCompleted = false;
 
     public SubTaskDTO() {
     }
 
-    public SubTaskDTO(ElementType type, String taskContent, String description, String icon, Boolean isCompleted) {
+    public SubTaskDTO(ElementType type, String taskContent, String description, IconDTO icon, Boolean isCompleted) {
         this.type = type;
         this.taskContent = taskContent;
         this.description = description;
@@ -21,7 +21,7 @@ public class SubTaskDTO {
         this.isCompleted = isCompleted;
     }
 
-    public SubTaskDTO(ElementType type, String taskContent, String icon, Boolean isCompleted) {
+    public SubTaskDTO(ElementType type, String taskContent, IconDTO icon, Boolean isCompleted) {
         this.type = type;
         this.taskContent = taskContent;
         this.icon = icon;
@@ -119,11 +119,11 @@ public class SubTaskDTO {
         this.type = type;
     }
 
-    public String getIcon() {
+    public IconDTO getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(IconDTO icon) {
         this.icon = icon;
     }
 

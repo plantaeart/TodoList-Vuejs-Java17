@@ -14,13 +14,13 @@ public class ToDoListDTO {
     private String description = "";
     private int completionPercentage = 0;
     private String color = "#FFFFFF";
-    private String icon = "";
+    private IconDTO icon = new IconDTO();
     private Boolean isCompleted = false;
     private List<TaskDTO> tasks = new ArrayList<TaskDTO>();
     private String updateDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 
     public ToDoListDTO(ElementType type, String name, String description, int completionPercentage, String color,
-            String icon, Boolean isCompleted, List<TaskDTO> tasks, String updateDate) {
+            IconDTO icon, Boolean isCompleted, List<TaskDTO> tasks, String updateDate) {
         this.type = type;
         this.name = name;
         this.description = description;
@@ -33,7 +33,7 @@ public class ToDoListDTO {
     }
 
     public ToDoListDTO(ElementType type, String name, String description, int completionPercentage, String color,
-            String icon, Boolean isCompleted, List<TaskDTO> tasks) {
+            IconDTO icon, Boolean isCompleted, List<TaskDTO> tasks) {
         this.type = type;
         this.name = name;
         this.description = description;
@@ -184,11 +184,11 @@ public class ToDoListDTO {
         this.color = color;
     }
 
-    public String getIcon() {
+    public IconDTO getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(IconDTO icon) {
         this.icon = icon;
     }
 
@@ -237,6 +237,8 @@ public class ToDoListDTO {
         }
         if (toDoList.getTasks() != null && !toDoList.getTasks().isEmpty()) {
             this.tasks = toDoList.getTasks();
+        } else {
+            this.tasks = new ArrayList<TaskDTO>();
         }
         if (toDoList.getUpdateDate() != null) {
             this.updateDate = toDoList.getUpdateDate();

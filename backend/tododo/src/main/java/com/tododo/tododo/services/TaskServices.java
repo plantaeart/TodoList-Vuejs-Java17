@@ -237,7 +237,6 @@ public class TaskServices {
 
                         // Rearanging tasks ids and sorting the tasks list ascending
                         currentToDoList.setTasks(rearangeTasksIds(currentToDoList.getTasks()));
-
                         // update the todo list
                         tdls.updateToDoListByIdFromJSON(
                                         new ToDoListServicesRequest(idsList, List.of(currentToDoList),

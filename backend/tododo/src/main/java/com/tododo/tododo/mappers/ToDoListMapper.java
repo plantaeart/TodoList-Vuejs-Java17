@@ -21,7 +21,7 @@ public class ToDoListMapper {
         dto.setDescription(toDoList.getDescription());
         dto.setCompletionPercentage(toDoList.getCompletionPercentage());
         dto.setColor(toDoList.getColor());
-        dto.setIcon(toDoList.getIcon());
+        dto.getIcon().toIconDTO(toDoList.getIcon());
         dto.setIsCompleted(toDoList.getIsCompleted());
         dto.setUpdateDate(toDoList.getUpdateDate());
 
@@ -34,7 +34,7 @@ public class ToDoListMapper {
                     taskDTO.setTaskContent(task.getTaskContent());
                     taskDTO.setDescription(task.getDescription());
                     taskDTO.setCompletionPercentage(task.getCompletionPercentage());
-                    taskDTO.setIcon(task.getIcon());
+                    taskDTO.getIcon().toIconDTO(task.getIcon());
                     taskDTO.setIsCompleted(task.getIsCompleted());
 
                     // Map subtasks
@@ -45,7 +45,7 @@ public class ToDoListMapper {
                                 subTaskDTO.setType(subTask.getType());
                                 subTaskDTO.setTaskContent(subTask.getTaskContent());
                                 subTaskDTO.setDescription(subTask.getDescription());
-                                subTaskDTO.setIcon(subTask.getIcon());
+                                subTaskDTO.getIcon().toIconDTO(subTask.getIcon());
                                 subTaskDTO.setIsCompleted(subTask.getIsCompleted());
                                 return subTaskDTO;
                             })
@@ -69,7 +69,7 @@ public class ToDoListMapper {
         toDoList.setDescription(dto.getDescription());
         toDoList.setCompletionPercentage(dto.getCompletionPercentage());
         toDoList.setColor(dto.getColor());
-        toDoList.setIcon(dto.getIcon());
+        toDoList.getIcon().fromIconDTO(dto.getIcon());
         toDoList.setIsCompleted(dto.getIsCompleted());
         toDoList.setUpdateDate(dto.getUpdateDate());
 
@@ -82,7 +82,7 @@ public class ToDoListMapper {
                     task.setTaskContent(taskDTO.getTaskContent());
                     task.setDescription(taskDTO.getDescription());
                     task.setCompletionPercentage(taskDTO.getCompletionPercentage());
-                    task.setIcon(taskDTO.getIcon());
+                    task.getIcon().fromIconDTO(taskDTO.getIcon());
                     task.setDescription(taskDTO.getDescription());
                     task.setIsCompleted(taskDTO.getIsCompleted());
 
@@ -94,7 +94,7 @@ public class ToDoListMapper {
                                 subTask.setType(subTaskDTO.getType());
                                 subTask.setTaskContent(subTaskDTO.getTaskContent());
                                 subTask.setDescription(subTaskDTO.getDescription());
-                                subTask.setIcon(subTaskDTO.getIcon());
+                                subTask.getIcon().fromIconDTO(subTaskDTO.getIcon());
                                 subTask.setIsCompleted(subTaskDTO.getIsCompleted());
                                 return subTask;
                             })

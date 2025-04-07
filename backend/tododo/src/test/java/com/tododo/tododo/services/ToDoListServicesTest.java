@@ -78,6 +78,18 @@ public class ToDoListServicesTest {
         System.err.println("==> TODOLIST FINISHING DELETE TEST");
     }
 
+    void testToDoListEmpty() {
+        System.err.println("==> TODOLIST STARTING EMPTY TEST");
+
+        ToDoListServicesResponse respGetAll = service.getAllToDoListsFromJSON(true);
+        assertAll(() -> {
+            assert respGetAll.getCurrentResult().equals(Result.NOT_EXISTING);
+            assert respGetAll.gettoDoLists().size() == 0;
+        });
+
+        System.err.println("==> TODOLIST FINISHING EMPTY TEST");
+    }
+
     @Test
     void workflowTestToDoListAll() {
         System.err.println("==> STARTING TODOLIST TESTS <==");
@@ -89,6 +101,7 @@ public class ToDoListServicesTest {
         testupdateToDoListByIdFromJSON(2, new ToDoListDTO("TestToDoList2Updated"));
         testDeleteToDoListByIdFromJSON(2);
         testDeleteToDoListByIdFromJSON(1);
+        testToDoListEmpty();
 
         System.err.println("==> FINISHING TODOLIST TESTS <==");
     }

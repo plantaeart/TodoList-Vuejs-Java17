@@ -23,7 +23,7 @@ public class ToDoList {
     @JsonProperty(value = "color", required = false)
     private String color = "#FFFFFF";
     @JsonProperty(value = "icon", required = false)
-    private String icon = "";
+    private Icon icon = new Icon();
     @JsonProperty(value = "isCompleted", required = false)
     protected Boolean isCompleted = false;
     @JsonProperty(value = "tasks", required = false)
@@ -37,7 +37,7 @@ public class ToDoList {
     }
 
     public ToDoList(ElementType type, String name, String description, int completionPercentage, String color,
-            String icon, Boolean isCompleted, List<Task> tasks, String updateDate) {
+            Icon icon, Boolean isCompleted, List<Task> tasks, String updateDate) {
         this.type = type;
         this.name = name;
         this.description = description;
@@ -50,7 +50,7 @@ public class ToDoList {
     }
 
     public ToDoList(ElementType type, String name, String description, int completionPercentage, String color,
-            String icon, Boolean isCompleted, List<Task> tasks) {
+            Icon icon, Boolean isCompleted, List<Task> tasks) {
         this.type = type;
         this.name = name;
         this.description = description;
@@ -61,7 +61,7 @@ public class ToDoList {
         this.tasks = tasks;
     }
 
-    public ToDoList(int id, ElementType type, String name, int completionPercentage, String color, String icon,
+    public ToDoList(int id, ElementType type, String name, int completionPercentage, String color, Icon icon,
             Boolean isCompleted) {
         this.id = id;
         this.type = type;
@@ -229,11 +229,11 @@ public class ToDoList {
         this.color = color;
     }
 
-    public String getIcon() {
+    public Icon getIcon() {
         return icon;
     }
 
-    public void setIcon(String icon) {
+    public void setIcon(Icon icon) {
         this.icon = icon;
     }
 
@@ -252,5 +252,4 @@ public class ToDoList {
     public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
     }
-
 }

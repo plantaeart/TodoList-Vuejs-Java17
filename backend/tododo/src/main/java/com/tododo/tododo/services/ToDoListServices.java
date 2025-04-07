@@ -29,6 +29,7 @@ public class ToDoListServices {
         try {
             // creating the mapper json to List<ToDoList>
             ObjectMapper objectMapper = new ObjectMapper();
+
             // Get all list from json file
             List<ToDoList> toDoLists = objectMapper.readValue(JsonUtils.getJsonFile(isTest),
                     new TypeReference<List<ToDoList>>() {

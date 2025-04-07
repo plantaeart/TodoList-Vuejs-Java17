@@ -110,6 +110,7 @@ public class TaskServicesTest {
         testDeleteTaskFromJSON(1, 2);
         testDeleteTaskFromJSON(1, 1);
         toDoListServiceTest.testDeleteToDoListByIdFromJSON(1);
+        toDoListServiceTest.testToDoListEmpty();
 
         System.err.println("==> FINISHING TASKS TESTS <==");
     }
