@@ -47,7 +47,6 @@ const idList = props.idList
 // Handle checkbox change
 const onCheckboxChange = async (value: boolean) => {
   let respTask: TaskResponse = new TaskResponse()
-  let respToDoList: ToDoListResponse = new ToDoListResponse()
   try {
     // Update the local copy
     localTask.value.isCompleted = value
@@ -70,19 +69,10 @@ const onCheckboxChange = async (value: boolean) => {
     // Check if the response is valid and contains the expected data
     if (respTask.currentResult === Result.OK) {
       storeTask.rearrangeArrayIdsTask(idList)
+
+      // Update the ToDoList with the new task status
+      checkToDoListCompletedState(currentToDoList)
     } else console.error(`Failed to update task. Response: ${respTask.message}`)
-
-    // Update the ToDoList with the new task status
-    respToDoList = await storeToDoList.updateToDoListById(
-      new ToDoListRequest([idList], [currentToDoList], false),
-      ElementType.TASK.toString(),
-    )
-
-    // Check if the response is valid and contains the expected data
-    if (respToDoList.currentResult !== Result.OK)
-      console.error(
-        `Failed to update for todo list id: ${idList} - Response: ${respToDoList.message}`,
-      )
   } catch (error) {
     console.error(
       `(FRONT) Error while updating Task id: ${localTask.value.id} from ToDoList id: ${idList}, error : ${error}`,
@@ -103,6 +93,10 @@ const deleteTaskFromDisplayList = async () => {
       idsTask: [idToDelete],
       isTest: false,
     }
+    const currentToDoList = storeToDoList.allToDoListState.find(
+      (item) => item.id === idList,
+    ) as ToDoList
+
     //const toDoListStore = useToDoListStore()
     // Await the response from the store
     resp = await storeTask.deleteTaskById(req)
@@ -111,6 +105,9 @@ const deleteTaskFromDisplayList = async () => {
     if (resp.currentResult === Result.OK) {
       // Remove the deleted item from the local list
       storeTask.rearrangeArrayIdsTask(idList)
+
+      // Update the ToDoList with the new task status
+      checkToDoListCompletedState(currentToDoList)
     } else console.error('Failed to delete todo list. Response:', resp)
   } catch (error) {
     console.error(
@@ -120,6 +117,22 @@ const deleteTaskFromDisplayList = async () => {
       `(BACK) Error while deleting Task id: ${localTask.value.id} from ToDoList id: ${idList}, error : ${resp.message}`,
     )
   }
+}
+
+const checkToDoListCompletedState = async (currentToDoList: ToDoList) => {
+  let respToDoList: ToDoListResponse = new ToDoListResponse()
+
+  // Update the ToDoList with the new task status
+  respToDoList = await storeToDoList.updateToDoListById(
+    new ToDoListRequest([idList], [currentToDoList], false),
+    ElementType.TASK.toString(),
+  )
+
+  // Check if the response is valid and contains the expected data
+  if (respToDoList.currentResult !== Result.OK)
+    console.error(
+      `Failed to update for todo list id: ${idList} - Response: ${respToDoList.message}`,
+    )
 }
 </script>
 
