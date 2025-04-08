@@ -12,24 +12,39 @@ import { Result } from '@/types/result'
 import { Task } from '@/features/task/Task'
 import { ToDoList } from '@/features/toDoList/ToDoList'
 import { icons } from '@/constants/icons'
+import { colors } from '@/constants/colors'
+import { Icon } from '@/features/classes/Icon'
+import { rearrangeArrayIds } from '@/utils/arrayUtils'
+import { Color } from '@/features/classes/Color'
 
 const store = useToDoListStore()
 const req: ToDoListRequest = new ToDoListRequest()
 const toDoListToAdd = ref(new ToDoList())
 const tasks = ref<Task[]>([])
+const selectedColor = ref(new Color())
+const selectedIcons = ref(new Array<Icon>())
+const defaultIcon = new Icon('Star', 'pi pi-star')
+const defaultColor = new Color('Yellow 100', 'bg-yellow-100')
 
 onMounted(() => {
-  toDoListToAdd.value.icon = icons.find((icon) => icon.name === 'Star')
+  selectedIcons.value.push(defaultIcon)
+  selectedColor.value = defaultColor
 })
 
 const addToDoListFromFormInfos = async () => {
   let resp: ToDoListResponse = new ToDoListResponse()
+  // Adding the icon to correct task
   try {
+    tasks.value.forEach((task) => {
+      task.icon = new Icon(selectedIcons.value[task.id].name, selectedIcons.value[task.id].icon)
+    })
+
     req.toDoLists = [
       {
         name: toDoListToAdd.value.name,
         description: toDoListToAdd.value.description,
-        icon: toDoListToAdd.value.icon,
+        icon: new Icon(selectedIcons.value[0].name, selectedIcons.value[0].icon),
+        color: new Color(selectedColor.value.name, selectedColor.value.color),
         tasks: tasks.value.filter((item) => item.taskContent !== ''),
       },
     ] // Prepare the request
@@ -49,8 +64,9 @@ const addToDoListFromFormInfos = async () => {
 // Function to add a new task in form
 const addingNewTask = async () => {
   if (!toDoListToAdd.value.name) return
-
-  tasks.value.push(new Task(tasks.value.length + 1, ''))
+  const idTask = tasks.value.length + 1
+  tasks.value.push(new Task({ id: idTask, taskContent: '', icon: defaultIcon }))
+  selectedIcons.value[idTask] = defaultIcon
 }
 
 // Function to delete a task in form
@@ -61,6 +77,8 @@ const deleteNewTask = async (taskId: number) => {
   if (index !== -1) {
     tasks.value.splice(index, 1)
   }
+
+  tasks.value = rearrangeArrayIds(tasks.value)
 }
 
 const clearDescription = async () => {
@@ -77,13 +95,40 @@ defineExpose({
     <div id="formElements" class="flex flex-col gap-2 w-4/5 justify-center">
       <div class="flex flex-row items-end justify-center">
         <Select
-          v-model="toDoListToAdd.icon"
+          v-model="selectedColor"
+          :options="colors"
+          filter
+          optionLabel="name"
+          class="w-1/4 mr-4 size-10"
+          size="large"
+          @value-change="
+            (selectedColor) => {
+              selectedColor.value = selectedColor as Color
+            }
+          "
+        >
+          <!-- Custom selected value template -->
+          <template #value="slotProps">
+            <div v-if="slotProps.value" class="flex items-center justify-center w-full">
+              <span :class="['h-5', 'w-full', 'rounded-md', slotProps.value.color]" />
+            </div>
+            <span v-else>{{ slotProps.placeholder }}</span>
+          </template>
+
+          <!-- Custom dropdown options template -->
+          <template #option="slotProps">
+            <div class="flex items-center w-full">
+              <span :class="['h-5', 'w-full', 'rounded-md', slotProps.option.color]" />
+            </div>
+          </template>
+        </Select>
+        <Select
+          v-model="selectedIcons[0]"
           :options="icons"
           filter
           optionLabel="name"
-          class="w-1/5 mr-4 size-10"
+          class="w-1/4 mr-4 size-10"
           size="large"
-          @value-change="toDoListToAdd.icon = $event.value"
         >
           <!-- Custom selected value template -->
           <template #value="slotProps">
@@ -134,9 +179,13 @@ defineExpose({
         </div>
       </div>
 
-      <div v-for="task in tasks" :key="task.id" class="flex flex-row justify-end items-center">
+      <div
+        v-for="(task, index) in tasks"
+        :key="task.id"
+        class="flex flex-row justify-end items-center"
+      >
         <Select
-          v-model="task.icon"
+          v-model="selectedIcons[index + 1]"
           :options="icons"
           filter
           optionLabel="name"

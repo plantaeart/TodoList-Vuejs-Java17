@@ -1,6 +1,7 @@
 import { ElementType } from '@/types/elementType'
 import type { Task } from '../task/Task'
 import { Icon } from '../classes/Icon'
+import { Color } from '../classes/Color'
 
 export class ToDoList {
   id?: number = 0
@@ -8,7 +9,7 @@ export class ToDoList {
   name: string = ''
   description?: string = ''
   completionPercentage?: number = 0
-  color?: string = '#FFFFFF'
+  color?: Color = new Color()
   icon?: Icon = new Icon()
   isCompleted?: boolean = false
   tasks?: Array<Task> = []
@@ -20,7 +21,7 @@ export class ToDoList {
     name: string = '',
     description: string = '',
     completionPercentage: number = 0,
-    color: string = '#FFFFFF',
+    color: Color = new Color(),
     icon: Icon = new Icon(),
     isCompleted: boolean = false,
     tasks: Array<Task> = [],

@@ -12,23 +12,17 @@ export class Task {
   isCompleted: boolean = false
   subTasks: Array<SubTask> = []
 
-  constructor(
-    id: number = 0,
-    taskContent: string = '',
-    type: ElementType = ElementType.TASK,
-    description: string = '',
-    completionPercentage: number = 0,
-    icon: Icon = new Icon(),
-    isCompleted: boolean = false,
-    subTasks: Array<SubTask> = [],
-  ) {
-    this.id = id
-    this.type = type
-    this.taskContent = taskContent
-    this.description = description
-    this.completionPercentage = completionPercentage
-    this.icon = icon
-    this.isCompleted = isCompleted
-    this.subTasks = subTasks
+  constructor(params?: {
+    id?: number
+    type?: ElementType
+    taskContent?: string
+    description?: string
+    icon?: Icon
+  }) {
+    this.id = params?.id ?? 0
+    this.type = params?.type ?? ElementType.TASK
+    this.taskContent = params?.taskContent ?? ''
+    this.description = params?.description ?? ''
+    this.icon = params?.icon ?? new Icon()
   }
 }

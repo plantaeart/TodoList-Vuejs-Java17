@@ -47,11 +47,13 @@ watch(
     <div>
       <AddToDoList />
     </div>
-    <div class="flex flex-col items-start" v-for="toDoList in localToDoLists" :key="toDoList.id">
-      <p v-if="debug">Todo list name : {{ toDoList.name }} and id : {{ toDoList.id }}</p>
-      <DisplayToDoListItem :to-do-list="toDoList" />
-      <div class="flex flex-row items-center ml-10" v-for="task in toDoList.tasks" :key="task.id">
-        <DisplayTaskItem :task="task" :id-list="toDoList.id as number" />
+    <div class="flex flex-row mb-4" v-for="toDoList in localToDoLists" :key="toDoList.id">
+      <div :class="[toDoList.color?.color, 'shadow-md']" class="rounded-lg">
+        <p v-if="debug">Todo list name : {{ toDoList.name }} and id : {{ toDoList.id }}</p>
+        <DisplayToDoListItem :to-do-list="toDoList" />
+        <div class="flex flex-row items-center ml-10" v-for="task in toDoList.tasks" :key="task.id">
+          <DisplayTaskItem :task="task" :id-list="toDoList.id as number" />
+        </div>
       </div>
     </div>
   </div>
