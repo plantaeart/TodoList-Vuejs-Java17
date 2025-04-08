@@ -69,7 +69,7 @@ public class SubTaskServicesTest {
         // Assert that the result is OK
         assertAll(() -> {
             assert respUpdate.getCurrentResult().equals(Result.OK);
-            assert respUpdate.getSubTaskList().get(0).getTaskContent() == updatedData.getTaskContent();
+            assert respUpdate.getSubTasks().get(0).getTaskContent() == updatedData.getTaskContent();
         });
 
         System.err.println("==> SUBTASK FINISHING UPDATE TEST");
@@ -88,7 +88,7 @@ public class SubTaskServicesTest {
         // Assert that the result is OK
         assertAll(() -> {
             assert respSwitch.getCurrentResult().equals(Result.OK);
-            assert respSwitch.getSubTaskList().get(0).getTaskContent().equals(subTaskContentTest);
+            assert respSwitch.getSubTasks().get(0).getTaskContent().equals(subTaskContentTest);
         });
 
         System.err.println("==> SUBTASK FINISHING SWITCH POSITION TEST");
@@ -103,7 +103,7 @@ public class SubTaskServicesTest {
         // Assert that the result is OK
         assertAll(() -> {
             assert respEmpty.getCurrentResult().equals(Result.NOT_EXISTING);
-            assert respEmpty.getSubTaskList().isEmpty();
+            assert respEmpty.getSubTasks().isEmpty();
         });
 
         System.err.println("==> SUBTASK FINISHING EMPTY TEST");

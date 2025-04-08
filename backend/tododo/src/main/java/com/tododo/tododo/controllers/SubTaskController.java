@@ -20,7 +20,7 @@ public class SubTaskController {
     private SubTaskServices service = new SubTaskServices();
 
     @GetMapping("getSubTaskById")
-    public SubTaskServicesResponse getSubTasksById(@RequestParam int[] idsList, @RequestParam int[] idsTask,
+    public SubTaskServicesResponse getSubTaskById(@RequestParam int[] idsList, @RequestParam int[] idsTask,
             @RequestParam int[] idsSubTask, @RequestParam boolean isTest) {
         return service.getSubTaskByIdFromJSON(idsList, idsTask, idsSubTask, isTest);
     }

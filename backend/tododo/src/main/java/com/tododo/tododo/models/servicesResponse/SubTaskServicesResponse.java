@@ -35,11 +35,11 @@ public class SubTaskServicesResponse {
         this.message = message;
     }
 
-    public List<SubTaskDTO> getSubTaskList() {
+    public List<SubTaskDTO> getSubTasks() {
         return subTasks;
     }
 
-    public void setSubTaskList(List<SubTaskDTO> subTasks) {
+    public void setSubTasks(List<SubTaskDTO> subTasks) {
         this.subTasks = subTasks;
     }
 

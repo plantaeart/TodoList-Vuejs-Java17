@@ -27,8 +27,8 @@ public class SubTaskServices {
                                                         isTest)
                                         .getTasks().get(0);
 
-                        resp.setSubTaskList(currentTask.getSubTasks());
-                        boolean isListEmpty = resp.getSubTaskList().size() == 0;
+                        resp.setSubTasks(currentTask.getSubTasks());
+                        boolean isListEmpty = resp.getSubTasks().size() == 0;
                         resp.setCurrentResult(isListEmpty ? Result.NOT_EXISTING : Result.OK);
                         resp.setMessage(isListEmpty
                                         ? "No SubTasks found from Task ID "
@@ -79,7 +79,7 @@ public class SubTaskServices {
                         // Set the retrieved subtask in the response
                         List<SubTaskDTO> subTasks = new ArrayList<>();
                         subTasks.add(subTask);
-                        resp.setSubTaskList(subTasks);
+                        resp.setSubTasks(subTasks);
                         resp.setCurrentResult(Result.OK);
                         resp.setMessage("SubTask with ID " + subTask.getId() + " retrieved successfully from Task ID "
                                         + currentTask.getId() + " in Todo List ID " + idsList[0]);
@@ -130,7 +130,7 @@ public class SubTaskServices {
                         // Creating a List<Task> for request creation
                         List<TaskDTO> taskToUpdate = new ArrayList<TaskDTO>();
                         taskToUpdate.add(currentTask);
-                        resp.setSubTaskList(req.getSubTasks());
+                        resp.setSubTasks(req.getSubTasks());
                         // update the todo list
                         ts.updateTaskByIdFromJSON(
                                         new TaskServicesRequest(req.getIdsList(), req.getIdsTask(), taskToUpdate,
@@ -196,7 +196,7 @@ public class SubTaskServices {
                                         new TaskServicesRequest(idsList, idsTask, taskToUpdate,
                                                         isTest));
 
-                        resp.setSubTaskList(List.of(subTaskToDelete));
+                        resp.setSubTasks(List.of(subTaskToDelete));
                         resp.setCurrentResult(Result.OK);
                         resp.setMessage("SubTask with ID " + subTaskToDelete.getId() + " from Task ID "
                                         + currentTask.getId()
@@ -209,7 +209,7 @@ public class SubTaskServices {
                         System.err.println(message);
                         resp.setMessage(message);
                         resp.setCurrentResult(Result.ERROR);
-                        resp.setSubTaskList(List.of(subTaskToDelete));
+                        resp.setSubTasks(List.of(subTaskToDelete));
 
                         return resp;
                 }
@@ -255,7 +255,7 @@ public class SubTaskServices {
                                         new TaskServicesRequest(req.getIdsList(), req.getIdsTask(), taskToUpdate,
                                                         req.getIsTest()));
 
-                        resp.setSubTaskList(List.of(subTaskToUpdate));
+                        resp.setSubTasks(List.of(subTaskToUpdate));
                         resp.setCurrentResult(Result.OK);
                         resp.setMessage("SubTask with ID " + subTaskToUpdate.getId() + " from Task ID "
                                         + currentTask.getId()
@@ -268,7 +268,7 @@ public class SubTaskServices {
                         System.err.println(message);
                         resp.setMessage(message);
                         resp.setCurrentResult(Result.ERROR);
-                        resp.setSubTaskList(List.of(req.getSubTasks().get(0)));
+                        resp.setSubTasks(List.of(req.getSubTasks().get(0)));
 
                         return resp;
                 }
@@ -334,7 +334,7 @@ public class SubTaskServices {
                                                         List.of(currentTask),
                                                         req.getIsTest()));
 
-                        resp.setSubTaskList(List.of(subTaskToSwitch2, subTaskToSwitch1));
+                        resp.setSubTasks(List.of(subTaskToSwitch2, subTaskToSwitch1));
                         resp.setCurrentResult(Result.OK);
                         resp.setMessage("SubTask1 and 2 had their ids switched from Task ID "
                                         + currentTask.getId()
@@ -348,7 +348,7 @@ public class SubTaskServices {
                         System.err.println(message);
                         resp.setMessage(message);
                         resp.setCurrentResult(Result.ERROR);
-                        resp.setSubTaskList(List.of(req.getSubTasks().get(0)));
+                        resp.setSubTasks(List.of(req.getSubTasks().get(0)));
 
                         return resp;
                 }

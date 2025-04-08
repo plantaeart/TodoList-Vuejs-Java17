@@ -4,6 +4,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -116,6 +118,8 @@ public class ToDoListServices {
             // Updating task informations
             ToDoListDTO updatedToDoList = req.getToDoLists().get(0);
             toDoListToUpdate.setToDoListDTO(updatedToDoList);
+            toDoListToUpdate
+                    .setUpdateDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 
             // overwrites the content of file
             OutputStreamWriter writer = new OutputStreamWriter(
