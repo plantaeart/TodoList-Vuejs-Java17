@@ -45,12 +45,17 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
         * Mise en place des tests JUnit 🟩
   * Mise en place du projet front Vuejs 3 🟩
   * Mise en place des tâche à réaliser pour le front 🟩
+    * Mise en place des compotement basic (Create, update, delete, switch) for ToDoList 🟩
+    * Mise en place du style 🟩
+    * Mise en place des compotement basic (Create, update, delete, switch) for Task 🟩
+    * Mise en place du style 🟩
     * Mise en place des compotement basic (Create, update, delete, switch) for ToDoList 🟧
     * Mise en place du style 🟪
-    * Mise en place des compotement basic (Create, update, delete, switch) for Task
-    * Mise en place du style 🟪
-    * Mise en place des compotement basic (Create, update, delete, switch) for ToDoList 🟪
-    * Mise en place du style 🟪
+    * Mise en place d'un display en format grille 🟪
+    * Mettre la possibilité d'update une tâche (réutilisation addToDoListform component) 🟪
+    * Mise en place de la feature du switch des tasks de position 🟪
+    * Mise en place de la feature du switch des subTasks de position 🟪
+    * Création de la feature pour pin des tâches 🟪
   * Adding some integration tests with cypress 🟪
 
 ## Notes à moi même 😐
