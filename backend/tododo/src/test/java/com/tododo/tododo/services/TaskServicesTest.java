@@ -96,6 +96,19 @@ public class TaskServicesTest {
         System.err.println("==> TASK FINISHING SWITCH TASK POSITION TESTS");
     }
 
+    void testTaskEmpty(int idList) {
+        System.err.println("==> TASK STARTING EMPTY TEST");
+
+        TaskServicesResponse respGetAll = service.getAllTasksFromJSON(new int[] { idList }, true);
+
+        assertAll(() -> {
+            assert respGetAll.getCurrentResult().equals(Result.NOT_EXISTING);
+            assert respGetAll.getTasks().isEmpty();
+        });
+
+        System.err.println("==> TASK FINISHING EMPTY TEST");
+    }
+
     @Test
     void workflowTestTaskAll() {
         System.err.println("==> STARTING TASKS TESTS <==");
@@ -109,6 +122,7 @@ public class TaskServicesTest {
         testSwitchTaskPositionFromJSON(1, 1, 2, "TestTask2Updated");
         testDeleteTaskFromJSON(1, 2);
         testDeleteTaskFromJSON(1, 1);
+        testTaskEmpty(1);
         toDoListServiceTest.testDeleteToDoListByIdFromJSON(1);
         toDoListServiceTest.testToDoListEmpty();
 

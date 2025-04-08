@@ -21,7 +21,7 @@ public class ToDoList {
     @JsonProperty(value = "completionPercentage", required = false)
     private int completionPercentage = 0;
     @JsonProperty(value = "color", required = false)
-    private String color = "#FFFFFF";
+    private Color color = new Color();
     @JsonProperty(value = "icon", required = false)
     private Icon icon = new Icon();
     @JsonProperty(value = "isCompleted", required = false)
@@ -36,7 +36,7 @@ public class ToDoList {
     public ToDoList() {
     }
 
-    public ToDoList(ElementType type, String name, String description, int completionPercentage, String color,
+    public ToDoList(ElementType type, String name, String description, int completionPercentage, Color color,
             Icon icon, Boolean isCompleted, List<Task> tasks, String updateDate) {
         this.type = type;
         this.name = name;
@@ -49,7 +49,7 @@ public class ToDoList {
         this.updateDate = updateDate;
     }
 
-    public ToDoList(ElementType type, String name, String description, int completionPercentage, String color,
+    public ToDoList(ElementType type, String name, String description, int completionPercentage, Color color,
             Icon icon, Boolean isCompleted, List<Task> tasks) {
         this.type = type;
         this.name = name;
@@ -61,7 +61,7 @@ public class ToDoList {
         this.tasks = tasks;
     }
 
-    public ToDoList(int id, ElementType type, String name, int completionPercentage, String color, Icon icon,
+    public ToDoList(int id, ElementType type, String name, int completionPercentage, Color color, Icon icon,
             Boolean isCompleted) {
         this.id = id;
         this.type = type;
@@ -221,11 +221,11 @@ public class ToDoList {
         this.completionPercentage = completionPercentage;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 

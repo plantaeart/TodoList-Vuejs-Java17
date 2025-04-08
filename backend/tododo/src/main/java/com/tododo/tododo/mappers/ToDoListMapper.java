@@ -20,7 +20,7 @@ public class ToDoListMapper {
         dto.setName(toDoList.getName());
         dto.setDescription(toDoList.getDescription());
         dto.setCompletionPercentage(toDoList.getCompletionPercentage());
-        dto.setColor(toDoList.getColor());
+        dto.getColor().toColorDTO(toDoList.getColor());
         dto.getIcon().toIconDTO(toDoList.getIcon());
         dto.setIsCompleted(toDoList.getIsCompleted());
         dto.setUpdateDate(toDoList.getUpdateDate());
@@ -68,7 +68,7 @@ public class ToDoListMapper {
         toDoList.setName(dto.getName());
         toDoList.setDescription(dto.getDescription());
         toDoList.setCompletionPercentage(dto.getCompletionPercentage());
-        toDoList.setColor(dto.getColor());
+        toDoList.getColor().fromColorDTO(dto.getColor());
         toDoList.getIcon().fromIconDTO(dto.getIcon());
         toDoList.setIsCompleted(dto.getIsCompleted());
         toDoList.setUpdateDate(dto.getUpdateDate());

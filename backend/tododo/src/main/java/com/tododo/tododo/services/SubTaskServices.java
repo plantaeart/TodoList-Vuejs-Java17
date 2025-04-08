@@ -16,6 +16,38 @@ public class SubTaskServices {
 
         TaskServices ts = new TaskServices();
 
+        // Get all SubTasks
+        public SubTaskServicesResponse getAllSubTasksFromJSON(int[] idsList, int[] idsTask, boolean isTest) {
+                SubTaskServicesResponse resp = new SubTaskServicesResponse();
+
+                try {
+                        // Getting the current task
+                        TaskDTO currentTask = ts
+                                        .getTaskByIdFromJSON(idsList, idsTask,
+                                                        isTest)
+                                        .getTasks().get(0);
+
+                        resp.setSubTaskList(currentTask.getSubTasks());
+                        boolean isListEmpty = resp.getSubTaskList().size() == 0;
+                        resp.setCurrentResult(isListEmpty ? Result.NOT_EXISTING : Result.OK);
+                        resp.setMessage(isListEmpty
+                                        ? "No SubTasks found from Task ID "
+                                                        + currentTask.getId() + " in Todo List ID " + idsList[0]
+                                        : "");
+
+                } catch (Exception e) {
+                        String message = "Error while retrieving all SubTasks from Task ID " + idsTask[0]
+                                        + " in Todo List ID " + idsList[0]
+                                        + " - message: " + e.getMessage();
+                        System.err.println(message);
+                        resp.setMessage(message);
+                        resp.setCurrentResult(Result.ERROR);
+                        return resp;
+                }
+
+                return resp;
+        }
+
         // Get a SubTask
         public SubTaskServicesResponse getSubTaskByIdFromJSON(int[] idsList, int[] idsTask, int[] idsSubTask,
                         boolean isTest) {

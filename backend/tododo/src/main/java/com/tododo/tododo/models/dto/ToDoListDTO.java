@@ -13,32 +13,32 @@ public class ToDoListDTO {
     private String name;
     private String description = "";
     private int completionPercentage = 0;
-    private String color = "#FFFFFF";
+    private ColorDTO ColorDTO = new ColorDTO();
     private IconDTO icon = new IconDTO();
     private Boolean isCompleted = false;
     private List<TaskDTO> tasks = new ArrayList<TaskDTO>();
     private String updateDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
 
-    public ToDoListDTO(ElementType type, String name, String description, int completionPercentage, String color,
+    public ToDoListDTO(ElementType type, String name, String description, int completionPercentage, ColorDTO ColorDTO,
             IconDTO icon, Boolean isCompleted, List<TaskDTO> tasks, String updateDate) {
         this.type = type;
         this.name = name;
         this.description = description;
         this.completionPercentage = completionPercentage;
-        this.color = color;
+        this.ColorDTO = ColorDTO;
         this.icon = icon;
         this.isCompleted = isCompleted;
         this.tasks = tasks;
         this.updateDate = updateDate;
     }
 
-    public ToDoListDTO(ElementType type, String name, String description, int completionPercentage, String color,
+    public ToDoListDTO(ElementType type, String name, String description, int completionPercentage, ColorDTO ColorDTO,
             IconDTO icon, Boolean isCompleted, List<TaskDTO> tasks) {
         this.type = type;
         this.name = name;
         this.description = description;
         this.completionPercentage = completionPercentage;
-        this.color = color;
+        this.ColorDTO = ColorDTO;
         this.icon = icon;
         this.isCompleted = isCompleted;
         this.tasks = tasks;
@@ -54,7 +54,7 @@ public class ToDoListDTO {
     @Override
     public String toString() {
         return "ToDoListDTO [id=" + id + ", type=" + type + ", name=" + name + ", description=" + description
-                + ", completionPercentage=" + completionPercentage + ", color=" + color + ", icon=" + icon
+                + ", completionPercentage=" + completionPercentage + ", ColorDTO=" + ColorDTO + ", icon=" + icon
                 + ", isCompleted=" + isCompleted + ", tasks=" + tasks + ", updateDate=" + updateDate + "]";
     }
 
@@ -67,7 +67,7 @@ public class ToDoListDTO {
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + completionPercentage;
-        result = prime * result + ((color == null) ? 0 : color.hashCode());
+        result = prime * result + ((ColorDTO == null) ? 0 : ColorDTO.hashCode());
         result = prime * result + ((icon == null) ? 0 : icon.hashCode());
         result = prime * result + ((isCompleted == null) ? 0 : isCompleted.hashCode());
         result = prime * result + ((tasks == null) ? 0 : tasks.hashCode());
@@ -100,10 +100,10 @@ public class ToDoListDTO {
             return false;
         if (completionPercentage != other.completionPercentage)
             return false;
-        if (color == null) {
-            if (other.color != null)
+        if (ColorDTO == null) {
+            if (other.ColorDTO != null)
                 return false;
-        } else if (!color.equals(other.color))
+        } else if (!ColorDTO.equals(other.ColorDTO))
             return false;
         if (icon == null) {
             if (other.icon != null)
@@ -176,12 +176,12 @@ public class ToDoListDTO {
         this.completionPercentage = completionPercentage;
     }
 
-    public String getColor() {
-        return color;
+    public ColorDTO getColor() {
+        return ColorDTO;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setColor(ColorDTO ColorDTO) {
+        this.ColorDTO = ColorDTO;
     }
 
     public IconDTO getIcon() {
@@ -227,7 +227,7 @@ public class ToDoListDTO {
             this.completionPercentage = toDoList.getCompletionPercentage();
         }
         if (toDoList.getColor() != null) {
-            this.color = toDoList.getColor();
+            this.ColorDTO = toDoList.getColor();
         }
         if (toDoList.getIcon() != null) {
             this.icon = toDoList.getIcon();

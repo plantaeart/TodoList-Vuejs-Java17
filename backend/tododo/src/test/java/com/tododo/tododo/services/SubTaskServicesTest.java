@@ -94,6 +94,21 @@ public class SubTaskServicesTest {
         System.err.println("==> SUBTASK FINISHING SWITCH POSITION TEST");
     }
 
+    void testSubTaskEmpty(int idList, int idTask) {
+        System.err.println("==> SUBTASK STARTING EMPTY TEST");
+
+        // Call the service method to check if the SubTask is empty and get the response
+        SubTaskServicesResponse respEmpty = service.getAllSubTasksFromJSON(new int[] { idList }, new int[] { idTask },
+                true);
+        // Assert that the result is OK
+        assertAll(() -> {
+            assert respEmpty.getCurrentResult().equals(Result.NOT_EXISTING);
+            assert respEmpty.getSubTaskList().isEmpty();
+        });
+
+        System.err.println("==> SUBTASK FINISHING EMPTY TEST");
+    }
+
     @Test
     void workflowTestSubTasksAll() {
         System.err.println("==> STARTING SUBTASKS TESTS <==");
@@ -107,6 +122,7 @@ public class SubTaskServicesTest {
         testSwitchTaskPositionFromJSON(1, 1, 1, 2, "TestSubTask2Updated");
         testdeleteSubTaskByIdFromJSON(1, 1, 2);
         testdeleteSubTaskByIdFromJSON(1, 1, 1);
+        testSubTaskEmpty(1, 1);
         taskServiceTest.testDeleteTaskFromJSON(1, 1);
         toDoListServiceTest.testDeleteToDoListByIdFromJSON(1);
         toDoListServiceTest.testToDoListEmpty();
