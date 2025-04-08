@@ -8,8 +8,6 @@ import { TaskResponse } from '@/features/task/TaskResponse'
 import { Result } from '@/types/result'
 import { Task } from '@/features/task/Task'
 import { useTaskStore } from '@/features/task/TaskStore'
-import { ToDoListResponse } from '@/features/toDoList/ToDoListResponse'
-import { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
 import type { ToDoList } from '@/features/toDoList/ToDoList'
 import { ElementType } from '@/types/elementType'
 import appEnv from 'app-env'
@@ -64,14 +62,18 @@ const onCheckboxChange = async (value: boolean) => {
     console.log(`Start updating Task id : ${localTask.value.id} from todo list id : ${idList}`)
 
     // Await the response from the store
-    respTask = await storeTask.updateTaskById(req)
+    respTask = await storeTask.updateTaskById(req, ElementType.TASK.toString())
 
     // Check if the response is valid and contains the expected data
     if (respTask.currentResult === Result.OK) {
       storeTask.rearrangeArrayIdsTask(idList)
 
       // Update the ToDoList with the new task status
-      checkToDoListCompletedState(currentToDoList)
+      storeToDoList.checkToDoListCompletedState(
+        idList,
+        currentToDoList,
+        ElementType.TASK.toString(),
+      )
     } else console.error(`Failed to update task. Response: ${respTask.message}`)
   } catch (error) {
     console.error(
@@ -107,7 +109,11 @@ const deleteTaskFromDisplayList = async () => {
       storeTask.rearrangeArrayIdsTask(idList)
 
       // Update the ToDoList with the new task status
-      checkToDoListCompletedState(currentToDoList)
+      storeToDoList.checkToDoListCompletedState(
+        idList,
+        currentToDoList,
+        ElementType.TASK.toString(),
+      )
     } else console.error('Failed to delete todo list. Response:', resp)
 
     console.log('Finish delete task id : ' + idToDelete)
@@ -119,22 +125,6 @@ const deleteTaskFromDisplayList = async () => {
       `(BACK) Error while deleting Task id: ${localTask.value.id} from ToDoList id: ${idList}, error : ${resp.message}`,
     )
   }
-}
-
-const checkToDoListCompletedState = async (currentToDoList: ToDoList) => {
-  let respToDoList: ToDoListResponse = new ToDoListResponse()
-
-  // Update the ToDoList with the new task status
-  respToDoList = await storeToDoList.updateToDoListById(
-    new ToDoListRequest([idList], [currentToDoList], false),
-    ElementType.TASK.toString(),
-  )
-
-  // Check if the response is valid and contains the expected data
-  if (respToDoList.currentResult !== Result.OK)
-    console.error(
-      `Failed to update for todo list id: ${idList} - Response: ${respToDoList.message}`,
-    )
 }
 </script>
 

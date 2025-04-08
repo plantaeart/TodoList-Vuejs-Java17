@@ -2,10 +2,10 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import toDoListService from '@/api/services/ToDoListServices'
 import { ToDoListRequest } from './ToDoListRequest'
-import type { ToDoListResponse } from './ToDoListResponse'
+import { ToDoListResponse } from './ToDoListResponse'
 import { ToDoList } from './ToDoList'
-import dayjs from 'dayjs'
 import { ElementType } from '@/types/elementType'
+import { Result } from '@/types/result'
 
 export const useToDoListStore = defineStore('toDoListStore', () => {
   //* State
@@ -23,6 +23,25 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
   })
 
   //* Actions
+  const checkToDoListCompletedState = async (
+    idList: number,
+    currentToDoList: ToDoList,
+    from: string,
+  ) => {
+    let respToDoList: ToDoListResponse = new ToDoListResponse()
+
+    // Update the ToDoList with the new task status
+    respToDoList = await updateToDoListById(
+      new ToDoListRequest([idList], [currentToDoList], false),
+      from,
+    )
+
+    // Check if the response is valid and contains the expected data
+    if (respToDoList.currentResult !== Result.OK)
+      console.error(
+        `Failed to update for todo list id: ${idList} - Response: ${respToDoList.message}`,
+      )
+  }
 
   const checkIfAllTaskCompleted = (idList: number): boolean => {
     const toDoList = allToDoListState.value.find((item) => item.id === idList)
@@ -56,14 +75,15 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
         case ElementType.TODOLIST:
           const populateCompleted = req.toDoLists[0].isCompleted as boolean
           req.toDoLists[0].tasks?.forEach((task) => (task.isCompleted = populateCompleted))
+          req.toDoLists[0].tasks?.forEach((task) =>
+            task.subTasks?.forEach((subTask) => (subTask.isCompleted = populateCompleted)),
+          )
           break
         case ElementType.TASK:
           const isTasksCompleted = checkIfAllTaskCompleted(req.idsList[0])
           req.toDoLists[0].isCompleted = isTasksCompleted
           break
       }
-      // Update the updateDate property to the current date
-      req.toDoLists[0].updateDate = dayjs().format('YYYY-MM-DD HH:mm:ss')
     }
 
     const response = await toDoListService.updateToDoListById(req)
@@ -113,6 +133,7 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
     toDoListResp,
     sizeToDoList,
     rearrangeArrayIdsList,
+    checkToDoListCompletedState,
     checkIfAllTaskCompleted,
     getAllToDoLists,
     getToDoListById,

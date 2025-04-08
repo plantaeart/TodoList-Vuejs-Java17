@@ -1,20 +1,23 @@
-import type { Task } from './Task'
+import type { SubTask } from './SubTask'
 
-export class TaskRequest {
+export class SubTaskRequest {
   idsList: number[] = []
   idsTask: number[] = []
-  tasks?: Array<Task> = []
+  idsSubTask: number[] = []
+  subTasks?: Array<SubTask> = []
   isTest: boolean = false
 
   constructor(params?: {
     idsList?: number[]
     idsTask?: number[]
-    tasks?: Array<Task>
+    idsSubTask?: number[]
+    subTasks?: Array<SubTask>
     isTest?: boolean
   }) {
     this.idsList = params?.idsList ?? []
     this.idsTask = params?.idsTask ?? []
-    this.tasks = params?.tasks ?? []
+    this.idsSubTask = params?.idsSubTask ?? []
+    this.subTasks = params?.subTasks ?? []
     this.isTest = params?.isTest ?? false
   }
 }

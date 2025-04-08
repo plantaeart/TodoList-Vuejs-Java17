@@ -4,6 +4,7 @@ import { ref, watch } from 'vue'
 import DisplayToDoListItem from './toDoList/DisplayToDoListItem.vue'
 import AddToDoList from './toDoList/addToDoList/AddToDoList.vue'
 import DisplayTaskItem from './task/DisplayTaskItem.vue'
+import DisplaySubTaskItem from './subTask/DisplaySubTaskItem.vue'
 import type { ToDoList } from '@/features/toDoList/ToDoList'
 import appEnv from 'app-env'
 
@@ -48,11 +49,22 @@ watch(
       <AddToDoList />
     </div>
     <div class="flex flex-row mb-4" v-for="toDoList in localToDoLists" :key="toDoList.id">
-      <div :class="[toDoList.color?.color, 'shadow-md']" class="rounded-lg">
+      <div :class="[toDoList.color?.color]" class="rounded-lg w-1/2 shadow-md">
         <p v-if="debug">Todo list name : {{ toDoList.name }} and id : {{ toDoList.id }}</p>
         <DisplayToDoListItem :to-do-list="toDoList" />
-        <div class="flex flex-row items-center ml-10" v-for="task in toDoList.tasks" :key="task.id">
+        <div class="flex flex-col ml-6" v-for="task in toDoList.tasks" :key="task.id">
           <DisplayTaskItem :task="task" :id-list="toDoList.id as number" />
+          <div
+            class="flex flex-row items-center ml-10"
+            v-for="subTask in task.subTasks"
+            :key="subTask.id"
+          >
+            <DisplaySubTaskItem
+              :sub-task="subTask"
+              :id-list="toDoList.id as number"
+              :id-task="task.id as number"
+            />
+          </div>
         </div>
       </div>
     </div>

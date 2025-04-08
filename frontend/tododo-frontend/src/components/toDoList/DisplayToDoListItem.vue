@@ -95,7 +95,7 @@ const deleteToDoList = async () => {
 
 <template>
   <div class="flex flex-col m-4">
-    <div class="flex flex-row items-center mb-4">
+    <div class="flex flex-row items-center">
       <Checkbox
         size="large"
         :model-value="localToDoList.isCompleted"
@@ -117,7 +117,7 @@ const deleteToDoList = async () => {
       <span v-else class="ml-[32px]" />
       <h3 class="text-2xl mb-2">{{ localToDoList.name }}</h3>
     </div>
-    <Panel header="Description" class="w-96 h-30">
+    <Panel v-if="localToDoList.description" header="Description" class="w-full h-30 mt-4">
       <p>
         {{ localToDoList.description }}
       </p>
