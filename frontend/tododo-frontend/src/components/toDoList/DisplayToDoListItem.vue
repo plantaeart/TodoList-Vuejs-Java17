@@ -115,7 +115,7 @@ const deleteToDoList = async () => {
         :class="['m-2', 'font-size:20px', 'flex', 'justify-center', localToDoList.icon?.icon]"
       />
       <span v-else class="ml-[32px]" />
-      <h3 class="text-2xl mb-2">{{ localToDoList.name }}</h3>
+      <h3 class="text-2xl mb-1">{{ localToDoList.name }}</h3>
     </div>
     <Panel v-if="localToDoList.description" header="Description" class="w-full h-30 mt-4">
       <p>

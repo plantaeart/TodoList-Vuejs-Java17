@@ -8,6 +8,7 @@ import type { Task } from './Task'
 import { rearrangeArrayIds } from '@/utils/arrayUtils'
 import { ElementType } from '@/types/elementType'
 import { Result } from '@/types/result'
+import type { ToDoList } from '../toDoList/ToDoList'
 
 export const useTaskStore = defineStore('taskStore', () => {
   //* State
@@ -44,7 +45,18 @@ export const useTaskStore = defineStore('taskStore', () => {
     )
 
     // Check if the response is valid and contains the expected data
-    if (respTask.currentResult !== Result.OK)
+    if (respTask.currentResult === Result.OK) {
+      // Update current todo list state
+      const toDoListStore = useToDoListStore()
+      const currentToDoList = toDoListStore.allToDoListState.find(
+        (item) => item.id === idList,
+      ) as ToDoList
+      toDoListStore.checkToDoListCompletedState(
+        idList,
+        currentToDoList,
+        ElementType.TASK.toString(),
+      )
+    } else
       console.error(
         `Failed to update for task id: ${currentTask.id} - Response: ${respTask.message}`,
       )
