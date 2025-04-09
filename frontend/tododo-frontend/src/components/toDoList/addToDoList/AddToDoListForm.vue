@@ -17,6 +17,7 @@ import { Icon } from '@/features/classes/Icon'
 import { rearrangeArrayIds } from '@/utils/arrayUtils'
 import { Color } from '@/features/classes/Color'
 import { SubTask } from '@/features/subTask/SubTask'
+import { ElementType } from '@/types/elementType'
 
 const store = useToDoListStore()
 const req: ToDoListRequest = new ToDoListRequest()
@@ -24,6 +25,19 @@ const toDoListToAdd = ref(new ToDoList())
 const tasks = ref<Task[]>([])
 const defaultIcon = new Icon('Star', 'pi pi-star')
 const defaultColor = new Color('Yellow 100', 'bg-yellow-100')
+const isUpdateState = ref(false)
+
+const initUpdateToDoListSate = (toDoListToUpdate: ToDoList, isUpDateState: boolean) => {
+  isUpdateState.value = isUpDateState
+  toDoListToAdd.value = toDoListToUpdate as ToDoList
+  tasks.value = toDoListToUpdate?.tasks as Task[]
+}
+
+const resetUpdateToDoListSate = () => {
+  isUpdateState.value = false
+  toDoListToAdd.value = new ToDoList()
+  tasks.value = []
+}
 
 onMounted(() => {
   toDoListToAdd.value.icon = defaultIcon
@@ -43,16 +57,30 @@ const addToDoListFromFormInfos = async () => {
         tasks: tasks.value.filter((item) => item.taskContent !== ''),
       },
     ] // Prepare the request
-    console.log(`Start adding todo list with name : ` + req.toDoLists[0].name)
-    // Await the response from the store
-    resp = await store.addToDoList(req)
+    console.log(`Start adding/updating todo list with name : ` + req.toDoLists[0].name)
+    if (!isUpdateState.value) {
+      // Await the response from the store
+      resp = await store.addToDoList(req)
+    } else {
+      req.idsList = [toDoListToAdd.value.id as number]
+      req.toDoLists[0].isCompleted = toDoListToAdd.value.isCompleted
+      resp = await store.updateToDoListById(req, ElementType.NONE.toString())
+    }
+
     // Check if the response is valid and contains the expected data
     if (resp && resp.currentResult === Result.OK) {
       tasks.value.splice(0, tasks.value.length) // Clear the tasks array after successful addition
-    } else console.error(`Failed to add ToDoList. Response : ${resp.message}`)
+    } else if (!isUpdateState.value)
+      console.error(`Failed to add ToDoList. Response : ${resp.message}`)
+    else console.error(`Failed to update ToDoList. Response : ${resp.message}`)
   } catch (error) {
-    console.error(`(FRONT) Error while adding ToDoList : ${error}`)
-    console.error(`(BACK) Error while adding ToDoList : ${resp.message}`)
+    if (!isUpdateState.value) {
+      console.error(`(FRONT) Error while adding ToDoList : ${error}`)
+      console.error(`(BACK) Error while adding ToDoList : ${resp.message}`)
+    } else {
+      console.error(`(FRONT) Error while updating ToDoList : ${error}`)
+      console.error(`(BACK) Error while updating ToDoList : ${resp.message}`)
+    }
   }
 }
 
@@ -108,6 +136,8 @@ const clearDescription = async () => {
 
 defineExpose({
   addToDoListFromFormInfos,
+  initUpdateToDoListSate,
+  resetUpdateToDoListSate,
 })
 </script>
 
@@ -284,6 +314,7 @@ defineExpose({
             label="Add sub task"
             icon="pi pi-plus"
             class="w-1/2 mt-2"
+            severity="info"
             @click="addingNewSubTask(task.id)"
             :disabled="!tasks[task.id - 1]?.taskContent"
           />
@@ -295,6 +326,7 @@ defineExpose({
           label="Add task"
           icon="pi pi-plus"
           class="w-1/2"
+          severity="info"
           @click="addingNewTask"
           :disabled="!toDoListToAdd.name"
         />

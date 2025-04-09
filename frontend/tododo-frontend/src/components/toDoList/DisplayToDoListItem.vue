@@ -9,9 +9,13 @@ import { ref, watch } from 'vue'
 import { ToDoListResponse } from '@/features/toDoList/ToDoListResponse'
 import { Result } from '@/types/result'
 import { ElementType } from '@/types/elementType'
+import AddToDoListForm from './addToDoList/AddToDoListForm.vue'
 
 const store = useToDoListStore()
 const localToDoList = ref<ToDoList>(new ToDoList()) // Local state to hold fetched data
+const isUpdateState = ref(false) // Local state to hold fetched data
+const isUpdatePanelVisible = ref('invisible')
+const AddToDoListFormRef = ref()
 
 // Define props
 const props = defineProps({
@@ -91,6 +95,29 @@ const deleteToDoList = async () => {
     )
   }
 }
+
+// Handle update button click to show the update panel
+const ShowUpdateToDoListPanel = async (toDoList?: ToDoList) => {
+  // Toggle the update state
+  isUpdateState.value = !isUpdateState.value
+
+  // Show or hide the update panel based on the state
+  if (isUpdateState.value) {
+    isUpdatePanelVisible.value = 'visible'
+    AddToDoListFormRef.value?.initUpdateToDoListSate(toDoList, isUpdateState.value)
+  } else {
+    isUpdatePanelVisible.value = 'invisible'
+    AddToDoListFormRef.value?.resetUpdateToDoListSate()
+  }
+}
+
+// Handle update button click
+const UpdateToDoList = async () => {
+  AddToDoListFormRef.value?.addToDoListFromFormInfos()
+  AddToDoListFormRef.value?.resetUpdateToDoListSate()
+  isUpdatePanelVisible.value = 'invisible'
+  isUpdateState.value = !isUpdateState.value
+}
 </script>
 
 <template>
@@ -116,12 +143,53 @@ const deleteToDoList = async () => {
       />
       <span v-else class="ml-[32px]" />
       <h3 class="text-2xl mb-1">{{ localToDoList.name }}</h3>
+      <div class="flex flex-row justify-end w-1/2">
+        <Button
+          size="small"
+          icon="pi pi-pen-to-square"
+          severity="warn"
+          aria-label="Update"
+          @click="ShowUpdateToDoListPanel(localToDoList)"
+        />
+      </div>
     </div>
     <Panel v-if="localToDoList.description" header="Description" class="w-full h-30 mt-4">
       <p>
         {{ localToDoList.description }}
       </p>
     </Panel>
+  </div>
+  <div
+    :class="[isUpdatePanelVisible]"
+    class="fixed z-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gray-200/40 rounded"
+  >
+    <div
+      :class="[toDoList.color?.color]"
+      class="fixed snap-y overflow-y-auto z-101 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4/6 h-5/6 rounded-lg"
+    >
+      <div class="flex flex-row justify-end">
+        <Button
+          class="m-3"
+          size="small"
+          icon="pi pi-times"
+          severity="danger"
+          aria-label="Cancel update"
+          label="Cancel update"
+          @click="ShowUpdateToDoListPanel()"
+        />
+      </div>
+      <div>
+        <AddToDoListForm ref="AddToDoListFormRef" />
+      </div>
+      <div v-if="isUpdateState" class="flex flex-row w-full justify-end">
+        <Button
+          label="Update todo list"
+          icon="pi pi-check"
+          class="w-1/3 m-3"
+          @click="UpdateToDoList()"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
