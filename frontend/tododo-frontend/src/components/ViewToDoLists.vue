@@ -48,22 +48,24 @@ watch(
     <div>
       <AddToDoList />
     </div>
-    <div class="flex flex-row mb-4" v-for="toDoList in localToDoLists" :key="toDoList.id">
-      <div :class="[toDoList.color?.color]" class="rounded-lg w-1/2 shadow-md">
-        <p v-if="debug">Todo list name : {{ toDoList.name }} and id : {{ toDoList.id }}</p>
-        <DisplayToDoListItem :to-do-list="toDoList" />
-        <div class="flex flex-col ml-6" v-for="task in toDoList.tasks" :key="task.id">
-          <DisplayTaskItem :task="task" :id-list="toDoList.id as number" />
-          <div
-            class="flex flex-row items-center ml-10"
-            v-for="subTask in task.subTasks"
-            :key="subTask.id"
-          >
-            <DisplaySubTaskItem
-              :sub-task="subTask"
-              :id-list="toDoList.id as number"
-              :id-task="task.id as number"
-            />
+    <div class="grid grid-cols-2 m-4 gap-4">
+      <div v-for="toDoList in localToDoLists" :key="toDoList.id">
+        <div :class="[toDoList.color?.color]" class="rounded-lg w-full shadow-md p-4">
+          <p v-if="debug">Todo list name : {{ toDoList.name }} and id : {{ toDoList.id }}</p>
+          <DisplayToDoListItem :to-do-list="toDoList" />
+          <div class="flex flex-col ml-6" v-for="task in toDoList.tasks" :key="task.id">
+            <DisplayTaskItem :task="task" :id-list="toDoList.id as number" />
+            <div
+              class="flex flex-row items-center ml-10"
+              v-for="subTask in task.subTasks"
+              :key="subTask.id"
+            >
+              <DisplaySubTaskItem
+                :sub-task="subTask"
+                :id-list="toDoList.id as number"
+                :id-task="task.id as number"
+              />
+            </div>
           </div>
         </div>
       </div>
