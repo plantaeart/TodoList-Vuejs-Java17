@@ -5,17 +5,20 @@ import Panel from 'primevue/panel'
 import { ToDoList } from '@/features/toDoList/ToDoList'
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
 import type { ToDoListRequest } from '@/features/toDoList/ToDoListRequest'
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { ToDoListResponse } from '@/features/toDoList/ToDoListResponse'
 import { Result } from '@/types/result'
 import { ElementType } from '@/types/elementType'
 import AddToDoListForm from './addToDoList/AddToDoListForm.vue'
+import type { Task } from '@/features/task/Task'
 
 const store = useToDoListStore()
 const localToDoList = ref<ToDoList>(new ToDoList()) // Local state to hold fetched data
 const isUpdateState = ref(false) // Local state to hold fetched data
 const isUpdatePanelVisible = ref('invisible')
 const AddToDoListFormRef = ref()
+const initialStateToDoListBeforeUpdate = ref(new ToDoList()) // Local state to hold fetched data
+let isRevertingState = false // Local state to hold fetched data;
 
 // Define props
 const props = defineProps({
@@ -29,7 +32,10 @@ const props = defineProps({
 watch(
   () => props.toDoList,
   (newToDoList) => {
-    localToDoList.value = newToDoList // Update the local copy when the prop changes
+    if (!isRevertingState) {
+      console.log('Updating localToDoList from props.toDoList')
+      localToDoList.value = newToDoList // Update the local copy when the prop changes
+    }
   },
   { deep: true },
 )
@@ -103,11 +109,28 @@ const ShowUpdateToDoListPanel = async (toDoList?: ToDoList) => {
 
   // Show or hide the update panel based on the state
   if (isUpdateState.value) {
+    // Deep copy tasks and subtasks
+    const deepCopyTasks = (tasks: Task[] = []) =>
+      tasks.map((task) => ({
+        ...task,
+        subTasks: task.subTasks ? [...task.subTasks.map((subTask) => ({ ...subTask }))] : [],
+      }))
+
+    // Set the initial state for the update panel
+    initialStateToDoListBeforeUpdate.value = new ToDoList({
+      id: toDoList?.id,
+      type: toDoList?.type,
+      name: toDoList?.name,
+      description: toDoList?.description,
+      completionPercentage: toDoList?.completionPercentage,
+      icon: toDoList?.icon,
+      color: toDoList?.color,
+      isCompleted: toDoList?.isCompleted,
+      tasks: deepCopyTasks(toDoList?.tasks || []), // Deep copy tasks and subtasks
+      updateDate: toDoList?.updateDate,
+    })
     isUpdatePanelVisible.value = 'visible'
     AddToDoListFormRef.value?.initUpdateToDoListSate(toDoList, isUpdateState.value)
-  } else {
-    isUpdatePanelVisible.value = 'invisible'
-    AddToDoListFormRef.value?.resetUpdateToDoListSate()
   }
 }
 
@@ -117,6 +140,18 @@ const UpdateToDoList = async () => {
   AddToDoListFormRef.value?.resetUpdateToDoListSate()
   isUpdatePanelVisible.value = 'invisible'
   isUpdateState.value = !isUpdateState.value
+}
+
+// Handle cancel update button click
+const cancelUpdate = () => {
+  isRevertingState = true // Disable the watch
+  Object.assign(localToDoList.value, { ...initialStateToDoListBeforeUpdate.value }) // Revert to the initial state
+  isUpdatePanelVisible.value = 'invisible' // Hide the update panel
+  isUpdateState.value = !isUpdateState.value // Reset the update state
+  AddToDoListFormRef.value?.resetUpdateToDoListSate()
+  nextTick(() => {
+    isRevertingState = false // Re-enable the watch after the state is reverted
+  })
 }
 </script>
 
@@ -175,7 +210,7 @@ const UpdateToDoList = async () => {
           severity="danger"
           aria-label="Cancel update"
           label="Cancel update"
-          @click="ShowUpdateToDoListPanel()"
+          @click="cancelUpdate"
         />
       </div>
       <div>
