@@ -57,6 +57,11 @@ const addToDoListFromFormInfos = async () => {
         tasks: tasks.value.filter((item) => item.taskContent !== ''),
       },
     ] // Prepare the request
+    // Remove empty subTasks
+    req.toDoLists[0].tasks?.forEach((task) => {
+      task.subTasks = task.subTasks.filter((item) => item.taskContent !== '')
+    })
+
     console.log(`Start adding/updating todo list with name : ` + req.toDoLists[0].name)
     if (!isUpdateState.value) {
       // Await the response from the store
@@ -65,6 +70,23 @@ const addToDoListFromFormInfos = async () => {
       req.idsList = [toDoListToAdd.value.id as number]
       req.toDoLists[0].isCompleted = toDoListToAdd.value.isCompleted
       resp = await store.updateToDoListById(req, ElementType.NONE.toString())
+
+      if (resp.currentResult !== Result.OK) {
+        console.error(
+          `(BACK) Failed to update ToDoList id : ${toDoListToAdd.value.id}. Response : ${resp.message}`,
+        )
+      } else {
+        const toDoListStore = useToDoListStore()
+        const currentToDoList: ToDoList = resp.toDoLists[0]
+        // Check if the ToDoList is completed
+        toDoListStore.checkToDoListCompletedState(
+          currentToDoList.id as number,
+          currentToDoList,
+          ElementType.TODOLIST.toString(),
+          true,
+        )
+        console.log(`Updated todo list with name : ` + req.toDoLists[0].name)
+      }
     }
 
     // Check if the response is valid and contains the expected data

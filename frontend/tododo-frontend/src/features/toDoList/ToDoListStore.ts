@@ -6,6 +6,7 @@ import { ToDoListResponse } from './ToDoListResponse'
 import { ToDoList } from './ToDoList'
 import { ElementType } from '@/types/elementType'
 import { Result } from '@/types/result'
+import { useTaskStore } from '../task/TaskStore'
 
 export const useToDoListStore = defineStore('toDoListStore', () => {
   //* State
@@ -27,8 +28,22 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
     idList: number,
     currentToDoList: ToDoList,
     from: string,
+    all?: boolean,
   ) => {
     let respToDoList: ToDoListResponse = new ToDoListResponse()
+
+    // To check if new tasks are completed
+    if (all) {
+      const taskStore = useTaskStore()
+      currentToDoList.tasks?.forEach((task) => {
+        if (task.subTasks.length > 0) {
+          console.log('HERE')
+          taskStore.checkTaskCompletedState(idList, task.id, task, ElementType.SUBTASK.toString())
+        }
+      })
+
+      return
+    }
 
     // Update the ToDoList with the new task status
     respToDoList = await updateToDoListById(

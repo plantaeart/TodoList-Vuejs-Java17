@@ -33,7 +33,6 @@ watch(
   () => props.toDoList,
   (newToDoList) => {
     if (!isRevertingState) {
-      console.log('Updating localToDoList from props.toDoList')
       localToDoList.value = newToDoList // Update the local copy when the prop changes
     }
   },
@@ -143,7 +142,7 @@ const UpdateToDoList = async () => {
 }
 
 // Handle cancel update button click
-const cancelUpdate = () => {
+const CancelUpdate = () => {
   isRevertingState = true // Disable the watch
   Object.assign(localToDoList.value, { ...initialStateToDoListBeforeUpdate.value }) // Revert to the initial state
   isUpdatePanelVisible.value = 'invisible' // Hide the update panel
@@ -157,35 +156,37 @@ const cancelUpdate = () => {
 
 <template>
   <div class="flex flex-col m-4">
-    <div class="flex flex-row items-center">
-      <Checkbox
-        size="large"
-        :model-value="localToDoList.isCompleted"
-        @update:model-value="onCheckboxChange"
-        binary
-      />
-      <Button
-        class="ml-1"
-        size="small"
-        icon="pi pi-times"
-        severity="danger"
-        aria-label="Cancel"
-        @click="deleteToDoList"
-      />
-      <span
-        v-if="localToDoList.icon?.icon !== ''"
-        :class="['m-2', 'font-size:20px', 'flex', 'justify-center', localToDoList.icon?.icon]"
-      />
-      <span v-else class="ml-[32px]" />
-      <h3 class="text-2xl mb-1">{{ localToDoList.name }}</h3>
-      <div class="flex flex-row justify-end w-1/2">
-        <Button
-          size="small"
-          icon="pi pi-pen-to-square"
-          severity="warn"
-          aria-label="Update"
-          @click="ShowUpdateToDoListPanel(localToDoList)"
+    <div class="flex flex-row justify-between">
+      <div class="flex flex-row items-center w-3/4">
+        <Checkbox
+          size="large"
+          :model-value="localToDoList.isCompleted"
+          @update:model-value="onCheckboxChange"
+          binary
         />
+        <Button
+          class="ml-1"
+          size="small"
+          icon="pi pi-times"
+          severity="danger"
+          aria-label="Cancel"
+          @click="deleteToDoList"
+        />
+        <span
+          :class="['m-2', 'font-size:20px', 'flex', 'justify-center', localToDoList.icon?.icon]"
+        />
+        <h3 class="text-2xl mb-1">{{ localToDoList.name }}</h3>
+      </div>
+      <div>
+        <div class="w-1/4">
+          <Button
+            size="small"
+            icon="pi pi-pen-to-square"
+            severity="warn"
+            aria-label="Update"
+            @click="ShowUpdateToDoListPanel(localToDoList)"
+          />
+        </div>
       </div>
     </div>
     <Panel v-if="localToDoList.description" header="Description" class="w-full h-30 mt-4">
@@ -194,6 +195,8 @@ const cancelUpdate = () => {
       </p>
     </Panel>
   </div>
+
+  <!-- Update panel for editing the todo list -->
   <div
     :class="[isUpdatePanelVisible]"
     class="fixed z-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gray-200/40 rounded"
@@ -210,10 +213,10 @@ const cancelUpdate = () => {
           severity="danger"
           aria-label="Cancel update"
           label="Cancel update"
-          @click="cancelUpdate"
+          @click="CancelUpdate"
         />
       </div>
-      <div>
+      <div class="flex justify-center">
         <AddToDoListForm ref="AddToDoListFormRef" />
       </div>
       <div v-if="isUpdateState" class="flex flex-row w-full justify-end">
