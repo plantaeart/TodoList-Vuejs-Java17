@@ -37,7 +37,6 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
       const taskStore = useTaskStore()
       currentToDoList.tasks?.forEach((task) => {
         if (task.subTasks.length > 0) {
-          console.log('HERE')
           taskStore.checkTaskCompletedState(idList, task.id, task, ElementType.SUBTASK.toString())
         }
       })

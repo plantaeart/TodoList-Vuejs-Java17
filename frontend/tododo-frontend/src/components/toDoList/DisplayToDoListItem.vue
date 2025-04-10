@@ -173,12 +173,12 @@ const CancelUpdate = () => {
           @click="deleteToDoList"
         />
         <span
-          :class="['m-2', 'font-size:20px', 'flex', 'justify-center', localToDoList.icon?.icon]"
+          :class="['m-2', 'font-size:40px', 'flex', 'justify-center', localToDoList.icon?.icon]"
         />
         <h3 class="text-2xl mb-1">{{ localToDoList.name }}</h3>
       </div>
-      <div>
-        <div class="w-1/4">
+      <div class="flex justify-center">
+        <div>
           <Button
             size="small"
             icon="pi pi-pen-to-square"

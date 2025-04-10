@@ -140,6 +140,7 @@ const deleteSubTaskFromDisplayList = async () => {
         binary
       />
       <Button
+        v-if="debug"
         class="ml-1"
         size="small"
         icon="pi pi-times"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useToDoListStore } from '@/features/toDoList/ToDoListStore'
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue' // Added computed
 import DisplayToDoListItem from './toDoList/DisplayToDoListItem.vue'
 import AddToDoList from './toDoList/addToDoList/AddToDoList.vue'
 import DisplayTaskItem from './task/DisplayTaskItem.vue'
@@ -33,6 +33,21 @@ watch(
   },
   { deep: true },
 )
+
+// Calculate columns for the masonry layout - Pinterest style
+const columnCount = 3 // Number of columns for medium screens and above
+const masonryColumns = computed(() => {
+  // Create an array of 'columnCount' empty arrays
+  const columns = Array.from({ length: columnCount }, () => [] as ToDoList[])
+
+  // Distribute items across columns optimally
+  localToDoLists.value.forEach((toDoList, index) => {
+    // Add each todo list to the appropriate column
+    columns[index % columnCount].push(toDoList)
+  })
+
+  return columns
+})
 </script>
 
 <template>
@@ -48,10 +63,23 @@ watch(
     <div>
       <AddToDoList />
     </div>
-    <div class="grid grid-cols-2 m-4 gap-4">
-      <div v-for="toDoList in localToDoLists" :key="toDoList.id">
-        <div :class="[toDoList.color?.color]" class="rounded-lg w-full shadow-md p-4">
-          <p v-if="debug">Todo list name : {{ toDoList.name }} and id : {{ toDoList.id }}</p>
+
+    <!-- Pinterest-style masonry layout -->
+    <div class="flex flex-col md:flex-row w-full gap-4">
+      <!-- Create a column for each array in masonryColumns -->
+      <div
+        v-for="(column, columnIndex) in masonryColumns"
+        :key="columnIndex"
+        class="w-full md:w-1/3 flex flex-col gap-4"
+      >
+        <!-- Render each todo list in this column -->
+        <div
+          v-for="toDoList in column"
+          :key="toDoList.id"
+          :class="[toDoList.color?.color]"
+          class="rounded-lg w-full shadow-md p-4"
+        >
+          <p v-if="debug">Todo list name: {{ toDoList.name }} and id: {{ toDoList.id }}</p>
           <DisplayToDoListItem :to-do-list="toDoList" />
           <div class="flex flex-col ml-6" v-for="task in toDoList.tasks" :key="task.id">
             <DisplayTaskItem :task="task" :id-list="toDoList.id as number" />

@@ -16,6 +16,7 @@ const storeToDoList = useToDoListStore()
 const storeTask = useTaskStore()
 const localTask = ref<Task>(new Task()) // Local state to hold fetched data
 const debug = ref(appEnv.VITE_DEBUG)
+
 // Define props
 const props = defineProps({
   idList: {
@@ -139,6 +140,7 @@ const deleteTaskFromDisplayList = async () => {
         binary
       />
       <Button
+        v-if="debug"
         class="ml-1"
         size="small"
         icon="pi pi-times"
