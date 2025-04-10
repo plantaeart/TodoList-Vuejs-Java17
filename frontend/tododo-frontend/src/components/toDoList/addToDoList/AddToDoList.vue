@@ -10,6 +10,11 @@ const AddToDoListFormRef = ref()
 const clickAddToDoList = () => {
   isCreatingToDoList.value = !isCreatingToDoList.value
   isCreateButtonDisabled.value = !isCreateButtonDisabled.value
+
+  if (isCreatingToDoList.value) {
+    // Reset the form when opening
+    AddToDoListFormRef.value?.addInitForm()
+  }
 }
 
 const clickAddToDoListFromFormInfos = () => {
@@ -29,23 +34,23 @@ const clickAddToDoListFromFormInfos = () => {
       raised
       :disabled="isCreateButtonDisabled"
     />
-    <div class="flex flex-col" v-if="isCreatingToDoList">
+    <div class="flex flex-col items-center justify-center w-4/6" v-if="isCreatingToDoList">
       <AddToDoListForm ref="AddToDoListFormRef" />
       <div class="flex flex-row justify-center">
         <Button
-          class="w-1/4 m-4"
+          class="w-full m-4"
           severity="danger"
           label="Cancel"
           icon="pi pi-times"
-          @click="clickAddToDoList"
           raised
+          @click="clickAddToDoList"
         />
         <Button
-          class="w-1/4 m-4"
+          class="w-full m-4"
           label="Create"
           icon="pi pi-check"
-          @click="clickAddToDoListFromFormInfos"
           raised
+          @click="clickAddToDoListFromFormInfos"
         />
       </div>
     </div>

@@ -27,22 +27,29 @@ const defaultIcon = new Icon('Star', 'pi pi-star')
 const defaultColor = new Color('Yellow 100', 'bg-yellow-100')
 const isUpdateState = ref(false)
 
+// To init the state of the form when update
 const initUpdateToDoListSate = (toDoListToUpdate: ToDoList, isUpDateState: boolean) => {
   isUpdateState.value = isUpDateState
   toDoListToAdd.value = toDoListToUpdate as ToDoList
   tasks.value = toDoListToUpdate?.tasks as Task[]
 }
 
+// Function to reset the state of the form
 const resetUpdateToDoListSate = () => {
   isUpdateState.value = false
   toDoListToAdd.value = new ToDoList()
   tasks.value = []
 }
 
+// When the component is mounted, set the default icon and color
 onMounted(() => {
+  addInitForm()
+})
+
+const addInitForm = () => {
   toDoListToAdd.value.icon = defaultIcon
   toDoListToAdd.value.color = defaultColor
-})
+}
 
 const addToDoListFromFormInfos = async () => {
   let resp: ToDoListResponse = new ToDoListResponse()
@@ -138,6 +145,7 @@ const deleteNewTask = async (idTask: number) => {
   tasks.value = rearrangeArrayIds(tasks.value)
 }
 
+// Function to delete a subtask in form
 const deleteNewSubTask = async (idTask: number, idSubTask: number) => {
   const indexTask = idTask - 1
   if (!tasks.value[indexTask].taskContent) return
@@ -152,6 +160,54 @@ const deleteNewSubTask = async (idTask: number, idSubTask: number) => {
   tasks.value[indexTask].subTasks = rearrangeArrayIds(tasks.value[indexTask].subTasks)
 }
 
+// To switch the task up in the list
+const switchUpTask = async (idTask: number) => {
+  const index = tasks.value.findIndex((task) => task.id === idTask)
+  if (index > 0) {
+    const temp = tasks.value[index]
+    tasks.value[index] = tasks.value[index - 1]
+    tasks.value[index - 1] = temp
+  }
+}
+
+// To switch the task down in the list
+const switchDownTask = async (idTask: number) => {
+  const index = tasks.value.findIndex((task) => task.id === idTask)
+  if (index < tasks.value.length - 1) {
+    const temp = tasks.value[index]
+    tasks.value[index] = tasks.value[index + 1]
+    tasks.value[index + 1] = temp
+  }
+}
+
+// To switch the subtask up in the list
+const switchUpSubTask = async (idTask: number, idSubTask: number) => {
+  const indexTask = idTask - 1
+  const indexSubTask = tasks.value[indexTask].subTasks.findIndex(
+    (subTask) => subTask.id === idSubTask,
+  )
+  if (indexSubTask > 0) {
+    const temp = tasks.value[indexTask].subTasks[indexSubTask]
+    tasks.value[indexTask].subTasks[indexSubTask] =
+      tasks.value[indexTask].subTasks[indexSubTask - 1]
+    tasks.value[indexTask].subTasks[indexSubTask - 1] = temp
+  }
+}
+
+// To switch the subtask down in the list
+const switchDownSubTask = async (idTask: number, idSubTask: number) => {
+  const indexTask = idTask - 1
+  const indexSubTask = tasks.value[indexTask].subTasks.findIndex(
+    (subTask) => subTask.id === idSubTask,
+  )
+  if (indexSubTask < tasks.value[indexTask].subTasks.length - 1) {
+    const temp = tasks.value[indexTask].subTasks[indexSubTask]
+    tasks.value[indexTask].subTasks[indexSubTask] =
+      tasks.value[indexTask].subTasks[indexSubTask + 1]
+    tasks.value[indexTask].subTasks[indexSubTask + 1] = temp
+  }
+}
+
 const clearDescription = async () => {
   toDoListToAdd.value.description = ''
 }
@@ -160,12 +216,13 @@ defineExpose({
   addToDoListFromFormInfos,
   initUpdateToDoListSate,
   resetUpdateToDoListSate,
+  addInitForm,
 })
 </script>
 
 <template>
-  <div class="flex flex-col items-center m-4 w-lg">
-    <div id="formElements" class="flex flex-col gap-2 w-4/5 justify-center">
+  <div class="flex flex-col items-center m-2 w-3/4">
+    <div id="formElements" class="flex flex-col gap-2 w-full justify-center">
       <div class="flex flex-row items-end justify-center">
         <!-- SELECT FOR COLORS -->
         <Select
@@ -236,7 +293,7 @@ defineExpose({
           />
           <label for="over_label">Todo list description</label>
         </FloatLabel>
-        <div class="w-full flex flex-row justify-start ml-19">
+        <div class="w-full flex flex-row justify-start">
           <Button
             label="Clear"
             class="w-1/5"
@@ -244,12 +301,13 @@ defineExpose({
             icon="pi pi-trash"
             severity="danger"
             aria-label="Clear"
+            raised
             @click="clearDescription()"
           />
         </div>
       </div>
 
-      <div v-for="(task, indexTask) in tasks" :key="task.id" class="">
+      <div v-for="(task, indexTask) in tasks" :key="task.id">
         <div class="flex flex-row justify-end items-center">
           <!-- SELECT FOR TASK ICON -->
           <Select
@@ -282,14 +340,38 @@ defineExpose({
             icon="pi pi-times"
             severity="danger"
             aria-label="Cancel"
+            raised
             @click="deleteNewTask(task.id)"
           />
+          <!-- SWITCHIN TASK BEHAVIOR -->
+          <div class="flex flex-col items-center justify-center">
+            <Button
+              :disabled="indexTask === 0"
+              size="small"
+              icon="pi pi-chevron-up"
+              aria-label="Cancel"
+              severity="info"
+              variant="text"
+              rounded
+              @click="switchUpTask(task.id)"
+            />
+            <Button
+              :disabled="indexTask === tasks.length - 1"
+              size="small"
+              icon="pi pi-chevron-down"
+              aria-label="Cancel"
+              severity="info"
+              variant="text"
+              rounded
+              @click="switchDownTask(task.id)"
+            />
+          </div>
         </div>
         <div>
           <div
-            v-for="subTask in tasks[indexTask].subTasks"
+            v-for="(subTask, indexSubTask) in tasks[indexTask].subTasks"
             :key="subTask.id"
-            class="flex flex-row justify-end items-center ml-10 mt-2"
+            class="flex flex-row justify-end items-center ml-10"
           >
             <!-- SELECT FOR TASK ICON -->
             <Select
@@ -321,13 +403,37 @@ defineExpose({
               aria-describedby="sub task name"
             />
             <Button
-              class="ml-1"
               size="small"
+              class="ml-1"
               icon="pi pi-times"
               severity="danger"
               aria-label="Cancel"
+              raised
               @click="deleteNewSubTask(task.id, subTask.id)"
             />
+            <!-- SWITCHIN SUBTASK BEHAVIOR -->
+            <div class="flex flex-col items-center justify-center">
+              <Button
+                :disabled="indexSubTask === 0"
+                size="small"
+                icon="pi pi-chevron-up"
+                aria-label="Switch up"
+                severity="help"
+                variant="text"
+                rounded
+                @click="switchUpSubTask(task.id, subTask.id)"
+              />
+              <Button
+                :disabled="indexSubTask === tasks[indexTask].subTasks.length - 1"
+                size="small"
+                icon="pi pi-chevron-down"
+                aria-label="Switch down"
+                severity="help"
+                variant="text"
+                rounded
+                @click="switchDownSubTask(task.id, subTask.id)"
+              />
+            </div>
           </div>
         </div>
 
@@ -336,7 +442,8 @@ defineExpose({
             label="Add sub task"
             icon="pi pi-plus"
             class="w-1/2 mt-2"
-            severity="info"
+            severity="help"
+            raised
             @click="addingNewSubTask(task.id)"
             :disabled="!tasks[task.id - 1]?.taskContent"
           />
@@ -349,6 +456,7 @@ defineExpose({
           icon="pi pi-plus"
           class="w-1/2"
           severity="info"
+          raised
           @click="addingNewTask"
           :disabled="!toDoListToAdd.name"
         />

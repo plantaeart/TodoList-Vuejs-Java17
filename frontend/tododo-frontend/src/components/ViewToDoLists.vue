@@ -53,16 +53,23 @@ const masonryColumns = computed(() => {
 <template>
   <div class="m-4">
     <div class="flex flex-col items-center mb-1">
-      <h1 class="text-xl">Tododo</h1>
+      <h1
+        class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-grey"
+      >
+        Tododo
+      </h1>
       <h2 class="text-l underline">To do and do !</h2>
-      <p v-if="isLoading">Loading...</p>
-      <p v-else>
-        {{ 'Count the number of lists : ' + store.sizeToDoList }}
-      </p>
+      <div v-if="debug">
+        <p v-if="isLoading">Loading...</p>
+        <p v-else>
+          {{ 'Count the number of lists : ' + store.sizeToDoList }}
+        </p>
+      </div>
     </div>
-    <div>
+    <div v-if="!isLoading">
       <AddToDoList />
     </div>
+    <di v-else class="flex flex-row justify-center"><p class="text-5xl">Loading...</p></di>
 
     <!-- Pinterest-style masonry layout -->
     <div class="flex flex-col md:flex-row w-full gap-4">
@@ -76,7 +83,7 @@ const masonryColumns = computed(() => {
         <div
           v-for="toDoList in column"
           :key="toDoList.id"
-          :class="[toDoList.color?.color]"
+          :class="[!toDoList.isCompleted ? toDoList.color?.color : 'bg-gray-200']"
           class="rounded-lg w-full shadow-md p-4"
         >
           <p v-if="debug">Todo list name: {{ toDoList.name }} and id: {{ toDoList.id }}</p>

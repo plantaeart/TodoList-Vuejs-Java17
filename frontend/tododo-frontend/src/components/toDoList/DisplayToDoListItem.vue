@@ -170,6 +170,7 @@ const CancelUpdate = () => {
           icon="pi pi-times"
           severity="danger"
           aria-label="Cancel"
+          raised
           @click="deleteToDoList"
         />
         <span
@@ -184,6 +185,7 @@ const CancelUpdate = () => {
             icon="pi pi-pen-to-square"
             severity="warn"
             aria-label="Update"
+            raised
             @click="ShowUpdateToDoListPanel(localToDoList)"
           />
         </div>
@@ -202,8 +204,8 @@ const CancelUpdate = () => {
     class="fixed z-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full bg-gray-200/40 rounded"
   >
     <div
-      :class="[toDoList.color?.color]"
-      class="fixed snap-y overflow-y-auto z-101 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4/6 h-5/6 rounded-lg"
+      :class="[!toDoList.isCompleted ? toDoList.color?.color : 'bg-gray-200']"
+      class="fixed snap-y overflow-y-auto z-101 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5/6 h-5/6 rounded-lg"
     >
       <div class="flex flex-row justify-end">
         <Button
@@ -213,6 +215,7 @@ const CancelUpdate = () => {
           severity="danger"
           aria-label="Cancel update"
           label="Cancel update"
+          raised
           @click="CancelUpdate"
         />
       </div>
@@ -224,6 +227,7 @@ const CancelUpdate = () => {
           label="Update todo list"
           icon="pi pi-check"
           class="w-1/3 m-3"
+          raised
           @click="UpdateToDoList()"
         />
       </div>

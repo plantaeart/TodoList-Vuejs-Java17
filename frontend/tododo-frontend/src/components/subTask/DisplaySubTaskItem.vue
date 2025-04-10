@@ -146,6 +146,7 @@ const deleteSubTaskFromDisplayList = async () => {
         icon="pi pi-times"
         severity="danger"
         aria-label="Cancel"
+        raised
         @click="deleteSubTaskFromDisplayList"
       />
       <span
