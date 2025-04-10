@@ -52,12 +52,11 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
     * Mise en place des compotement basic (Create, update, delete, switch) for ToDoList 🟩
     * Mise en place du style 🟩
     * Test that the todo lists behavior are ok with taks and subTasks 🟩
-    * Mise en place d'un display en format grille 🟪
+    * Mise en place d'un display en format grille 🟩
     * Mettre la possibilité d'update une tâche (réutilisation addToDoListform component) 🟩
-    * Mise en place de la feature du switch des tasks de position 🟪
-    * Mise en place de la feature du switch des subTasks de position 🟪
-    * Création de la feature pour pin des tâches 🟪
-  * Adding some integration tests with cypress 🟪
+    * Mise en place de la feature du switch des tasks de position 🟩
+    * Mise en place de la feature du switch des subTasks de position 🟩
+  * Adding some integration tests with cypress 🟧
 
 ## Notes à moi même 😐
 
@@ -66,3 +65,5 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
 * 31/03/2025 : Je ne pensais pas un jour refaire du java, mais très franchement avec VS Code, c'est plutôt amusant ! (je ne pensais pas dire ça un jour non plus)
 * 01/04/2025 : Wow, mais VueJS + Pinia, c'est un truc de fou en fait 😎
 * 03/04/2025 : Des principes très intéressant avec VueJS (au niveau des refs, éléments réactifs et emits --> qui me rappelle les signaux dans Godot).
+* 10/04/2025 : J'arrive à la fin des behavior business de cette todo list web app ! Je suis très content d'avoir pu finir tout ça. Celà faisait un bon moment que
+                je n'avais pas fait de Java ni de Vuejs, le combo est deux est parfait et Pinia pour la gestion des store est très agréable. Bref, plus que les tests                   d'intégrations et on sera good !
