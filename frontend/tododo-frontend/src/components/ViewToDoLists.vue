@@ -69,7 +69,7 @@ const masonryColumns = computed(() => {
     <div v-if="!isLoading">
       <AddToDoList />
     </div>
-    <di v-else class="flex flex-row justify-center"><p class="text-5xl">Loading...</p></di>
+    <div v-else class="flex flex-row justify-center"><p class="text-5xl">Loading...</p></div>
 
     <!-- Pinterest-style masonry layout -->
     <div class="flex flex-col md:flex-row w-full gap-4">

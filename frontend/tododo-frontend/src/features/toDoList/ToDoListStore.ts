@@ -7,6 +7,7 @@ import { ToDoList } from './ToDoList'
 import { ElementType } from '@/types/elementType'
 import { Result } from '@/types/result'
 import { useTaskStore } from '../task/TaskStore'
+import appEnv from 'app-env'
 
 export const useToDoListStore = defineStore('toDoListStore', () => {
   //* State
@@ -67,6 +68,7 @@ export const useToDoListStore = defineStore('toDoListStore', () => {
   }
 
   const getAllToDoLists = async (req: ToDoListRequest) => {
+    req.isTest = appEnv.VITE_IS_TEST
     const response = (await toDoListService.getAllToDoLists(req.isTest)) as ToDoListResponse
     toDoListResp.value = response // Directly assign the response
     allToDoListState.value.splice(0, allToDoListState.value.length, ...toDoListResp.value.toDoLists)

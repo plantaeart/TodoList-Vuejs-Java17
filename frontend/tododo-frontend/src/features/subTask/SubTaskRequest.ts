@@ -1,3 +1,4 @@
+import appEnv from 'app-env'
 import type { SubTask } from './SubTask'
 
 export class SubTaskRequest {
@@ -5,7 +6,7 @@ export class SubTaskRequest {
   idsTask: number[] = []
   idsSubTask: number[] = []
   subTasks?: Array<SubTask> = []
-  isTest: boolean = false
+  isTest: boolean = appEnv.VITE_IS_TEST
 
   constructor(params?: {
     idsList?: number[]

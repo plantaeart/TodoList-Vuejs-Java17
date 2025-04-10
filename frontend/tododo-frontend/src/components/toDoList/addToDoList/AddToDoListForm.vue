@@ -18,6 +18,7 @@ import { rearrangeArrayIds } from '@/utils/arrayUtils'
 import { Color } from '@/features/classes/Color'
 import { SubTask } from '@/features/subTask/SubTask'
 import { ElementType } from '@/types/elementType'
+import appEnv from 'app-env'
 
 const store = useToDoListStore()
 const req: ToDoListRequest = new ToDoListRequest()
@@ -64,6 +65,7 @@ const addToDoListFromFormInfos = async () => {
         tasks: tasks.value.filter((item) => item.taskContent !== ''),
       },
     ] // Prepare the request
+    req.isTest = appEnv.VITE_IS_TEST
     // Remove empty subTasks
     req.toDoLists[0].tasks?.forEach((task) => {
       task.subTasks = task.subTasks.filter((item) => item.taskContent !== '')

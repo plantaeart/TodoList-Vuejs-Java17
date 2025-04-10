@@ -11,6 +11,7 @@ import { Result } from '@/types/result'
 import { ElementType } from '@/types/elementType'
 import AddToDoListForm from './addToDoList/AddToDoListForm.vue'
 import type { Task } from '@/features/task/Task'
+import appEnv from 'app-env'
 
 const store = useToDoListStore()
 const localToDoList = ref<ToDoList>(new ToDoList()) // Local state to hold fetched data
@@ -51,7 +52,7 @@ const onCheckboxChange = async (value: boolean) => {
     const req: ToDoListRequest = {
       idsList: [localToDoList.value.id as number],
       toDoLists: [{ ...localToDoList.value }], // Use the local copy
-      isTest: false,
+      isTest: appEnv.VITE_IS_TEST,
     }
 
     console.log(`Start updating todo list id : ${localToDoList.value.id}`)
@@ -79,7 +80,7 @@ const deleteToDoList = async () => {
     const idToDelete: number = localToDoList.value.id as number
     const req: ToDoListRequest = {
       idsList: [idToDelete],
-      isTest: false,
+      isTest: appEnv.VITE_IS_TEST,
     }
 
     // Await the response from the store

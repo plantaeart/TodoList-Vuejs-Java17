@@ -1,10 +1,11 @@
+import appEnv from 'app-env'
 import type { Task } from './Task'
 
 export class TaskRequest {
   idsList: number[] = []
   idsTask: number[] = []
   tasks?: Array<Task> = []
-  isTest: boolean = false
+  isTest: boolean = appEnv.VITE_IS_TEST
 
   constructor(params?: {
     idsList?: number[]

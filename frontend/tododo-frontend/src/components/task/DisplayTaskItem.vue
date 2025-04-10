@@ -57,7 +57,7 @@ const onCheckboxChange = async (value: boolean) => {
       idsList: [idList],
       idsTask: [localTask.value.id as number],
       tasks: [{ ...localTask.value }], // Use the local copy
-      isTest: false,
+      isTest: appEnv.VITE_IS_TEST,
     }
 
     console.log(`Start updating Task id : ${localTask.value.id} from todo list id : ${idList}`)
@@ -94,7 +94,7 @@ const deleteTaskFromDisplayList = async () => {
     const req: TaskRequest = {
       idsList: [idList],
       idsTask: [idToDelete],
-      isTest: false,
+      isTest: appEnv.VITE_IS_TEST,
     }
     const currentToDoList = storeToDoList.allToDoListState.find(
       (item) => item.id === idList,
