@@ -27,6 +27,7 @@ const clickAddToDoListFromFormInfos = () => {
 <template>
   <div class="flex flex-col items-center m-4">
     <Button
+      data-cy="showToDoListFormAddButton"
       class="w-1/4 mb-4"
       label="Add todo list"
       icon="pi pi-plus"
@@ -38,6 +39,7 @@ const clickAddToDoListFromFormInfos = () => {
       <AddToDoListForm ref="AddToDoListFormRef" />
       <div class="flex flex-row justify-center">
         <Button
+          data-cy="showToDoListFormCancelButton"
           class="w-full m-4"
           severity="danger"
           label="Cancel"
@@ -46,6 +48,7 @@ const clickAddToDoListFromFormInfos = () => {
           @click="clickAddToDoList"
         />
         <Button
+          data-cy="addToDoListButton"
           class="w-full m-4"
           label="Create"
           icon="pi pi-check"

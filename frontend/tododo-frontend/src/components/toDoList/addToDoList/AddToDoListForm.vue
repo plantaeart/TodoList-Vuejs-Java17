@@ -228,6 +228,7 @@ defineExpose({
       <div class="flex flex-row items-end justify-center">
         <!-- SELECT FOR COLORS -->
         <Select
+          data-cy="addToDoListColorSelect"
           v-model="toDoListToAdd.color"
           :options="colors"
           filter
@@ -252,6 +253,7 @@ defineExpose({
         </Select>
         <!-- SELECT FOR TODOLIST ICON -->
         <Select
+          data-cy="addToDoListIconSelect"
           v-model="toDoListToAdd.icon"
           :options="icons"
           filter
@@ -277,6 +279,7 @@ defineExpose({
         <div class="flex flex-col">
           <label for="toDoListName">Todo list name</label>
           <InputText
+            data-cy="addToDoListNameInput"
             class="w-full"
             v-model="toDoListToAdd.name"
             aria-describedby="todo list name"
@@ -286,6 +289,7 @@ defineExpose({
       <div class="flex flex-col items-center">
         <FloatLabel variant="in">
           <Textarea
+            data-cy="addToDoListDescriptionInput"
             id="TodoListDescription"
             v-model="toDoListToAdd.description"
             rows="3"
@@ -313,6 +317,7 @@ defineExpose({
         <div class="flex flex-row justify-end items-center">
           <!-- SELECT FOR TASK ICON -->
           <Select
+            :data-cy="`addToDoListTaskIconSelect-${task.id}`"
             v-model="task.icon"
             :options="icons"
             filter
@@ -335,8 +340,14 @@ defineExpose({
               </div>
             </template>
           </Select>
-          <InputText class="w-3/7" v-model="task.taskContent" aria-describedby="task name" />
+          <InputText
+            :data-cy="`addToDoListTaskNameInput-${task.id}`"
+            class="w-3/7"
+            v-model="task.taskContent"
+            aria-describedby="task name"
+          />
           <Button
+            :data-cy="`addToDoListTaskDeleteButton-${task.id}`"
             class="ml-1"
             size="small"
             icon="pi pi-times"
@@ -345,23 +356,25 @@ defineExpose({
             raised
             @click="deleteNewTask(task.id)"
           />
-          <!-- SWITCHIN TASK BEHAVIOR -->
+          <!-- SWITCHING TASK BEHAVIOR -->
           <div class="flex flex-col items-center justify-center">
             <Button
+              :data-cy="`addToDoListTaskSwitchUpButton-${task.id}`"
               :disabled="indexTask === 0"
               size="small"
               icon="pi pi-chevron-up"
-              aria-label="Cancel"
+              aria-label="Switch up"
               severity="info"
               variant="text"
               rounded
               @click="switchUpTask(task.id)"
             />
             <Button
+              :data-cy="`addToDoListTaskSwitchDownButton-${task.id}`"
               :disabled="indexTask === tasks.length - 1"
               size="small"
               icon="pi pi-chevron-down"
-              aria-label="Cancel"
+              aria-label="Switch down"
               severity="info"
               variant="text"
               rounded
@@ -375,8 +388,9 @@ defineExpose({
             :key="subTask.id"
             class="flex flex-row justify-end items-center ml-10"
           >
-            <!-- SELECT FOR TASK ICON -->
+            <!-- SELECT FOR SUBTASK ICON -->
             <Select
+              :data-cy="`addToDoListSubTaskIconSelect-${task.id}-${subTask.id}`"
               v-model="subTask.icon"
               :options="icons"
               filter
@@ -400,11 +414,13 @@ defineExpose({
               </template>
             </Select>
             <InputText
+              :data-cy="`addToDoListSubTaskNameInput-${task.id}-${subTask.id}`"
               class="w-3/7"
               v-model="subTask.taskContent"
               aria-describedby="sub task name"
             />
             <Button
+              :data-cy="`addToDoListSubTaskDeleteButton-${task.id}-${subTask.id}`"
               size="small"
               class="ml-1"
               icon="pi pi-times"
@@ -413,9 +429,10 @@ defineExpose({
               raised
               @click="deleteNewSubTask(task.id, subTask.id)"
             />
-            <!-- SWITCHIN SUBTASK BEHAVIOR -->
+            <!-- SWITCHING SUBTASK BEHAVIOR -->
             <div class="flex flex-col items-center justify-center">
               <Button
+                :data-cy="`addToDoListSubTaskSwitchUpButton-${task.id}-${subTask.id}`"
                 :disabled="indexSubTask === 0"
                 size="small"
                 icon="pi pi-chevron-up"
@@ -426,6 +443,7 @@ defineExpose({
                 @click="switchUpSubTask(task.id, subTask.id)"
               />
               <Button
+                :data-cy="`addToDoListSubTaskSwitchDownButton-${task.id}-${subTask.id}`"
                 :disabled="indexSubTask === tasks[indexTask].subTasks.length - 1"
                 size="small"
                 icon="pi pi-chevron-down"
@@ -441,6 +459,7 @@ defineExpose({
 
         <div class="flex flex-row items-center justify-center">
           <Button
+            :data-cy="`addToDoListSubTaskAddButton-${task.id}`"
             label="Add sub task"
             icon="pi pi-plus"
             class="w-1/2 mt-2"
@@ -454,6 +473,7 @@ defineExpose({
 
       <div class="flex flex-row items-center justify-center">
         <Button
+          data-cy="addToDoListTaskAddButton"
           label="Add task"
           icon="pi pi-plus"
           class="w-1/2"

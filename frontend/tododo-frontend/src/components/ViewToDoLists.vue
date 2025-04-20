@@ -11,6 +11,7 @@ import appEnv from 'app-env'
 const store = useToDoListStore()
 const localToDoLists = ref<ToDoList[]>([]) // Local state to hold fetched data
 const debug = ref(appEnv.VITE_DEBUG)
+const isTesting = appEnv.VITE_IS_TEST
 
 const props = defineProps({
   toDoLists: {
@@ -58,6 +59,7 @@ const masonryColumns = computed(() => {
       >
         Tododo
       </h1>
+      <p v-if="debug">{{ 'Is testing : ' + isTesting }}</p>
       <h2 class="text-l underline">To do and do !</h2>
       <div v-if="debug">
         <p v-if="isLoading">Loading...</p>
@@ -85,6 +87,7 @@ const masonryColumns = computed(() => {
           :key="toDoList.id"
           :class="[!toDoList.isCompleted ? toDoList.color?.color : 'bg-gray-200']"
           class="rounded-lg w-full shadow-md p-4"
+          :data-cy="`toDoList-${toDoList.id}`"
         >
           <p v-if="debug">Todo list name: {{ toDoList.name }} and id: {{ toDoList.id }}</p>
           <DisplayToDoListItem :to-do-list="toDoList" />

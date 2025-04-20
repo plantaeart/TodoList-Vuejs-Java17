@@ -166,6 +166,7 @@ const CancelUpdate = () => {
           binary
         />
         <Button
+          :data-cy="`deleteToDoList-${localToDoList.id}`"
           class="ml-1"
           size="small"
           icon="pi pi-times"
