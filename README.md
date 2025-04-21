@@ -16,6 +16,23 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
 * Données 💿
   Je n'avais pas envie de m'embêter, un fichier JSON (donc on est sur du NoSQL) fera l'affaire !
 
+## Lancer le projet 🚀
+
+* Backend :
+  * Open VS Code
+  * Install this addon pack for Java : https://code.visualstudio.com/docs/languages/java
+  * Get the project from Github (Backend/tododo)
+  * Launch it
+* Front
+  * Open VS Code
+  * Install VueJs VSCode extension
+  * Get the project from Github (Frontend/tododo-frontend)
+  * Use "npm i" to get all dependencies
+  * Use npm run dev and go to the adress display in the terminal
+  * To launch Cyrpess tests :
+    * Open one terminal to launch the app in testing mode : npm run dev -- --mode testing --host
+    * Open another terminal and run Cypress : npx cypress open
+
 ## En place pour l'instant 💭
 
 🟩 : Done
@@ -56,7 +73,7 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
     * Mettre la possibilité d'update une tâche (réutilisation addToDoListform component) 🟩
     * Mise en place de la feature du switch des tasks de position 🟩
     * Mise en place de la feature du switch des subTasks de position 🟩
-  * Adding some integration tests with cypress 🟧
+  * Adding some integration tests with cypress 🟩
 
 ## Notes à moi même 😐
 
@@ -67,3 +84,4 @@ Je commence cette aventure avec une web app de type __To Do List__ avec 2 techno
 * 03/04/2025 : Des principes très intéressant avec VueJS (au niveau des refs, éléments réactifs et emits --> qui me rappelle les signaux dans Godot).
 * 10/04/2025 : J'arrive à la fin des behavior business de cette todo list web app ! Je suis très content d'avoir pu finir tout ça. Celà faisait un bon moment que
                 je n'avais pas fait de Java ni de Vuejs, le combo est deux est parfait et Pinia pour la gestion des store est très agréable. Bref, plus que les tests                   d'intégrations et on sera good !
+* 21/04/2025 : On arrive sur la fin de ce projet perso ! Très cool à réaliser, la combinaison du VueJS 3 et Java 17 est super. Je recommande cette stack 😏
